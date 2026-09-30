@@ -1,0 +1,14 @@
+/* Admin Forms Styling */
+.form-card-admin {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-grid-admin {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}

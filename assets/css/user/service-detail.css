@@ -1,0 +1,20 @@
+/* Service Detail Page User Styles */
+@import '../common/reset.css';
+@import '../common/variables.css';
+@import '../common/header.css';
+@import '../common/footer.css';
+@import '../common/components.css';
+
+.service-detail-container {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  gap: 40px;
+  margin: 60px 0;
+}
+.sidebar-widget {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 24px;
+}

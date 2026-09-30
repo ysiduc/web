@@ -1,0 +1,93 @@
+/* Project Detail User Styles */
+@import '../common/reset.css';
+@import '../common/variables.css';
+@import '../common/header.css';
+@import '../common/footer.css';
+@import '../common/components.css';
+
+.project-detail-section {
+  padding: 70px 0;
+  background: #fff;
+}
+
+.project-detail-grid {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 50px;
+}
+
+.project-featured-img {
+  margin-bottom: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.project-featured-img img {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+}
+
+.project-meta-box {
+  background: var(--bg-light);
+  padding: 25px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 35px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.meta-box-item span {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  display: block;
+}
+
+.meta-box-item strong {
+  color: var(--primary-navy);
+  font-size: 15px;
+}
+
+.project-highlight-desc {
+  font-size: 16px;
+  color: var(--text-main);
+  font-weight: 500;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #fffbeb;
+  border-left: 4px solid var(--accent-gold);
+  border-radius: 4px;
+}
+
+.cta-sidebar-card {
+  background: var(--primary-navy);
+  color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.cta-sidebar-card h3 {
+  color: #fff;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.related-projects-box {
+  background: var(--bg-light);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+@media (max-width: 992px) {
+  .project-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

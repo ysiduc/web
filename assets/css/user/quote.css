@@ -1,0 +1,16 @@
+/* Quote Request User Styles */
+@import '../common/reset.css';
+@import '../common/variables.css';
+@import '../common/header.css';
+@import '../common/footer.css';
+@import '../common/components.css';
+
+.quote-page-form {
+  max-width: 800px;
+  margin: 60px auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+}

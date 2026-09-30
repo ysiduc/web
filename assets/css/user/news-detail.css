@@ -1,0 +1,11 @@
+/* News Detail User Styles */
+@import '../common/reset.css';
+@import '../common/variables.css';
+@import '../common/header.css';
+@import '../common/footer.css';
+@import '../common/components.css';
+
+.news-detail-container {
+  max-width: 860px;
+  margin: 60px auto;
+}

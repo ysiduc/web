@@ -1,0 +1,11 @@
+# Apache Configuration for PNMEC (web_cty)
+RewriteEngine On
+RewriteBase /test/web_cty/
+
+# Security Header Defaults
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-XSS-Protection "1; mode=block"
+
+# Prevent directory browsing
+Options -Indexes

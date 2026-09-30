@@ -1,0 +1,13 @@
+/* News Page User Styles */
+@import '../common/reset.css';
+@import '../common/variables.css';
+@import '../common/header.css';
+@import '../common/footer.css';
+@import '../common/components.css';
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 60px 0;
+}

@@ -1,0 +1,78 @@
+/* Contact Page User Styles */
+@import '../common/reset.css';
+@import '../common/variables.css';
+@import '../common/header.css';
+@import '../common/footer.css';
+@import '../common/components.css';
+
+.contact-section {
+  padding: 70px 0;
+  background: #fff;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.contact-info-card {
+  background: var(--primary-navy);
+  color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+}
+
+.contact-info-card h3 {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.contact-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.contact-detail-item i {
+  color: var(--accent-gold);
+  font-size: 20px;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.contact-form-box {
+  background: var(--bg-light);
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.contact-form-title {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: var(--primary-navy);
+}
+
+.contact-form-sub {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.map-wrapper {
+  margin-top: 40px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 992px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
