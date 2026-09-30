@@ -2,8 +2,14 @@
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
 
+// Redirect to modern React Admin Dashboard login
+if (!isset($_GET['legacy'])) {
+    header("Location: /test/web_cty/admin-dashboard/dist/#/login");
+    exit;
+}
+
 if (is_logged_in()) {
-    header("Location: /test/web_cty/admin/index.php");
+    header("Location: /test/web_cty/admin/index.php?legacy=1");
     exit;
 }
 

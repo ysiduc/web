@@ -1,5 +1,11 @@
 <?php
-$page_title = "Dashboard Thống Kê & Quản Trị Hệ Thống";
+// Redirect to modern React Admin Dashboard unless legacy mode requested
+if (!isset($_GET['legacy'])) {
+    header("Location: /test/web_cty/admin-dashboard/dist/");
+    exit;
+}
+
+$page_title = "Dashboard Thống Kê & Quản Trị Hệ Thống (Legacy)";
 require_once __DIR__ . '/includes/header.php';
 
 $db = getDBConnection();
