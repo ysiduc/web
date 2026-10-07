@@ -383,39 +383,127 @@
 }
 
 @media (max-width: 767px) {
+
+  /* ===== MOBILE TOP BAR ===== */
   .topbar {
-    padding: 6px 0;
+    padding: 5px 0;
+    font-size: 8.5px;
   }
-  .topbar-item--email,
-  .topbar-item--hours {
-    display: none;
+
+  .topbar .header-container {
+    padding-left: 6px;
+    padding-right: 6px;
   }
-  .topbar-info span {
-    margin-right: 0;
-  }
+
   .topbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-wrap: nowrap;
+    gap: 0;
+    width: 100%;
+  }
+
+  .topbar-info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
     gap: 8px;
   }
-  .topbar-right {
+
+  /* Không ẩn email + giờ làm việc trên mobile */
+  .topbar-item--email,
+  .topbar-item--hours {
+    display: inline-flex !important;
+  }
+
+  .topbar-info span {
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 8.5px;
+    line-height: 1.2;
     white-space: nowrap;
   }
-  .navbar {
-    height: 66px;
+
+  .topbar-info i {
+    font-size: 8px;
+    flex-shrink: 0;
   }
+
+  .topbar-link {
+    font-size: inherit;
+    white-space: nowrap;
+  }
+
+  /* Không còn cột đăng nhập */
+  .topbar-right {
+    display: none !important;
+  }
+
+
+  /* ===== MOBILE MAIN HEADER ===== */
+
+  .navbar {
+    height: 58px;
+  }
+
   .site-logo-img {
-    height: 48px;
-    max-height: 50px;
+    height: 34px;
+    max-height: 36px;
+    max-width: 155px;
+    width: auto;
+  }
+
+  .brand-logo {
+    gap: 0;
+  }
+
+  .menu-toggle {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
   }
 }
 
 @media (max-width: 360px) {
-  .site-logo-img {
-    height: 42px;
-    max-height: 44px;
+
+  .topbar {
+    font-size: 7.5px;
   }
-  .topbar-content {
-    font-size: 11px;
+
+  .topbar-info {
+    gap: 5px;
+  }
+
+  .topbar-info span {
+    font-size: 7.5px;
+    gap: 2px;
+  }
+
+  .topbar-info i {
+    font-size: 7px;
+  }
+
+  .navbar {
+    height: 56px;
+  }
+
+  .site-logo-img {
+    height: 31px;
+    max-height: 33px;
+    max-width: 140px;
+  }
+
+  .menu-toggle {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
   }
 }
 

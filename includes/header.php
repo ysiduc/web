@@ -55,12 +55,23 @@ $active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
   <div class="topbar">
     <div class="header-container topbar-content">
       <div class="topbar-info">
-        <span class="topbar-item topbar-item--hotline"><i class="fa-solid fa-phone"></i> Hotline: <a href="tel:<?php echo $phone; ?>" class="topbar-link"><?php echo $phone; ?></a></span>
-        <span class="topbar-item topbar-item--email"><i class="fa-solid fa-envelope"></i> <?php echo $email; ?></span>
-        <span class="topbar-item topbar-item--hours"><i class="fa-solid fa-clock"></i> <?php echo $working_hours; ?></span>
-      </div>
-      <div class="topbar-right">
-        <a href="<?php echo url('/admin/login.php'); ?>" class="topbar-link"><i class="fa-solid fa-lock"></i> Đăng nhập</a>
+        <span class="topbar-item topbar-item--hotline">
+          <i class="fa-solid fa-phone"></i>
+          Hotline:
+          <a href="tel:<?php echo $phone; ?>" class="topbar-link">
+            <?php echo $phone; ?>
+          </a>
+        </span>
+
+        <span class="topbar-item topbar-item--email">
+          <i class="fa-solid fa-envelope"></i>
+          <?php echo $email; ?>
+        </span>
+
+        <span class="topbar-item topbar-item--hours">
+          <i class="fa-solid fa-clock"></i>
+          <?php echo $working_hours; ?>
+        </span>
       </div>
     </div>
   </div>
