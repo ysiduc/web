@@ -152,3 +152,88 @@ function get_flash_message() {
     }
     return null;
 }
+
+/**
+ * Lấy đường dẫn ảnh dịch vụ an toàn (hỗ trợ upload mới, ảnh legacy và fallback)
+ */
+function get_service_image_url($image) {
+    $root = defined('ROOT_URL') ? ROOT_URL : '/test/web_cty';
+    $basePath = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);
+    $fallback = $root . '/assets/images/service-cons.png';
+
+    if (empty($image)) {
+        return $fallback;
+    }
+
+    if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '//')) {
+        return $image;
+    }
+
+    if (str_starts_with($image, '/')) {
+        return $image;
+    }
+
+    // Check in assets/uploads/
+    if (file_exists($basePath . '/assets/uploads/' . $image)) {
+        return $root . '/assets/uploads/' . $image;
+    }
+
+    // Check in assets/uploads/services/
+    if (file_exists($basePath . '/assets/uploads/services/' . $image)) {
+        return $root . '/assets/uploads/services/' . $image;
+    }
+
+    // Check in assets/images/
+    if (file_exists($basePath . '/assets/images/' . $image)) {
+        return $root . '/assets/images/' . $image;
+    }
+
+    // Default image filename
+    if ($image === 'default-service.jpg') {
+        return $fallback;
+    }
+
+    return $root . '/assets/uploads/' . $image;
+}
+
+/**
+ * Lấy đường dẫn ảnh công trình an toàn
+ */
+function get_project_image_url($image) {
+    $root = defined('ROOT_URL') ? ROOT_URL : '/test/web_cty';
+    $basePath = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);
+    $fallback = 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1000&q=80';
+
+    if (empty($image)) {
+        return $fallback;
+    }
+
+    if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '//')) {
+        return $image;
+    }
+
+    if (str_starts_with($image, '/')) {
+        return $image;
+    }
+
+    // Check in assets/uploads/
+    if (file_exists($basePath . '/assets/uploads/' . $image)) {
+        return $root . '/assets/uploads/' . $image;
+    }
+
+    // Check in assets/uploads/projects/
+    if (file_exists($basePath . '/assets/uploads/projects/' . $image)) {
+        return $root . '/assets/uploads/projects/' . $image;
+    }
+
+    // Check in assets/images/
+    if (file_exists($basePath . '/assets/images/' . $image)) {
+        return $root . '/assets/images/' . $image;
+    }
+
+    if ($image === 'default-project.jpg') {
+        return $fallback;
+    }
+
+    return $root . '/assets/uploads/' . $image;
+}

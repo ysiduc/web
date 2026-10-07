@@ -6,6 +6,7 @@ import { AdminLayout } from './components/layout/AdminLayout';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ProjectsPage } from './pages/ProjectsPage';
+import { ProjectDetailEditorPage } from './pages/ProjectDetailEditorPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { NewsPage } from './pages/NewsPage';
 import { QuotesPage } from './pages/QuotesPage';
@@ -42,6 +43,7 @@ export function App() {
         >
           <Route index element={<DashboardPage />} />
           <Route path="projects" element={<ProjectsPage />} />
+          <Route path="projects/:id/detail-editor" element={<ProjectDetailEditorPage />} />
           <Route path="services" element={<ServicesPage />} />
           <Route path="news" element={<NewsPage />} />
           <Route path="quotes" element={<QuotesPage />} />

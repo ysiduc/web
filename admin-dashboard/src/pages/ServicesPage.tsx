@@ -141,6 +141,34 @@ export const ServicesPage: React.FC = () => {
     }
   };
 
+  const handleToggleFeatured = async (s: Service) => {
+    try {
+      const newFeatured = !s.featured;
+      const formData = new FormData();
+      formData.append('id', String(s.id));
+      formData.append('featured', newFeatured ? '1' : '0');
+      const res = await api.post('/services/update.php', formData);
+      if (res.data.success) {
+        setServices((prev) =>
+          prev.map((item) =>
+            item.id === s.id ? { ...item, featured: newFeatured ? 1 : 0 } : item
+          )
+        );
+        setFeedback({
+          type: 'success',
+          message: newFeatured
+            ? `Đã bật nổi bật cho dịch vụ "${s.title}"!`
+            : `Đã tắt nổi bật cho dịch vụ "${s.title}"!`,
+        });
+      }
+    } catch (err: any) {
+      setFeedback({
+        type: 'error',
+        message: err.response?.data?.message || 'Có lỗi xảy ra khi đổi trạng thái nổi bật.',
+      });
+    }
+  };
+
   const handleDelete = async () => {
     if (!deleteTarget) return;
     setIsSubmitting(true);
@@ -323,19 +351,24 @@ export const ServicesPage: React.FC = () => {
                       </p>
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap">
-                      {s.featured ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-300 dark:bg-amber-950/60 dark:text-amber-400 dark:border-amber-800">
-                          <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
-                          <span>Nổi bật</span>
-                        </span>
-                      ) : (
-                        <span className="text-xs text-slate-400">Thường</span>
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleToggleFeatured(s)}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold cursor-pointer transition shadow-sm ${
+                          s.featured
+                            ? 'bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-700 hover:bg-amber-200'
+                            : 'bg-slate-100 text-slate-500 border border-slate-200 dark:bg-navy-800 dark:text-slate-400 dark:border-navy-700 hover:bg-slate-200'
+                        }`}
+                        title="Bấm để bật/tắt hiển thị Dịch vụ nổi bật trên Trang Chủ"
+                      >
+                        <Star className={`w-3.5 h-3.5 ${s.featured ? 'fill-amber-500 text-amber-500' : 'text-slate-400'}`} />
+                        <span>{s.featured ? 'Nổi bật (Home)' : 'Thường'}</span>
+                      </button>
                     </td>
                     <td className="px-6 py-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1.5">
                         <a
-                          href={`/test/web_cty/services.php#${s.slug}`}
+                          href={`/test/web_cty/service-detail.php?id=${s.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"

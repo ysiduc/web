@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { api, getImageUrl } from '../api/client';
 import type { Project, ApiResponse } from '../types';
 import { Badge } from '../components/common/Badge';
@@ -12,6 +13,8 @@ import {
   ExternalLink,
   Upload,
   MapPin,
+  FilePlus2,
+  Calendar,
 } from 'lucide-react';
 
 export const ProjectsPage: React.FC = () => {
@@ -34,6 +37,7 @@ export const ProjectsPage: React.FC = () => {
   const [formCategory, setFormCategory] = useState('Nhà kết cấu thép');
   const [formClient, setFormClient] = useState('');
   const [formLocation, setFormLocation] = useState('');
+  const [formStartDate, setFormStartDate] = useState('');
   const [formCompletionDate, setFormCompletionDate] = useState('');
   const [formDescription, setFormDescription] = useState('');
   const [formContent, setFormContent] = useState('');
@@ -97,6 +101,7 @@ export const ProjectsPage: React.FC = () => {
     setFormCategory('Nhà kết cấu thép');
     setFormClient('Doanh nghiệp / Cá nhân');
     setFormLocation('Hà Nội, Việt Nam');
+    setFormStartDate('');
     setFormCompletionDate('');
     setFormDescription('');
     setFormContent('');
@@ -112,6 +117,7 @@ export const ProjectsPage: React.FC = () => {
     setFormCategory(p.category);
     setFormClient(p.client || '');
     setFormLocation(p.location || '');
+    setFormStartDate(p.start_date || '');
     setFormCompletionDate(p.completion_date || '');
     setFormDescription(p.description || '');
     setFormContent(p.content || '');
@@ -141,7 +147,8 @@ export const ProjectsPage: React.FC = () => {
     formData.append('category', formCategory);
     formData.append('client', formClient.trim());
     formData.append('location', formLocation.trim());
-    if (formCompletionDate) formData.append('completion_date', formCompletionDate);
+    formData.append('start_date', formStartDate || '');
+    formData.append('completion_date', formCompletionDate || '');
     formData.append('description', formDescription.trim());
     formData.append('content', formContent.trim());
     formData.append('status', formStatus);
@@ -331,8 +338,13 @@ export const ProjectsPage: React.FC = () => {
                           />
                         </div>
                         <div>
-                          <div className="font-bold text-slate-900 dark:text-white line-clamp-1">
-                            {p.title}
+                          <div className="font-bold text-slate-900 dark:text-white line-clamp-1 flex items-center gap-1.5">
+                            <span>{p.title}</span>
+                            {p.detail_mode === 'custom' && (
+                              <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-400 border border-amber-300 dark:border-amber-800">
+                                Builder
+                              </span>
+                            )}
                           </div>
                           <div className="text-xs text-slate-400 mt-0.5 line-clamp-1">
                             {p.description}
@@ -353,12 +365,27 @@ export const ProjectsPage: React.FC = () => {
                         <MapPin className="w-3 h-3 flex-shrink-0" />
                         <span>{p.location || 'Hà Nội'}</span>
                       </div>
+                      {(p.start_date || p.completion_date) && (
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1 font-mono">
+                          <Calendar className="w-3 h-3 flex-shrink-0 text-amber-500" />
+                          <span>
+                            {p.start_date ? p.start_date.split('-').reverse().join('/') : '...'} - {p.completion_date ? p.completion_date.split('-').reverse().join('/') : '...'}
+                          </span>
+                        </div>
+                      )}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap">
                       <Badge status={p.status} />
                     </td>
                     <td className="px-6 py-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1.5">
+                        <Link
+                          to={`/projects/${p.id}/detail-editor`}
+                          className="p-2 text-amber-600 hover:text-amber-700 dark:hover:text-amber-400 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/50 transition font-bold"
+                          title="Soạn trang chi tiết (Nội dung chi tiết nâng cao)"
+                        >
+                          <FilePlus2 className="w-4 h-4" />
+                        </Link>
                         <a
                           href={`/test/web_cty/project-detail.php?id=${p.id}`}
                           target="_blank"
@@ -483,7 +510,19 @@ export const ProjectsPage: React.FC = () => {
 
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
-                Thời gian hoàn thiện
+                Ngày bắt đầu thi công
+              </label>
+              <input
+                type="date"
+                value={formStartDate}
+                onChange={(e) => setFormStartDate(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-navy-700 bg-white dark:bg-navy-950 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
+                Ngày hoàn thành
               </label>
               <input
                 type="date"

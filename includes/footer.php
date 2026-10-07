@@ -30,7 +30,7 @@ $email = get_site_info('email', 'contact@pnmec.vn');
             <li><a href="/test/web_cty/services.php"><i class="fa-solid fa-angle-right"></i> Dịch vụ cơ khí & xây dựng</a></li>
             <li><a href="/test/web_cty/projects.php"><i class="fa-solid fa-angle-right"></i> Dự án công trình đã thực hiện</a></li>
             <li><a href="/test/web_cty/recruitment.php"><i class="fa-solid fa-angle-right"></i> Cơ hội việc làm - Tuyển dụng</a></li>
-            <li><a href="/test/web_cty/contact.php"><i class="fa-solid fa-angle-right"></i> Liên hệ tư vấn báo giá</a></li>
+            <li><a href="/test/web_cty/news.php"><i class="fa-solid fa-angle-right"></i> Tin tức</a></li>
           </ul>
         </div>
 

@@ -8,7 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $subfolder = trim($_POST['folder'] ?? 'general');
-$cleanFolder = preg_replace('/[^a-zA-Z0-9_-]/', '', $subfolder);
+$cleanFolder = trim(preg_replace('#[^a-zA-Z0-9_\-/]#', '', $subfolder), '/');
+$cleanFolder = str_replace('..', '', $cleanFolder);
 
 $upload = api_upload_image('file', $cleanFolder ?: 'general');
 

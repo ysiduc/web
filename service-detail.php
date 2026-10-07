@@ -37,7 +37,7 @@ if (!$service) {
 <section style="padding: 60px 0; background: #fff;">
   <div class="container" style="display: grid; grid-template-columns: 2.5fr 1fr; gap: 40px;">
     <div>
-      <img src="<?php echo htmlspecialchars($service['image']); ?>" alt="<?php echo htmlspecialchars($service['title']); ?>" style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; margin-bottom: 30px;">
+      <img src="<?php echo htmlspecialchars(get_service_image_url($service['image'])); ?>" alt="<?php echo htmlspecialchars($service['title']); ?>" style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; margin-bottom: 30px;" onerror="this.onerror=null;this.src='<?= (defined('ROOT_URL') ? ROOT_URL : '/test/web_cty') ?>/assets/images/service-cons.png';">
       
       <h2 style="font-size: 28px; margin-bottom: 16px; color: var(--primary-navy);"><?php echo htmlspecialchars($service['title']); ?></h2>
       <p style="font-size: 16px; font-weight: 600; color: var(--accent-gold); margin-bottom: 24px; line-height: 1.6;">

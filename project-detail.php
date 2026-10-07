@@ -59,9 +59,9 @@ require_once __DIR__ . '/includes/header.php';
       <!-- Left Column: Details -->
       <div>
         <div class="project-featured-img">
-          <img src="/test/web_cty/assets/uploads/<?php echo !empty($project['image']) ? htmlspecialchars($project['image']) : 'default-project.jpg'; ?>" 
+          <img src="<?= htmlspecialchars(get_project_image_url($project['image'])) ?>" 
                alt="<?php echo htmlspecialchars($project['title']); ?>"
-               onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1000&q=80'">
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1000&q=80'">
         </div>
 
         <div class="project-meta-box">
@@ -74,8 +74,12 @@ require_once __DIR__ . '/includes/header.php';
             <strong><?php echo htmlspecialchars($project['location']); ?></strong>
           </div>
           <div class="meta-box-item">
+            <span>Khởi Công:</span>
+            <strong><?php echo !empty($project['start_date']) ? format_date($project['start_date']) : 'N/A'; ?></strong>
+          </div>
+          <div class="meta-box-item">
             <span>Hoàn Thành:</span>
-            <strong><?php echo format_date($project['completion_date']); ?></strong>
+            <strong><?php echo !empty($project['completion_date']) ? format_date($project['completion_date']) : 'N/A'; ?></strong>
           </div>
           <div class="meta-box-item">
             <span>Lượt Xem:</span>
@@ -83,14 +87,88 @@ require_once __DIR__ . '/includes/header.php';
           </div>
         </div>
 
-        <h3 style="font-size: 22px; margin-bottom: 16px; color: var(--primary-navy);">Tổng Quan Dự Án & Giải Pháp Kỹ Thuật</h3>
-        <p class="project-highlight-desc">
-          <?php echo htmlspecialchars($project['description']); ?>
-        </p>
+        <?php
+        $is_custom = ($project['detail_mode'] ?? 'basic') === 'custom';
+        $blocks = [];
+        if ($is_custom && !empty($project['detail_blocks'])) {
+            $decoded = json_decode($project['detail_blocks'], true);
+            if (is_array($decoded) && count($decoded) > 0) {
+                $blocks = $decoded;
+            } else {
+                $is_custom = false;
+            }
+        } else {
+            $is_custom = false;
+        }
+        ?>
 
-        <div style="font-size: 15px; line-height: 1.8; color: var(--text-main); white-space: pre-line;">
-          <?php echo htmlspecialchars($project['content']); ?>
-        </div>
+        <?php if ($is_custom): ?>
+          <div class="project-custom-builder-content">
+            <?php foreach ($blocks as $blk): 
+              $type = $blk['type'] ?? '';
+            ?>
+              <?php if ($type === 'heading'): 
+                $lvl = in_array((int)($blk['level'] ?? 2), [2, 3, 4]) ? (int)$blk['level'] : 2;
+                $tag = "h" . $lvl;
+              ?>
+                <<?= $tag ?> class="builder-heading builder-heading-<?= $lvl ?>"><?= htmlspecialchars($blk['text'] ?? '') ?></<?= $tag ?>>
+
+              <?php elseif ($type === 'paragraph'): ?>
+                <p class="builder-paragraph"><?= nl2br(htmlspecialchars($blk['text'] ?? '')) ?></p>
+
+              <?php elseif ($type === 'image' && !empty($blk['src'])): ?>
+                <figure class="builder-image-box">
+                  <img src="<?= htmlspecialchars(get_project_image_url($blk['src'])) ?>" alt="<?= htmlspecialchars($blk['alt'] ?? '') ?>" loading="lazy" />
+                  <?php if (!empty($blk['caption'])): ?>
+                    <figcaption class="builder-caption"><?= htmlspecialchars($blk['caption']) ?></figcaption>
+                  <?php endif; ?>
+                </figure>
+
+              <?php elseif ($type === 'gallery' && !empty($blk['images'])): ?>
+                <div class="builder-gallery-grid">
+                  <?php foreach ($blk['images'] as $gImg): 
+                    if (empty($gImg['src'])) continue;
+                  ?>
+                    <figure class="builder-gallery-item">
+                      <img src="<?= htmlspecialchars(get_project_image_url($gImg['src'])) ?>" alt="<?= htmlspecialchars($gImg['alt'] ?? '') ?>" loading="lazy" />
+                      <?php if (!empty($gImg['caption'])): ?>
+                        <figcaption class="builder-gallery-caption"><?= htmlspecialchars($gImg['caption']) ?></figcaption>
+                      <?php endif; ?>
+                    </figure>
+                  <?php endforeach; ?>
+                </div>
+
+              <?php elseif ($type === 'callout'): ?>
+                <div class="builder-callout builder-callout-<?= htmlspecialchars($blk['variant'] ?? 'gold') ?>">
+                  <?php if (!empty($blk['title'])): ?>
+                    <h4 class="builder-callout-title"><i class="fa-solid fa-circle-info"></i> <?= htmlspecialchars($blk['title']) ?></h4>
+                  <?php endif; ?>
+                  <div class="builder-callout-body"><?= nl2br(htmlspecialchars($blk['text'] ?? '')) ?></div>
+                </div>
+
+              <?php elseif ($type === 'divider'): ?>
+                <hr class="builder-divider" />
+
+              <?php elseif ($type === 'html' && !empty($blk['content'])): ?>
+                <div class="builder-custom-html">
+                  <?= $blk['content'] ?>
+                </div>
+
+              <?php endif; ?>
+            <?php endforeach; ?>
+          </div>
+
+        <?php else: ?>
+          <!-- Basic mode -->
+          <h3 style="font-size: 22px; margin-bottom: 16px; color: var(--primary-navy);">Tổng Quan Dự Án & Giải Pháp Kỹ Thuật</h3>
+          <p class="project-highlight-desc">
+            <?php echo htmlspecialchars($project['description']); ?>
+          </p>
+
+          <div style="font-size: 15px; line-height: 1.8; color: var(--text-main); white-space: pre-line;">
+            <?php echo htmlspecialchars($project['content']); ?>
+          </div>
+        <?php endif; ?>
       </div>
 
       <!-- Right Column: Sidebar CTA & Related Projects -->
@@ -110,9 +188,9 @@ require_once __DIR__ . '/includes/header.php';
             <div style="display: flex; flex-direction: column; gap: 16px;">
               <?php foreach ($related_projects as $rel): ?>
                 <div style="display: flex; gap: 12px; align-items: center;">
-                  <img src="/test/web_cty/assets/uploads/<?php echo !empty($rel['image']) ? htmlspecialchars($rel['image']) : 'default-project.jpg'; ?>" 
+                  <img src="<?= htmlspecialchars(get_project_image_url($rel['image'])) ?>" 
                        style="width: 70px; height: 55px; object-fit: cover; border-radius: 6px;"
-                       onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=150&q=80'">
+                       onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=150&q=80'">
                   <div>
                     <h4 style="font-size: 13px; line-height: 1.3;"><a href="/test/web_cty/project-detail.php?id=<?php echo $rel['id']; ?>"><?php echo htmlspecialchars($rel['title']); ?></a></h4>
                     <span style="font-size: 11px; color: var(--text-muted);"><?php echo htmlspecialchars($rel['location']); ?></span>

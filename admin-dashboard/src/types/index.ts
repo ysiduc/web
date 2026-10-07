@@ -16,6 +16,7 @@ export interface Project {
   category: string;
   client?: string | null;
   location?: string | null;
+  start_date?: string | null;
   completion_date?: string | null;
   description: string;
   content?: string | null;
@@ -23,9 +24,33 @@ export interface Project {
   gallery?: string | null;
   status: 'published' | 'draft';
   views: number;
+  detail_mode?: 'basic' | 'custom';
+  detail_blocks?: string | DetailBlock[] | null;
   created_by?: number | null;
   author_name?: string | null;
   created_at: string;
+}
+
+export type BlockType = 'heading' | 'paragraph' | 'image' | 'gallery' | 'callout' | 'divider' | 'html';
+
+export interface GalleryItem {
+  src: string;
+  alt?: string;
+  caption?: string;
+}
+
+export interface DetailBlock {
+  id: string;
+  type: BlockType;
+  level?: 2 | 3 | 4;
+  text?: string;
+  src?: string;
+  alt?: string;
+  caption?: string;
+  images?: GalleryItem[];
+  title?: string;
+  variant?: 'info' | 'warning' | 'success' | 'gold';
+  content?: string;
 }
 
 export interface Service {

@@ -13,6 +13,7 @@ $title           = trim($input['title'] ?? '');
 $category        = trim($input['category'] ?? 'Cơ khí xây dựng');
 $client          = trim($input['client'] ?? 'Khách hàng cá nhân / Doanh nghiệp');
 $location        = trim($input['location'] ?? 'Hà Nội, Việt Nam');
+$start_date      = !empty($input['start_date']) ? $input['start_date'] : null;
 $completion_date = !empty($input['completion_date']) ? $input['completion_date'] : null;
 $description     = trim($input['description'] ?? '');
 $content         = trim($input['content'] ?? '');
@@ -43,13 +44,14 @@ $base_slug = create_slug($title);
 $slug = $base_slug . '-' . time();
 
 try {
-    $stmt = $db->prepare("INSERT INTO projects (title, slug, category, client, location, completion_date, description, content, image, gallery, status, created_by) VALUES (:title, :slug, :category, :client, :location, :completion_date, :description, :content, :image, :gallery, :status, :created_by)");
+    $stmt = $db->prepare("INSERT INTO projects (title, slug, category, client, location, start_date, completion_date, description, content, image, gallery, status, created_by) VALUES (:title, :slug, :category, :client, :location, :start_date, :completion_date, :description, :content, :image, :gallery, :status, :created_by)");
     $stmt->execute([
         'title'           => $title,
         'slug'            => $slug,
         'category'        => $category,
         'client'          => $client,
         'location'        => $location,
+        'start_date'      => $start_date,
         'completion_date' => $completion_date,
         'description'     => $description,
         'content'         => $content,

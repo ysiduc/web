@@ -32,7 +32,8 @@ $title           = trim($input['title'] ?? $oldProject['title']);
 $category        = trim($input['category'] ?? $oldProject['category']);
 $client          = trim($input['client'] ?? $oldProject['client']);
 $location        = trim($input['location'] ?? $oldProject['location']);
-$completion_date = !empty($input['completion_date']) ? $input['completion_date'] : $oldProject['completion_date'];
+$start_date      = array_key_exists('start_date', $input) ? (!empty($input['start_date']) ? $input['start_date'] : null) : $oldProject['start_date'];
+$completion_date = array_key_exists('completion_date', $input) ? (!empty($input['completion_date']) ? $input['completion_date'] : null) : $oldProject['completion_date'];
 $description     = trim($input['description'] ?? $oldProject['description']);
 $content         = trim($input['content'] ?? $oldProject['content']);
 $status          = in_array($input['status'] ?? '', ['published', 'draft']) ? $input['status'] : $oldProject['status'];
@@ -65,13 +66,14 @@ if (!empty($input['slug'])) {
 }
 
 try {
-    $stmt = $db->prepare("UPDATE projects SET title = :title, slug = :slug, category = :category, client = :client, location = :location, completion_date = :completion_date, description = :description, content = :content, image = :image, gallery = :gallery, status = :status WHERE id = :id");
+    $stmt = $db->prepare("UPDATE projects SET title = :title, slug = :slug, category = :category, client = :client, location = :location, start_date = :start_date, completion_date = :completion_date, description = :description, content = :content, image = :image, gallery = :gallery, status = :status WHERE id = :id");
     $stmt->execute([
         'title'           => $title,
         'slug'            => $slug,
         'category'        => $category,
         'client'          => $client,
         'location'        => $location,
+        'start_date'      => $start_date,
         'completion_date' => $completion_date,
         'description'     => $description,
         'content'         => $content,

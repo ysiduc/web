@@ -132,6 +132,7 @@
   border-radius: 6px !important;
   box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35) !important;
   transition: all 0.25s ease !important;
+  white-space: nowrap !important;
 }
 
 .nav-cta-btn:hover {

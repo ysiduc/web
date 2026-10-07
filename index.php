@@ -62,48 +62,39 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
 
     <div class="h-svc__grid" id="svcGrid">
       <?php
-      /* 
-       * DANH SÁCH DỊCH VỤ NỔI BẬT (Chỉnh sửa / Thêm / Xóa thủ công tại đây)
-       * Các file ảnh nằm trong đường dẫn: assets/images/
-       */
-      $svc_cards = [
-        [
-          'tag'  => 'PNMEC-CNC',
-          'img'  => '/test/web_cty/assets/images/service-cnc.png',
-          'desc' => 'Gia công chi tiết máy CNC chính xác, dầm tổ hợp chịu lực & cắt Laser Fiber thép tấm công nghiệp.'
-        ],
-        [
-          'tag'  => 'PNMEC-CONS',
-          'img'  => '/test/web_cty/assets/images/service-cons.png',
-          'desc' => 'Sản xuất & thi công lắp dựng khung nhà xưởng kết cấu thép khẩu độ lớn đạt chuẩn quốc tế.'
-        ],
-        [
-          'tag'  => 'PNMEC-PLANT',
-          'img'  => '/test/web_cty/assets/images/service-plant.png',
-          'desc' => 'Hạ tầng công nghiệp, móng cọc & bê tông xoa nền Epoxy đáp ứng tải trọng cao.',
-          'active' => true
-        ],
-        [
-          'tag'  => 'PNMEC-PIPING',
-          'img'  => '/test/web_cty/assets/images/service-piping.png',
-          'desc' => 'Chế tạo bồn chứa Inox áp lực cao & hệ thống đường ống công nghiệp dẫn hóa chất an toàn.'
-        ],
-        [
-          'tag'  => 'PNMEC-ECO',
-          'img'  => '/test/web_cty/assets/images/service-eco.png',
-          'desc' => 'Di dời, lắp đặt dây chuyền máy móc công nghiệp nặng và bảo dưỡng công trình định kỳ.'
-        ],
-      ];
-      foreach($svc_cards as $c): ?>
-      <a href="/test/web_cty/services.php" class="h-svc__card<?= !empty($c['active'])?' active':'' ?>">
-        <img src="<?= $c['img'] ?>" alt="<?= $c['tag'] ?>" loading="lazy">
-        <div class="h-svc__badge-tag"><?= $c['tag'] ?></div>
+      $featured_services = [];
+      if ($db) {
+          try {
+              $stmt = $db->query("SELECT id, title, slug, code, summary, image, featured, status FROM services WHERE featured = 1 AND status = 'active' ORDER BY id ASC LIMIT 5");
+              $featured_services = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          } catch (Exception $e) {}
+      }
+      $root_url = defined('ROOT_URL') ? ROOT_URL : '/test/web_cty';
+
+      if (!empty($featured_services)):
+        foreach($featured_services as $idx => $s):
+          $tag = !empty($s['code']) ? $s['code'] : $s['title'];
+          $desc = !empty($s['summary']) ? $s['summary'] : $s['title'];
+          $img_url = get_service_image_url($s['image']);
+          $detail_url = $root_url . '/service-detail.php?id=' . urlencode($s['id']);
+      ?>
+      <a href="<?= $detail_url ?>" class="h-svc__card<?= $idx === 2 ? ' active' : '' ?>">
+        <img src="<?= htmlspecialchars($img_url) ?>" alt="<?= htmlspecialchars($tag) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= $root_url ?>/assets/images/service-cons.png';">
+        <div class="h-svc__badge-tag"><?= htmlspecialchars($tag) ?></div>
         <div class="h-svc__overlay">
-          <p class="h-svc__desc"><?= $c['desc'] ?></p>
+          <p class="h-svc__desc"><?= htmlspecialchars($desc) ?></p>
           <span class="h-svc__link">XEM CHI TIẾT <i class="fa-solid fa-arrow-right"></i></span>
         </div>
       </a>
-      <?php endforeach; ?>
+      <?php 
+        endforeach;
+      else:
+      ?>
+      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted, #94a3b8); font-size: 15px;">
+        <i class="fa-solid fa-layer-group" style="font-size: 32px; margin-bottom: 12px; display: block; opacity: 0.5;"></i>
+        Chưa có dịch vụ nổi bật nào được thiết lập trong hệ thống quản trị.
+      </div>
+      <?php endif; ?>
     </div>
   </div>
 </section>
