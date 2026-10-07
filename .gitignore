@@ -11,10 +11,13 @@ dist-ssr/
 
 # Local Environment Configuration & Secrets
 config/local.php
+local.php
 .env
 .env.local
 .env.*.local
 *.env
+error_log
+**/error_log
 
 # Runtime Upload Images (keep structure and security files)
 assets/uploads/*

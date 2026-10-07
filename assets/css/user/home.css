@@ -253,6 +253,24 @@
   text-decoration:none;transition:var(--transition-fast);
 }
 .h-btn-navy:hover{background:#1e293b;transform:translateY(-2px);}
+.h-proj__empty{
+  text-align:center;
+  padding:56px 20px;
+  background:#f8fafc;
+  border-radius:12px;
+  border:1px dashed #cbd5e1;
+  color:#64748b;
+  font-size:15px;
+  max-width:560px;
+  margin:20px auto 0;
+}
+.h-proj__empty i{
+  font-size:36px;
+  color:#94a3b8;
+  display:block;
+  margin-bottom:12px;
+  opacity:0.6;
+}
 
 /* ── TESTIMONIALS ──────────────────────────────────── */
 .h-testi{padding:90px 0 72px;background:#141923;}

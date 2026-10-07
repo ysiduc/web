@@ -2,143 +2,26 @@
 $page_title = "Dịch Vụ Thiết Kế & Thi Công Cơ Khí - Xây Dựng";
 require_once __DIR__ . '/includes/header.php';
 
-$co_khi_services = [
-    [
-        'id' => 'CK-01',
-        'title' => 'Thiết Kế Thi Công Nhà Kết Cấu Thép',
-        'img' => asset_url('images/service-cons.png'),
-        'desc' => 'Thiết kế, sản xuất cấu kiện thép tại nhà máy và tổ chức lắp dựng an toàn khung kèo nhà xưởng, nhà tiền chế khẩu độ lớn đạt chuẩn chất lượng.',
-        'bullets' => [
-            'Khung kèo vượt nhịp lớn không cột chịu tải cao',
-            'Tấm lợp tôn cách nhiệt 3 lớp PU/EPS chống nóng',
-            'Thi công nhanh chóng, độ bền kết cấu trên 30 năm'
-        ]
-    ],
-    [
-        'id' => 'CK-02',
-        'title' => 'Thiết Kế Thi Công Cầu Thang, Ban Công',
-        'img' => 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80',
-        'desc' => 'Gia công và lắp đặt cầu thang sắt hộp, cầu thang xoắn ốc, cầu thang xương cá kết hợp ban công sắt mỹ thuật, tay vịn gỗ hoặc kính cường lực cao cấp.',
-        'bullets' => [
-            'Thiết kế chuẩn phong thủy, kiến trúc hiện đại',
-            'Mối hàn mài phẳng mịn, sơn tĩnh điện cao cấp',
-            'Kết cấu vững chắc, an toàn tuyệt đối khi sử dụng'
-        ]
-    ],
-    [
-        'id' => 'CK-03',
-        'title' => 'Thiết Kế Thi Công Mái Tôn, Mái Che Di Động',
-        'img' => 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80',
-        'desc' => 'Thi công khung kèo xà gồ thép mạ kẽm lợp tôn lạnh chống nóng 3 lớp, tôn lấy sáng Polycarbonate và hệ thống mái xếp lượn sóng, mái che bạt kéo tự động.',
-        'bullets' => [
-            'Chống thấm dột tuyệt đối, cách âm cách nhiệt tốt',
-            'Khung thép chịu sức gió giật bão lớn an toàn',
-            'Vận hành kéo mở nhẹ nhàng, tiện lợi cho mọi mặt bằng'
-        ]
-    ],
-    [
-        'id' => 'CK-04',
-        'title' => 'Thiết Kế Thi Công Nhà Cơi Nới, Lồng Cơi Tập Thể',
-        'img' => 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80',
-        'desc' => 'Giải pháp cơi nới mở rộng không gian sống, làm lồng sắt an toàn (chuồng cọp), gác lửng khung thép hộp và sàn bê tông nhẹ Cemboard cho nhà phố, nhà tập thể.',
-        'bullets' => [
-            'Khung thép siêu nhẹ giảm tải trọng cho móng cũ',
-            'Gia cố an toàn chống trộm đột nhập hiệu quả',
-            'Tích hợp cửa thoát hiểm PCCC khẩn cấp tiện dụng'
-        ]
-    ],
-    [
-        'id' => 'CK-05',
-        'title' => 'Thiết Kế Thi Công Các Dạng Thang Thoát Hiểm',
-        'img' => 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=600&q=80',
-        'desc' => 'Sản xuất và lắp dựng hệ thống cầu thang thoát hiểm ngoài trời cho tòa nhà văn phòng, chung cư, khách sạn, nhà hàng đáp ứng nghiêm ngặt tiêu chuẩn PCCC.',
-        'bullets' => [
-            'Kết cấu dầm thép hình chữ I, U chịu tải trọng lớn',
-            'Bậc tôn gân dập nhám chống trơn trượt hiệu quả',
-            'Sơn chống cháy cao cấp, hỗ trợ kiểm định PCCC'
-        ]
-    ],
-    [
-        'id' => 'CK-06',
-        'title' => 'Thiết Kế Thi Công Nhà Xe, Mái Che',
-        'img' => 'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=600&q=80',
-        'desc' => 'Thi công hệ mái che nhà để xe ô tô, xe máy cho cơ quan, nhà máy, trường học, bệnh viện với kết cấu khung vòm thép và tôn cách nhiệt bền bỉ.',
-        'bullets' => [
-            'Khẩu độ rộng tối đa hóa diện tích sắp xếp vị trí đỗ',
-            'Hệ thống máng xối thu gom nước mưa thoát nhanh',
-            'Khung cột vững chãi, thẩm mỹ và che chắn tối ưu'
-        ]
-    ],
-    [
-        'id' => 'CK-07',
-        'title' => 'Thiết Kế Thi Công Mái Kính',
-        'img' => 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80',
-        'desc' => 'Lắp đặt mái kính cường lực canopy, mái sảnh nghệ thuật, giếng trời tự động khung thép mạ kẽm định hình cho biệt thự, nhà phố và tòa nhà hiện đại.',
-        'bullets' => [
-            'Kính cường lực an toàn 2 lớp chất lượng cao',
-            'Đón ánh sáng tự nhiên tối đa, ngăn tia cực tím UV',
-            'Bơm keo kết cấu chống thấm dột rò rỉ nước 100%'
-        ]
-    ],
-    [
-        'id' => 'CK-08',
-        'title' => 'Thiết Kế Thi Công Sắt Mỹ Thuật',
-        'img' => asset_url('images/service-cnc.png'),
-        'desc' => 'Gia công hoa sắt nghệ thuật, cổng sắt uốn mỹ nghệ, hàng rào biệt thự, lan can hoa văn cổ điển và tân cổ điển tinh xảo theo bản vẽ kiến trúc.',
-        'bullets' => [
-            'Cắt Laser Fiber CNC sắc nét, hoa văn chuẩn xác',
-            'Rèn uốn thủ công kết hợp công nghệ hiện đại',
-            'Sơn mạ kẽm nhúng nóng chống ăn mòn, bền đẹp trọn đời'
-        ]
-    ],
-    [
-        'id' => 'CK-09',
-        'title' => 'Thiết Kế Thi Công Cửa Các Loại',
-        'img' => 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=600&q=80',
-        'desc' => 'Sản xuất và lắp đặt trọn gói cửa cổng sắt 2 cánh, 4 cánh, cửa lùa tự động, cửa chống cháy, cửa cuốn và cửa nhôm kính hệ cao cấp.',
-        'bullets' => [
-            'Phụ kiện bản lề, khóa thông minh đồng bộ chính hãng',
-            'Sơn tĩnh điện 2 mặt chống bong tróc, trầy xước',
-            'Vận hành êm ái, cách âm cách nhiệt và bảo mật cao'
-        ]
-    ],
-];
+$db = getDBConnection();
+$services = [];
+if ($db) {
+    try {
+        $stmt = $db->query("SELECT id, title, slug, code, summary, content, image, featured, views, status, created_at FROM services WHERE status = 'active' ORDER BY id ASC");
+        $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {}
+}
 
-$xay_dung_services = [
-    [
-        'id' => 'XD-01',
-        'title' => 'Thiết Kế Thi Công Nhà Trọn Gói',
-        'img' => asset_url('images/service-plant.png'),
-        'desc' => 'Tổng thầu chìa khóa trao tay (Design & Build) từ xin phép xây dựng, thiết kế kiến trúc - kết cấu 3D, thi công phần thô đến hoàn thiện nhà phố, biệt thự.',
-        'bullets' => [
-            'Cam kết không phát sinh bất kỳ chi phí ngoài hợp đồng',
-            'Sử dụng vật tư chính hãng đúng chủng loại cam kết',
-            'Kỹ sư trưởng trực tiếp giám sát chất lượng tại công trường'
-        ]
-    ],
-    [
-        'id' => 'XD-02',
-        'title' => 'Thiết Kế Thi Công Nội Ngoại Thất',
-        'img' => 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80',
-        'desc' => 'Thiết kế và thi công hoàn thiện nội ngoại thất cao cấp, ốp lát gạch đá Granite, trần thạch cao, sơn bả tường, cảnh quan sân vườn theo phong cách hiện đại.',
-        'bullets' => [
-            'Dựng phối cảnh 3D trực quan trước khi thi công thực tế',
-            'Đường nét thi công sắc sảo, chuẩn gu thẩm mỹ gia chủ',
-            'Tối ưu hóa công năng sử dụng và chuẩn mực phong thủy'
-        ]
-    ],
-    [
-        'id' => 'XD-03',
-        'title' => 'Cải Tạo Sửa Chữa Và Phá Dỡ',
-        'img' => 'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=600&q=80',
-        'desc' => 'Dịch vụ phá dỡ công trình cũ an toàn, dọn phế thải, cấy ghép dầm cột cơi nới nâng tầng, xử lý triệt để thấm dột và sửa chữa nâng cấp toàn diện nhà ở.',
-        'bullets' => [
-            'Máy móc chuyên dụng thi công nhanh gọn, đúng tiến độ',
-            'Đảm bảo an toàn tuyệt đối cho kết cấu nhà liền kề',
-            'Xử lý dứt điểm các hiện tượng nứt, lún, thấm mốc tường'
-        ]
-    ],
-];
+$co_khi_services = [];
+$xay_dung_services = [];
+
+foreach ($services as $s) {
+    $code = strtoupper(trim($s['code'] ?? ''));
+    if (str_starts_with($code, 'XD')) {
+        $xay_dung_services[] = $s;
+    } else {
+        $co_khi_services[] = $s;
+    }
+}
 ?>
 
 <!-- ═══════════════════════════════════════════════════
@@ -158,10 +41,10 @@ $xay_dung_services = [
       <!-- Quick Nav Pills -->
       <div class="srv-quick-nav">
         <a href="#co-khi" class="srv-nav-pill srv-nav-pill--gold">
-          <i class="fa-solid fa-hammer"></i> Cơ Khí Xây Dựng (9 Dịch Vụ)
+          <i class="fa-solid fa-hammer"></i> Cơ Khí Xây Dựng (<?= count($co_khi_services) ?> Dịch Vụ)
         </a>
         <a href="#xay-dung" class="srv-nav-pill srv-nav-pill--blue">
-          <i class="fa-solid fa-building"></i> Xây Dựng Dân Dụng (3 Dịch Vụ)
+          <i class="fa-solid fa-building"></i> Xây Dựng Dân Dụng (<?= count($xay_dung_services) ?> Dịch Vụ)
         </a>
         <a href="#quy-trinh" class="srv-nav-pill srv-nav-pill--outline">
           <i class="fa-solid fa-list-check"></i> Quy Trình 5 Bước
@@ -178,7 +61,7 @@ $xay_dung_services = [
 </section>
 
 <!-- ═══════════════════════════════════════════════════
-     2. PHẦN 1: DỊCH VỤ CƠ KHÍ XÂY DỰNG (9 MỤC)
+     2. PHẦN 1: DỊCH VỤ CƠ KHÍ XÂY DỰNG
 ═══════════════════════════════════════════════════ -->
 <section class="srv-section" id="co-khi">
   <div class="container srv-container">
@@ -195,51 +78,58 @@ $xay_dung_services = [
       <div class="srv-sec-divider"></div>
     </div>
 
-    <!-- 9 Items Grid -->
+    <?php if (!empty($co_khi_services)): ?>
     <div class="srv-grid srv-grid--3cols">
-      <?php foreach ($co_khi_services as $item): ?>
+      <?php foreach ($co_khi_services as $item): 
+        $desc = !empty($item['summary']) ? $item['summary'] : (mb_substr(strip_tags($item['content'] ?? ''), 0, 160) . '...');
+      ?>
       <div class="srv-card">
         <div class="srv-card__media">
-          <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['title']) ?>" loading="lazy">
-          <div class="srv-card__badge-code"><?= $item['id'] ?></div>
+          <img src="<?= htmlspecialchars(get_service_image_url($item['image'])) ?>" 
+               alt="<?= htmlspecialchars($item['title']) ?>" 
+               loading="lazy" 
+               onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
+          <?php if (!empty($item['code'])): ?>
+          <div class="srv-card__badge-code"><?= htmlspecialchars($item['code']) ?></div>
+          <?php endif; ?>
           <div class="srv-card__overlay">
-            <a href="<?= url('quote.php?service=' . urlencode($item['title'])) ?>" class="srv-card__overlay-btn">
-              <i class="fa-solid fa-calculator"></i> Báo Giá Nhanh
+            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>" class="srv-card__overlay-btn">
+              <i class="fa-solid fa-eye"></i> Xem Chi Tiết
             </a>
           </div>
         </div>
         
         <div class="srv-card__body">
-          <h3 class="srv-card__title"><?= htmlspecialchars($item['title']) ?></h3>
-          <p class="srv-card__desc"><?= htmlspecialchars($item['desc']) ?></p>
-          
-          <ul class="srv-card__bullets">
-            <?php foreach ($item['bullets'] as $b): ?>
-            <li>
-              <span class="srv-card__bullet-ico"><i class="fa-solid fa-check"></i></span>
-              <span><?= htmlspecialchars($b) ?></span>
-            </li>
-            <?php endforeach; ?>
-          </ul>
+          <h3 class="srv-card__title">
+            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>"><?= htmlspecialchars($item['title']) ?></a>
+          </h3>
+          <p class="srv-card__desc"><?= htmlspecialchars($desc) ?></p>
 
           <div class="srv-card__footer">
-            <a href="<?= url('contact.php?service=' . urlencode($item['title'])) ?>" class="srv-card__action-btn">
-              <i class="fa-solid fa-headset"></i> Tư Vấn Ngay
+            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>" class="srv-card__action-btn">
+              <i class="fa-solid fa-eye"></i> Chi Tiết Dịch Vụ
             </a>
-            <a href="<?= url('projects.php?category=' . urlencode('Cơ khí chế tạo')) ?>" class="srv-card__proj-btn">
-              Công Trình Đã Hoàn Thiện <i class="fa-solid fa-arrow-right"></i>
+            <a href="<?= url('quote.php?service=' . urlencode($item['title'])) ?>" class="srv-card__proj-btn">
+              Báo Giá <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
         </div>
       </div>
       <?php endforeach; ?>
     </div>
+    <?php else: ?>
+    <div class="srv-empty-state">
+      <i class="fa-solid fa-screwdriver-wrench"></i>
+      <h4>Chưa có dịch vụ cơ khí nào được kích hoạt</h4>
+      <p>Hiện chưa có dịch vụ cơ khí nào trong cơ sở dữ liệu hoặc đang được cập nhật.</p>
+    </div>
+    <?php endif; ?>
 
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════
-     3. PHẦN 2: DỊCH VỤ XÂY DỰNG DÂN DỤNG (3 MỤC)
+     3. PHẦN 2: DỊCH VỤ XÂY DỰNG DÂN DỤNG
 ═══════════════════════════════════════════════════ -->
 <section class="srv-section srv-section--alt" id="xay-dung">
   <div class="container srv-container">
@@ -256,46 +146,52 @@ $xay_dung_services = [
       <div class="srv-sec-divider srv-sec-divider--blue"></div>
     </div>
 
-    <!-- 3 Items Grid -->
+    <?php if (!empty($xay_dung_services)): ?>
     <div class="srv-grid srv-grid--3cols">
-      <?php foreach ($xay_dung_services as $item): ?>
+      <?php foreach ($xay_dung_services as $item): 
+        $desc = !empty($item['summary']) ? $item['summary'] : (mb_substr(strip_tags($item['content'] ?? ''), 0, 160) . '...');
+      ?>
       <div class="srv-card srv-card--highlight">
         <div class="srv-card__media">
-          <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['title']) ?>" loading="lazy">
-          <div class="srv-card__badge-code srv-card__badge-code--blue"><?= $item['id'] ?></div>
+          <img src="<?= htmlspecialchars(get_service_image_url($item['image'])) ?>" 
+               alt="<?= htmlspecialchars($item['title']) ?>" 
+               loading="lazy" 
+               onerror="this.onerror=null;this.src='<?= asset_url('images/service-plant.png') ?>';">
+          <?php if (!empty($item['code'])): ?>
+          <div class="srv-card__badge-code srv-card__badge-code--blue"><?= htmlspecialchars($item['code']) ?></div>
+          <?php endif; ?>
           <div class="srv-card__overlay">
-            <a href="<?= url('quote.php?service=' . urlencode($item['title'])) ?>" class="srv-card__overlay-btn">
-              <i class="fa-solid fa-calculator"></i> Báo Giá Nhanh
+            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>" class="srv-card__overlay-btn">
+              <i class="fa-solid fa-eye"></i> Xem Chi Tiết
             </a>
           </div>
         </div>
         
         <div class="srv-card__body">
-          <h3 class="srv-card__title"><?= htmlspecialchars($item['title']) ?></h3>
-          <p class="srv-card__desc"><?= htmlspecialchars($item['desc']) ?></p>
-          
-          <ul class="srv-card__bullets">
-            <?php foreach ($item['bullets'] as $b): ?>
-            <li>
-              <span class="srv-card__bullet-ico srv-card__bullet-ico--blue"><i class="fa-solid fa-check"></i></span>
-              <span><?= htmlspecialchars($b) ?></span>
-            </li>
-            <?php endforeach; ?>
-          </ul>
+          <h3 class="srv-card__title">
+            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>"><?= htmlspecialchars($item['title']) ?></a>
+          </h3>
+          <p class="srv-card__desc"><?= htmlspecialchars($desc) ?></p>
 
           <div class="srv-card__footer">
-            <a href="<?= url('contact.php?service=' . urlencode($item['title'])) ?>" class="srv-card__action-btn srv-card__action-btn--blue">
-              <i class="fa-solid fa-headset"></i> Tư Vấn Ngay
+            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>" class="srv-card__action-btn srv-card__action-btn--blue">
+              <i class="fa-solid fa-eye"></i> Chi Tiết Dịch Vụ
             </a>
-            <a href="<?= url('projects.php?category=' . urlencode('Xây dựng dân dụng')) ?>" class="srv-card__proj-btn">
-              Công Trình Đã Hoàn Thiện <i class="fa-solid fa-arrow-right"></i>
+            <a href="<?= url('quote.php?service=' . urlencode($item['title'])) ?>" class="srv-card__proj-btn">
+              Báo Giá <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
         </div>
       </div>
       <?php endforeach; ?>
     </div>
-
+    <?php else: ?>
+    <div class="srv-empty-state">
+      <i class="fa-solid fa-trowel-bricks"></i>
+      <h4>Chưa có dịch vụ xây dựng nào được kích hoạt</h4>
+      <p>Hiện chưa có dịch vụ xây dựng nào trong cơ sở dữ liệu hoặc đang được cập nhật.</p>
+    </div>
+    <?php endif; ?>
   </div>
 </section>
 

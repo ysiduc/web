@@ -8,37 +8,24 @@ $related_projects = [];
 
 if ($db && $id > 0) {
     try {
-        $db->query("UPDATE projects SET views = views + 1 WHERE id = " . $id);
-        $stmt = $db->prepare("SELECT * FROM projects WHERE id = :id LIMIT 1");
+        $stmt = $db->prepare("SELECT * FROM projects WHERE id = :id AND status = 'published' LIMIT 1");
         $stmt->execute(['id' => $id]);
         $project = $stmt->fetch();
 
         if ($project) {
-            $stmtRel = $db->prepare("SELECT * FROM projects WHERE category = :category AND id != :id ORDER BY id DESC LIMIT 3");
+            $db->query("UPDATE projects SET views = views + 1 WHERE id = " . $id);
+            $stmtRel = $db->prepare("SELECT * FROM projects WHERE category = :category AND id != :id AND status = 'published' ORDER BY id DESC LIMIT 3");
             $stmtRel->execute(['category' => $project['category'], 'id' => $id]);
             $related_projects = $stmtRel->fetchAll();
         }
     } catch (Exception $e) {}
 }
 
-if (!$project) {
-    $project = [
-        'id' => $id > 0 ? $id : 1,
-        'title' => 'Nhà Xưởng Công Nghiệp Tập Đoàn Samsung Bắc Ninh',
-        'category' => 'Xây dựng công nghiệp',
-        'client' => 'Tập đoàn Samsung Electronics',
-        'location' => 'KCN Yên Phong, Bắc Ninh',
-        'completion_date' => '2025-11-20',
-        'image' => 'default-project.jpg',
-        'description' => 'Thi công tổng thầu nhà xưởng sản xuất quy mô 25.000m2 với kết cấu thép vượt khổ lớn.',
-        'content' => "Dự án Tổng thầu Xây dựng Nhà xưởng Sản xuất Linh kiện số 3 Samsung Bắc Ninh đòi hỏi tiêu chuẩn khắt khe về tải trọng và độ chính xác kết cấu thép.\n\nPNMEC đã áp dụng công nghệ hàn tự động dầm H và lắp dựng đạt tiến độ trước 15 ngày so với hợp đồng ban đầu. Toàn bộ cấu kiện thép được gia công phủ sơn epoxy 3 lớp chống chịu môi trường công nghiệp hóa chất nhẹ.",
-        'views' => 450
-    ];
-}
-
-$page_title = $project['title'];
+$page_title = $project ? $project['title'] : "Không Tìm Thấy Công Trình";
 require_once __DIR__ . '/includes/header.php';
 ?>
+
+<?php if ($project): ?>
 
 <!-- Page Banner -->
 <section class="page-banner">
@@ -206,5 +193,25 @@ require_once __DIR__ . '/includes/header.php';
     </div>
   </div>
 </section>
+<?php else: ?>
+<!-- Page Banner -->
+<section class="page-banner">
+  <div class="container">
+    <h1>Không Tìm Thấy Công Trình</h1>
+    <div class="breadcrumb">
+      <a href="<?= url('/index.php') ?>">Trang chủ</a> / <a href="<?= url('/projects.php') ?>">Công trình</a> / <span>Không tìm thấy</span>
+    </div>
+  </div>
+</section>
+
+<section style="padding: 80px 20px; text-align: center;">
+  <div class="container">
+    <i class="fa-solid fa-folder-open" style="font-size: 48px; color: #94a3b8; margin-bottom: 20px; display: block; opacity: 0.6;"></i>
+    <h2 style="font-size: 22px; color: var(--primary-navy, #0f172a); margin-bottom: 8px;">Công trình không tồn tại hoặc chưa được công bố</h2>
+    <p style="color: #64748b; max-width: 500px; margin: 10px auto 25px;">Dự án bạn đang tìm kiếm hiện không khả dụng trong hệ thống.</p>
+    <a href="<?= url('/projects.php') ?>" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách công trình</a>
+  </div>
+</section>
+<?php endif; ?>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

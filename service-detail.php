@@ -1,6 +1,5 @@
 <?php
-$page_title = "Chi Tiết Dịch Vụ - PNMEC";
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/functions.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $db = getDBConnection();
@@ -8,23 +7,20 @@ $service = null;
 
 if ($db && $id > 0) {
     try {
-        $stmt = $db->prepare("SELECT * FROM services WHERE id = :id");
+        $stmt = $db->prepare("SELECT * FROM services WHERE id = :id AND status = 'active' LIMIT 1");
         $stmt->execute(['id' => $id]);
         $service = $stmt->fetch();
+        if ($service) {
+            $db->query("UPDATE services SET views = views + 1 WHERE id = " . $id);
+        }
     } catch (Exception $e) {}
 }
 
-if (!$service) {
-    $service = [
-        'title' => 'Thi Công Khung Kèo Kết Cấu Thép Khẩu Độ Thép Lớn',
-        'code' => 'PNMEC-CONS',
-        'summary' => 'Sản xuất & thi công lắp dựng khung nhà xưởng kết cấu thép khẩu độ lớn đạt chuẩn chất lượng quốc tế.',
-        'content' => 'PNMEC tự hào là đơn vị tổng thầu thi công kết cấu thép nhà xưởng hàng đầu miền Bắc. Hệ thống xưởng sản xuất hiện đại 15.000m2 trang bị máy cắt Laser Fiber, máy gá dầm tổ hợp tự động và dây chuyền phun sơn khép kín.',
-        'image' => 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1200&q=80'
-    ];
-}
+$page_title = $service ? $service['title'] : "Không Tìm Thấy Dịch Vụ";
+require_once __DIR__ . '/includes/header.php';
 ?>
 
+<?php if ($service): ?>
 <div class="page-banner">
   <div class="container">
     <h1><?php echo htmlspecialchars($service['title']); ?></h1>
@@ -63,6 +59,25 @@ if (!$service) {
     </aside>
   </div>
 </section>
+<?php else: ?>
+<div class="page-banner">
+  <div class="container">
+    <h1>Không Tìm Thấy Dịch Vụ</h1>
+    <div class="breadcrumb">
+      <a href="<?= url('index.php') ?>">Trang chủ</a> / <a href="<?= url('services.php') ?>">Dịch vụ</a> / <span>Không tìm thấy</span>
+    </div>
+  </div>
+</div>
+
+<section style="padding: 80px 20px; text-align: center;">
+  <div class="container">
+    <i class="fa-solid fa-screwdriver-wrench" style="font-size: 48px; color: #94a3b8; margin-bottom: 20px; display: block; opacity: 0.6;"></i>
+    <h2 style="font-size: 22px; color: var(--primary-navy, #0f172a); margin-bottom: 8px;">Dịch vụ không tồn tại hoặc đã tạm dừng</h2>
+    <p style="color: #64748b; max-width: 500px; margin: 10px auto 25px;">Dịch vụ bạn đang tìm kiếm không tồn tại hoặc đã ngừng cung cấp.</p>
+    <a href="<?= url('services.php') ?>" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách dịch vụ</a>
+  </div>
+</section>
+<?php endif; ?>
 
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

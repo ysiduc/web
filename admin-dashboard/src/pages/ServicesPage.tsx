@@ -198,7 +198,7 @@ export const ServicesPage: React.FC = () => {
             Quản Lý Dịch Vụ Thi Công
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            12 Phân loại dịch vụ cốt lõi: Kết cấu thép, gia công cơ khí &amp; xây dựng công nghiệp
+            {services.length} Phân loại dịch vụ cốt lõi: Kết cấu thép, gia công cơ khí &amp; xây dựng công nghiệp
           </p>
         </div>
         <button

@@ -7,16 +7,9 @@ $db = getDBConnection();
 $projects = [];
 if ($db) {
     try {
-        $stmt = $db->query("SELECT * FROM projects ORDER BY views DESC, id DESC LIMIT 3");
+        $stmt = $db->query("SELECT * FROM projects WHERE status = 'published' ORDER BY views DESC, id DESC LIMIT 3");
         $projects = $stmt->fetchAll();
     } catch (Exception $e) {}
-}
-if (empty($projects)) {
-    $projects = [
-        ['id'=>1,'title'=>'Nhà Xưởng Công Nghiệp Tập Đoàn Samsung Bắc Ninh','category'=>'Xây dựng công nghiệp','client'=>'Tập đoàn Samsung Electronics','location'=>'KCN Yên Phong, Bắc Ninh','image'=>'','description'=>'Thi công tổng thầu nhà xưởng sản xuất quy mô 25.000m² với kết cấu thép vượt khổ lớn.'],
-        ['id'=>2,'title'=>'Gia Công Hệ Thống Băng Tải Luyện Kim Hoà Phát','category'=>'Cơ khí chế tạo','client'=>'Tập đoàn Hòa Phát','location'=>'KKT Dung Quất, Quảng Ngãi','image'=>'','description'=>'Chế tạo và gia công hệ thống truyền động băng tải chịu nhiệt cho khu liên hợp thép Dung Quất.'],
-        ['id'=>3,'title'=>'Tòa Nhà Văn Phòng & Showroom Ô Tô VinFast','category'=>'Kết cấu thép','client'=>'Tập đoàn Vingroup','location'=>'Cầu Giấy, Hà Nội','image'=>'','description'=>'Thi công khung kết cấu thép chịu lực 8 tầng kết hợp vách kính hiện đại.'],
-    ];
 }
 $about_text = get_site_info('about_summary','PNMEC Group là đơn vị tiên phong trong lĩnh vực gia công cơ khí chính xác và thi công xây dựng công nghiệp tại Việt Nam. Chúng tôi cung cấp giải pháp trọn gói từ thiết kế, chế tạo đến thi công và bàn giao công trình với tiêu chuẩn quốc tế.');
 $hero_title = get_site_info('hero_title','GIẢI PHÁP CƠ KHÍ CHẾ TẠO & THI CÔNG XÂY DỰNG TIÊN TIẾN');
@@ -142,23 +135,17 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
       <h2>Các Công Trình Đã Đăng</h2>
       <p>Những công trình cơ khí &amp; xây dựng tiêu biểu thể hiện năng lực và chất lượng thi công vượt trội.</p>
     </div>
+    <?php if (!empty($projects)): ?>
     <div class="h-proj__grid">
       <?php
-      $fallback_imgs = [
-        'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=600&q=80',
-        'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80',
-        'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80',
-      ];
-      foreach($projects as $i => $p):
-        $img = !empty($p['image']) && $p['image']!='default-project.jpg'
-               ? asset_url('uploads/'.htmlspecialchars($p['image']))
-               : $fallback_imgs[$i%3];
+      foreach($projects as $p):
+        $img = get_project_image_url($p['image']);
       ?>
       <div class="h-proj__card">
         <div class="h-proj__thumb">
           <span class="h-proj__cat"><?= htmlspecialchars($p['category']) ?></span>
-          <img src="<?= $img ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy"
-               onerror="this.src='<?= $fallback_imgs[$i%3] ?>'">
+          <img src="<?= htmlspecialchars($img) ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy"
+               onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
         </div>
         <div class="h-proj__body">
           <h3><a href="<?= url('/project-detail.php?id=' . $p['id']) ?>"><?= htmlspecialchars($p['title']) ?></a></h3>
@@ -177,6 +164,12 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
     <div class="h-proj__cta">
       <a href="<?= url('/projects.php') ?>" class="h-btn-navy"><i class="fa-solid fa-grip"></i> Xem Tất Cả Công Trình</a>
     </div>
+    <?php else: ?>
+    <div class="h-proj__empty">
+      <i class="fa-solid fa-folder-open"></i>
+      Chưa có công trình nào được đăng.
+    </div>
+    <?php endif; ?>
   </div>
 </section>
 

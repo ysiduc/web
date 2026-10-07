@@ -287,6 +287,47 @@ function get_project_image_url($image) {
 }
 
 /**
+ * Lấy đường dẫn ảnh tin tức an toàn
+ */
+function get_news_image_url($image) {
+    $basePath = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);
+    $fallback = asset_url('images/service-cons.png');
+
+    if (empty($image)) {
+        return $fallback;
+    }
+
+    if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '//')) {
+        return $image;
+    }
+
+    if (str_starts_with($image, '/')) {
+        return $image;
+    }
+
+    // Check in assets/uploads/
+    if (file_exists($basePath . '/assets/uploads/' . $image)) {
+        return asset_url('uploads/' . $image);
+    }
+
+    // Check in assets/uploads/news/
+    if (file_exists($basePath . '/assets/uploads/news/' . $image)) {
+        return asset_url('uploads/news/' . $image);
+    }
+
+    // Check in assets/images/
+    if (file_exists($basePath . '/assets/images/' . $image)) {
+        return asset_url('images/' . $image);
+    }
+
+    if ($image === 'default-news.jpg') {
+        return $fallback;
+    }
+
+    return asset_url('uploads/' . $image);
+}
+
+/**
  * Làm sạch mã HTML tùy chỉnh bằng DOMDocument allow-list
  * Ngăn chặn XSS, thẻ độc hại (script, iframe, on*, javascript:...)
  */

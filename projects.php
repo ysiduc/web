@@ -77,22 +77,6 @@ if ($db) {
         $projects = $stmt->fetchAll();
     } catch (Exception $e) {}
 }
-
-// Fallback project images map for preview
-$image_fallbacks = [
-    'Nhà kết cấu thép' => asset_url('images/service-cons.png'),
-    'Cầu thang - Ban công' => 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80',
-    'Mái tôn - Mái che' => 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80',
-    'Nhà cơi nới - Gác lửng' => 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80',
-    'Thang thoát hiểm' => 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=600&q=80',
-    'Nhà xe - Mái che' => 'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=600&q=80',
-    'Mái kính' => 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80',
-    'Sắt mỹ thuật' => asset_url('images/service-cnc.png'),
-    'Cửa các loại' => 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=600&q=80',
-    'Xây nhà trọn gói' => asset_url('images/service-plant.png'),
-    'Nội ngoại thất' => 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80',
-    'Cải tạo & Phá dỡ' => 'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=600&q=80',
-];
 ?>
 
 <!-- ═══════════════════════════════════════════════════
@@ -223,16 +207,14 @@ $image_fallbacks = [
       <?php if (count($projects) > 0): ?>
         <?php foreach ($projects as $p): 
           $isCoKhi = in_array($p['category'], $co_khi_subcats);
-          $imgSrc = !empty($p['image']) && $p['image'] !== 'default-project.jpg' 
-                    ? asset_url('images/' . htmlspecialchars($p['image']))
-                    : ($image_fallbacks[$p['category']] ?? 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=600&q=80');
+          $imgSrc = get_project_image_url($p['image']);
         ?>
           <div class="proj-card <?= $isCoKhi ? 'proj-card--ck' : 'proj-card--xd' ?>">
             <div class="proj-card__thumb">
               <span class="proj-card__badge <?= $isCoKhi ? 'proj-card__badge--gold' : 'proj-card__badge--blue' ?>">
                 <i class="fa-solid <?= $isCoKhi ? 'fa-hammer' : 'fa-building' ?> fa-xs"></i> <?= htmlspecialchars($p['category']) ?>
               </span>
-              <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy" onerror="this.src='<?= asset_url('images/service-cons.png') ?>'">
+              <img src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
               <div class="proj-card__thumb-overlay">
                 <a href="<?= url('project-detail.php?id=' . $p['id']) ?>" class="proj-card__quick-view">
                   <i class="fa-solid fa-eye"></i> Xem Chi Tiết
