@@ -5,6 +5,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     api_response(false, null, 'Phương thức không được hỗ trợ.', 405);
 }
 
+// Rate limiting for login attempts (10 attempts / 5 mins / IP)
+enforce_rate_limit_api('login', 10, 300);
+
 $input = get_api_input();
 $username = trim($input['username'] ?? '');
 $password = trim($input['password'] ?? '');
@@ -22,8 +25,8 @@ if ($result['status']) {
     $user = $stmt->fetch();
 
     api_response(true, [
-        'user' => $user,
-        'session_id' => session_id()
+        'user'       => $user,
+        'csrf_token' => get_csrf_token()
     ], 'Đăng nhập thành công!');
 } else {
     api_response(false, null, $result['message'], 401);

@@ -6,11 +6,31 @@
 
 require_once __DIR__ . '/constants.php';
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'web_cty');
-define('DB_PORT', '3306');
+// Load config from local.php if available
+$localConfig = [];
+$localConfigFile = __DIR__ . '/local.php';
+if (file_exists($localConfigFile)) {
+    $loaded = require $localConfigFile;
+    if (is_array($loaded)) {
+        $localConfig = $loaded;
+    }
+}
+
+if (!defined('DB_HOST')) {
+    define('DB_HOST', $localConfig['db_host'] ?? getenv('DB_HOST') ?: 'localhost');
+}
+if (!defined('DB_USER')) {
+    define('DB_USER', $localConfig['db_user'] ?? getenv('DB_USER') ?: 'root');
+}
+if (!defined('DB_PASS')) {
+    define('DB_PASS', $localConfig['db_pass'] ?? (getenv('DB_PASS') !== false ? getenv('DB_PASS') : ''));
+}
+if (!defined('DB_NAME')) {
+    define('DB_NAME', $localConfig['db_name'] ?? getenv('DB_NAME') ?: 'web_cty');
+}
+if (!defined('DB_PORT')) {
+    define('DB_PORT', (int)($localConfig['db_port'] ?? getenv('DB_PORT') ?: 3306));
+}
 
 function getDBConnection() {
     static $pdo = null;
@@ -28,7 +48,7 @@ function getDBConnection() {
         $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         return $pdo;
     } catch (PDOException $e) {
-        // Return false gracefully if database connection is not established yet
+        error_log("Database connection error: " . $e->getMessage());
         return false;
     }
 }

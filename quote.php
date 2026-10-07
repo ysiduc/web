@@ -1,49 +1,61 @@
 <?php
-$page_title = "Yêu Cầu Báo Giá Thi Công - PNMEC";
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/functions.php';
 
 $success = '';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $fullname = sanitize($_POST['fullname'] ?? '');
-    $phone = sanitize($_POST['phone'] ?? '');
-    $email = sanitize($_POST['email'] ?? '');
-    $service_type = sanitize($_POST['service_type'] ?? '');
-    $project_location = sanitize($_POST['project_location'] ?? '');
-    $message = sanitize($_POST['message'] ?? '');
-
-    if (empty($fullname) || empty($phone)) {
-        $error = 'Vui lòng điền đầy đủ Họ và tên và Số điện thoại liên hệ.';
+    require_once __DIR__ . '/includes/rate_limiter.php';
+    $rl = check_rate_limit('quote', 5, 300);
+    if (!$rl['allowed']) {
+        http_response_code(429);
+        header("Retry-After: " . $rl['retry_after']);
+        $error = 'Bạn đã gửi yêu cầu quá nhiều lần. Vui lòng thử lại sau ' . $rl['retry_after'] . ' giây.';
     } else {
-        $db = getDBConnection();
-        if ($db) {
-            try {
-                $stmt = $db->prepare("INSERT INTO quotes (fullname, phone, email, service_type, project_location, message) VALUES (:fullname, :phone, :email, :service_type, :project_location, :message)");
-                $stmt->execute([
-                    'fullname' => $fullname,
-                    'phone' => $phone,
-                    'email' => $email,
-                    'service_type' => $service_type,
-                    'project_location' => $project_location,
-                    'message' => $message
-                ]);
-                $success = 'Gửi yêu cầu báo giá thành công! Kỹ sư tư vấn PNMEC sẽ phản hồi quý khách trong thời gian sớm nhất.';
-            } catch (Exception $e) {
-                $error = 'Có lỗi xảy ra khi lưu thông tin. Vui lòng thử lại sau.';
-            }
+        $fullname = sanitize($_POST['fullname'] ?? '');
+        $phone = sanitize($_POST['phone'] ?? '');
+        $email = sanitize($_POST['email'] ?? '');
+        $service_type = sanitize($_POST['service_type'] ?? '');
+        $project_location = sanitize($_POST['project_location'] ?? '');
+        $message = sanitize($_POST['message'] ?? '');
+
+        if (empty($fullname) || empty($phone)) {
+            $error = 'Vui lòng điền đầy đủ Họ và tên và Số điện thoại liên hệ.';
         } else {
-            $success = 'Yêu cầu báo giá của bạn đã được ghi nhận. Chúng tôi sẽ gọi lại ngay!';
+            $db = getDBConnection();
+            if ($db) {
+                try {
+                    $stmt = $db->prepare("INSERT INTO quotes (fullname, phone, email, service_type, project_location, message) VALUES (:fullname, :phone, :email, :service_type, :project_location, :message)");
+                    $stmt->execute([
+                        'fullname' => $fullname,
+                        'phone' => $phone,
+                        'email' => $email,
+                        'service_type' => $service_type,
+                        'project_location' => $project_location,
+                        'message' => $message
+                    ]);
+                    $success = 'Gửi yêu cầu báo giá thành công! Kỹ sư tư vấn PNMEC sẽ phản hồi quý khách trong thời gian sớm nhất.';
+                } catch (Exception $e) {
+                    error_log("Quote submit error: " . $e->getMessage());
+                    $error = 'Có lỗi xảy ra khi lưu thông tin. Vui lòng thử lại sau.';
+                }
+            } else {
+                $success = 'Yêu cầu báo giá của bạn đã được ghi nhận. Chúng tôi sẽ gọi lại ngay!';
+            }
         }
     }
 }
+
+$page_title = "Yêu Cầu Báo Giá Thi Công - PNMEC";
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="page-banner">
   <div class="container">
     <h1>Yêu Cầu Báo Giá Thi Công</h1>
     <div class="breadcrumb">
-      <a href="/test/web_cty/index.php">Trang chủ</a> / <span>Nhận Báo Giá</span>
+      <a href="<?= url('/index.php') ?>">Trang chủ</a> / <span>Nhận Báo Giá</span>
     </div>
   </div>
 </div>

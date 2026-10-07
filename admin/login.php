@@ -4,12 +4,12 @@ require_once __DIR__ . '/../includes/functions.php';
 
 // Redirect to modern React Admin Dashboard login
 if (!isset($_GET['legacy'])) {
-    header("Location: /test/web_cty/admin-dashboard/dist/#/login");
+    header("Location: " . url('admin-dashboard/dist/#/login'));
     exit;
 }
 
 if (is_logged_in()) {
-    header("Location: /test/web_cty/admin/index.php?legacy=1");
+    header("Location: " . url('admin/index.php?legacy=1'));
     exit;
 }
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $result = login_user($username, $password);
         if ($result['status']) {
-            header("Location: /test/web_cty/admin/index.php");
+            header("Location: " . url('admin/index.php'));
             exit;
         } else {
             $error = $result['message'];
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đăng Nhập Quản Trị - PNMEC</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/test/web_cty/assets/css/admin/login.css">
+  <link rel="stylesheet" href="<?= asset_url('css/admin/login.css') ?>">
 </head>
 <body class="login-body">
   <div class="login-card">

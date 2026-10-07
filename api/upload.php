@@ -7,6 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     api_response(false, null, 'Phương thức không được hỗ trợ.', 405);
 }
 
+// Rate limiting for upload (30 uploads / 10 minutes)
+enforce_rate_limit_api('upload', 30, 600);
+
 $subfolder = trim($_POST['folder'] ?? 'general');
 $cleanFolder = trim(preg_replace('#[^a-zA-Z0-9_\-/]#', '', $subfolder), '/');
 $cleanFolder = str_replace('..', '', $cleanFolder);

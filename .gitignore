@@ -9,17 +9,36 @@ dist/
 dist-ssr/
 */dist-ssr/
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-pnpm-debug.log*
-
-# Environment files
+# Local Environment Configuration & Secrets
+config/local.php
 .env
 .env.local
 .env.*.local
 *.env
+
+# Runtime Upload Images (keep structure and security files)
+assets/uploads/*
+!assets/uploads/.gitkeep
+!assets/uploads/**/.gitkeep
+!assets/uploads/.htaccess
+
+# Runtime Storage & Rate Limiting
+storage/
+storage/rate-limit/*
+!storage/rate-limit/.gitkeep
+
+# Releases & Backups
+release/
+backups/
+*.sql.gz
+*.zip
+*.tar.gz
+
+# Logs & Cache
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
 
 # System / Editor files
 .DS_Store

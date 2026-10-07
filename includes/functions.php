@@ -86,38 +86,88 @@ function create_slug($str) {
 }
 
 /**
- * Hàm upload hình ảnh dự án vào thư mục `assets/uploads/`
+ * Hàm upload hình ảnh an toàn dùng chung cho toàn bộ hệ thống
  */
-function upload_image($file_input, $target_dir = __DIR__ . '/../assets/uploads/') {
+function secure_upload_image($file_input, $subfolder = '', $max_size_mb = 8) {
     if (!isset($_FILES[$file_input]) || $_FILES[$file_input]['error'] !== UPLOAD_ERR_OK) {
         return ['status' => false, 'message' => 'Không có tệp nào được tải lên hoặc có lỗi tải tệp.'];
     }
 
     $file = $_FILES[$file_input];
-    $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-    $max_size = 5 * 1024 * 1024; // 5MB
+    $max_bytes = $max_size_mb * 1024 * 1024;
 
-    if (!in_array($file['type'], $allowed_types)) {
-        return ['status' => false, 'message' => 'Định dạng tệp không hợp lệ (Chỉ chấp nhận JPG, PNG, WEBP, GIF).'];
+    if ($file['size'] > $max_bytes) {
+        return ['status' => false, 'message' => 'Dung lượng ảnh vượt quá giới hạn (tối đa ' . $max_size_mb . 'MB).'];
     }
 
-    if ($file['size'] > $max_size) {
-        return ['status' => false, 'message' => 'Kích thước tệp quá lớn (Tối đa 5MB).'];
+    $originalName = $file['name'];
+    // Ngăn chặn double extension độc hại (vd: file.php.jpg)
+    if (preg_match('/\.(php|phtml|phar|cgi|pl|py|sh|bash|html|js|exe)\./i', $originalName)) {
+        return ['status' => false, 'message' => 'Tên tệp chứa phần mở rộng không an toàn.'];
     }
 
-    if (!file_exists($target_dir)) {
-        mkdir($target_dir, 0777, true);
+    $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+    $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+    if (!in_array($ext, $allowed_extensions, true)) {
+        return ['status' => false, 'message' => 'Định dạng file không hợp lệ (chỉ chấp nhận JPG, PNG, WEBP, GIF).'];
     }
 
-    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-    $filename = time() . '_' . uniqid() . '.' . strtolower($extension);
-    $target_file = $target_dir . $filename;
+    // Kiểm tra MIME thực sự bằng finfo
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
 
-    if (move_uploaded_file($file['tmp_name'], $target_file)) {
-        return ['status' => true, 'filename' => $filename];
-    } else {
-        return ['status' => false, 'message' => 'Có lỗi xảy ra khi lưu tệp vào máy chủ.'];
+    $allowed_mimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!in_array($mime, $allowed_mimes, true)) {
+        return ['status' => false, 'message' => 'MIME type không được phép: ' . $mime];
     }
+
+    // Kiểm tra cấu trúc hình ảnh hợp lệ
+    if (!@getimagesize($file['tmp_name'])) {
+        return ['status' => false, 'message' => 'Tệp tải lên không phải là ảnh hợp lệ.'];
+    }
+
+    $cleanSubfolder = trim(preg_replace('#[^a-zA-Z0-9_\-/]#', '', $subfolder), '/');
+    $cleanSubfolder = str_replace('..', '', $cleanSubfolder);
+
+    $baseUploadDir = defined('UPLOAD_DIR') ? UPLOAD_DIR : (dirname(__DIR__) . '/assets/uploads/');
+    $targetDir = rtrim($baseUploadDir, '/') . '/' . ($cleanSubfolder ? $cleanSubfolder . '/' : '');
+
+    if (!file_exists($targetDir)) {
+        mkdir($targetDir, 0755, true);
+    }
+
+    // Sinh tên file ngẫu nhiên bảo mật (không dùng tên gốc)
+    $filename = time() . '_' . bin2hex(random_bytes(8)) . '.' . $ext;
+    $targetFile = $targetDir . $filename;
+
+    if (move_uploaded_file($file['tmp_name'], $targetFile)) {
+        @chmod($targetFile, 0644);
+        $relativePath = ($cleanSubfolder ? $cleanSubfolder . '/' : '') . $filename;
+        $uploadUrl = defined('UPLOAD_URL') ? UPLOAD_URL : (defined('ROOT_URL') ? ROOT_URL . '/assets/uploads/' : '/assets/uploads/');
+        return [
+            'status'   => true,
+            'filename' => $relativePath,
+            'url'      => rtrim($uploadUrl, '/') . '/' . $relativePath,
+        ];
+    }
+
+    return ['status' => false, 'message' => 'Có lỗi xảy ra khi lưu tệp vào máy chủ.'];
+}
+
+/**
+ * Hàm upload hình ảnh legacy (wrapper cho secure_upload_image)
+ */
+function upload_image($file_input, $target_dir = null) {
+    $subfolder = '';
+    if ($target_dir && strpos($target_dir, 'projects') !== false) {
+        $subfolder = 'projects';
+    } elseif ($target_dir && strpos($target_dir, 'services') !== false) {
+        $subfolder = 'services';
+    } elseif ($target_dir && strpos($target_dir, 'news') !== false) {
+        $subfolder = 'news';
+    }
+    return secure_upload_image($file_input, $subfolder, 8);
 }
 
 /**
@@ -157,9 +207,8 @@ function get_flash_message() {
  * Lấy đường dẫn ảnh dịch vụ an toàn (hỗ trợ upload mới, ảnh legacy và fallback)
  */
 function get_service_image_url($image) {
-    $root = defined('ROOT_URL') ? ROOT_URL : '/test/web_cty';
     $basePath = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);
-    $fallback = $root . '/assets/images/service-cons.png';
+    $fallback = asset_url('images/service-cons.png');
 
     if (empty($image)) {
         return $fallback;
@@ -175,17 +224,17 @@ function get_service_image_url($image) {
 
     // Check in assets/uploads/
     if (file_exists($basePath . '/assets/uploads/' . $image)) {
-        return $root . '/assets/uploads/' . $image;
+        return asset_url('uploads/' . $image);
     }
 
     // Check in assets/uploads/services/
     if (file_exists($basePath . '/assets/uploads/services/' . $image)) {
-        return $root . '/assets/uploads/services/' . $image;
+        return asset_url('uploads/services/' . $image);
     }
 
     // Check in assets/images/
     if (file_exists($basePath . '/assets/images/' . $image)) {
-        return $root . '/assets/images/' . $image;
+        return asset_url('images/' . $image);
     }
 
     // Default image filename
@@ -193,16 +242,15 @@ function get_service_image_url($image) {
         return $fallback;
     }
 
-    return $root . '/assets/uploads/' . $image;
+    return asset_url('uploads/' . $image);
 }
 
 /**
  * Lấy đường dẫn ảnh công trình an toàn
  */
 function get_project_image_url($image) {
-    $root = defined('ROOT_URL') ? ROOT_URL : '/test/web_cty';
     $basePath = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);
-    $fallback = 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1000&q=80';
+    $fallback = asset_url('images/service-cons.png');
 
     if (empty($image)) {
         return $fallback;
@@ -218,22 +266,130 @@ function get_project_image_url($image) {
 
     // Check in assets/uploads/
     if (file_exists($basePath . '/assets/uploads/' . $image)) {
-        return $root . '/assets/uploads/' . $image;
+        return asset_url('uploads/' . $image);
     }
 
     // Check in assets/uploads/projects/
     if (file_exists($basePath . '/assets/uploads/projects/' . $image)) {
-        return $root . '/assets/uploads/projects/' . $image;
+        return asset_url('uploads/projects/' . $image);
     }
 
     // Check in assets/images/
     if (file_exists($basePath . '/assets/images/' . $image)) {
-        return $root . '/assets/images/' . $image;
+        return asset_url('images/' . $image);
     }
 
     if ($image === 'default-project.jpg') {
         return $fallback;
     }
 
-    return $root . '/assets/uploads/' . $image;
+    return asset_url('uploads/' . $image);
 }
+
+/**
+ * Làm sạch mã HTML tùy chỉnh bằng DOMDocument allow-list
+ * Ngăn chặn XSS, thẻ độc hại (script, iframe, on*, javascript:...)
+ */
+function sanitize_html_content(string $html): string {
+    if (trim($html) === '') {
+        return '';
+    }
+
+    $allowedTags = [
+        'section', 'div', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'ul', 'ol', 'li', 'strong', 'b', 'em', 'i', 'u', 'a',
+        'table', 'thead', 'tbody', 'tr', 'th', 'td', 'blockquote',
+        'br', 'hr', 'img', 'figure', 'figcaption', 'code', 'pre'
+    ];
+
+    $allowedAttrs = [
+        'class', 'id', 'href', 'title', 'target', 'rel', 'src', 'alt', 'width', 'height', 'style'
+    ];
+
+    libxml_use_internal_errors(true);
+    $dom = new DOMDocument('1.0', 'UTF-8');
+    // Bọc thẻ html/body và mã hóa UTF-8 để không bị lỗi tiếng Việt
+    $wrapped = '<?xml encoding="utf-8" ?><html><body>' . $html . '</body></html>';
+    $dom->loadHTML($wrapped, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    libxml_clear_errors();
+
+    $xpath = new DOMXPath($dom);
+    $nodes = $xpath->query('//*');
+
+    $nodesToRemove = [];
+
+    foreach ($nodes as $node) {
+        if (!($node instanceof DOMElement)) continue;
+        $tagName = strtolower($node->nodeName);
+        if ($tagName === 'html' || $tagName === 'body') continue;
+
+        if (!in_array($tagName, $allowedTags, true)) {
+            $nodesToRemove[] = $node;
+            continue;
+        }
+
+        // Kiểm tra thuộc tính
+        if ($node->hasAttributes()) {
+            $attrsToRemove = [];
+            foreach ($node->attributes as $attr) {
+                $attrName = strtolower($attr->name);
+
+                // Loại bỏ mọi thuộc tính event bắt đầu bằng on* (onclick, onerror, onload...)
+                if (str_starts_with($attrName, 'on') || !in_array($attrName, $allowedAttrs, true)) {
+                    $attrsToRemove[] = $attr->name;
+                    continue;
+                }
+
+                // Kiểm tra liên kết href và src
+                if ($attrName === 'href' || $attrName === 'src') {
+                    $val = trim(strtolower($attr->value));
+                    $val = preg_replace('/[\x00-\x1f\x7f]/', '', $val);
+                    if (str_starts_with($val, 'javascript:') || str_starts_with($val, 'vbscript:') || str_starts_with($val, 'data:')) {
+                        $attrsToRemove[] = $attr->name;
+                        continue;
+                    }
+                }
+
+                // Kiểm tra inline style
+                if ($attrName === 'style') {
+                    $styleVal = strtolower($attr->value);
+                    if (strpos($styleVal, 'expression') !== false ||
+                        strpos($styleVal, 'javascript') !== false ||
+                        strpos($styleVal, 'behavior') !== false ||
+                        strpos($styleVal, '-moz-binding') !== false) {
+                        $attrsToRemove[] = $attr->name;
+                        continue;
+                    }
+                }
+            }
+
+            foreach ($attrsToRemove as $attrName) {
+                $node->removeAttribute($attrName);
+            }
+        }
+
+        // Tự động thêm rel="noopener noreferrer" cho target="_blank"
+        if ($tagName === 'a' && strtolower($node->getAttribute('target')) === '_blank') {
+            $node->setAttribute('rel', 'noopener noreferrer');
+        }
+    }
+
+    foreach ($nodesToRemove as $node) {
+        if ($node->parentNode) {
+            $node->parentNode->removeChild($node);
+        }
+    }
+
+    $body = $dom->getElementsByTagName('body')->item(0);
+    if (!$body) {
+        return '';
+    }
+
+    $cleanHtml = '';
+    foreach ($body->childNodes as $child) {
+        $cleanHtml .= $dom->saveHTML($child);
+    }
+
+    return trim($cleanHtml);
+}
+

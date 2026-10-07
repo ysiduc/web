@@ -20,5 +20,6 @@ if (!$user || $user['status'] !== 'active') {
 }
 
 api_response(true, [
-    'user' => $user
+    'user'       => $user,
+    'csrf_token' => get_csrf_token()
 ], 'Thông tin tài khoản hiện tại.');

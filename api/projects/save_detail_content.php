@@ -34,19 +34,10 @@ if (!is_array($raw_blocks)) {
 }
 
 /**
- * Sanitize custom HTML:
- * Strips dangerous tags and attributes (script, on*, iframe, javascript:)
+ * Sanitize custom HTML using DOMDocument allow-list
  */
 function sanitize_custom_html(string $html): string {
-    // 1. Remove dangerous tags and their content
-    $html = preg_replace('#<(script|style|iframe|object|embed|applet|form|svg|link|meta)[^>]*?>.*?</\\1>#is', '', $html);
-    // 2. Remove self-closing or unclosed dangerous tags
-    $html = preg_replace('#<(script|style|iframe|object|embed|applet|form|svg|link|meta)[^>]*?>#is', '', $html);
-    // 3. Remove event handlers: onclick, onerror, onload, onmouseover, etc.
-    $html = preg_replace('#\s+on[a-zA-Z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)#i', '', $html);
-    // 4. Remove javascript: or vbscript: or data: in href/src
-    $html = preg_replace('#(href|src)\s*=\s*["\']\s*(javascript|vbscript|data):[^"\']*["\']#i', '$1="#"', $html);
-    return trim($html);
+    return sanitize_html_content($html);
 }
 
 $allowed_types = ['heading', 'paragraph', 'image', 'gallery', 'callout', 'divider', 'html'];

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, getImageUrl } from '../api/client';
+import { api, getImageUrl, getPublicPageUrl } from '../api/client';
 import type { Project, ApiResponse } from '../types';
 import { Badge } from '../components/common/Badge';
 import { Modal } from '../components/common/Modal';
@@ -387,7 +387,7 @@ export const ProjectsPage: React.FC = () => {
                           <FilePlus2 className="w-4 h-4" />
                         </Link>
                         <a
-                          href={`/test/web_cty/project-detail.php?id=${p.id}`}
+                          href={getPublicPageUrl(`/project-detail.php?id=${p.id}`)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"

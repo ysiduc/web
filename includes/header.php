@@ -11,19 +11,19 @@ $working_hours = get_site_info('working_hours', 'Thứ 2 - Thứ 7: 07:30 - 17:3
 
 // Dynamic Page CSS Map
 $page_css_map = [
-    'index.php'          => '/test/web_cty/assets/css/user/home.css',
-    'about.php'          => '/test/web_cty/assets/css/user/about.css',
-    'services.php'       => '/test/web_cty/assets/css/user/services.css',
-    'service-detail.php' => '/test/web_cty/assets/css/user/service-detail.css',
-    'projects.php'       => '/test/web_cty/assets/css/user/projects.css',
-    'project-detail.php'  => '/test/web_cty/assets/css/user/project-detail.css',
-    'quote.php'          => '/test/web_cty/assets/css/user/quote.css',
-    'news.php'           => '/test/web_cty/assets/css/user/news.css',
-    'news-detail.php'    => '/test/web_cty/assets/css/user/news-detail.css',
-    'contact.php'        => '/test/web_cty/assets/css/user/contact.css',
-    'recruitment.php'    => '/test/web_cty/assets/css/user/recruitment.css',
+    'index.php'          => asset_url('css/user/home.css'),
+    'about.php'          => asset_url('css/user/about.css'),
+    'services.php'       => asset_url('css/user/services.css'),
+    'service-detail.php' => asset_url('css/user/service-detail.css'),
+    'projects.php'       => asset_url('css/user/projects.css'),
+    'project-detail.php'  => asset_url('css/user/project-detail.css'),
+    'quote.php'          => asset_url('css/user/quote.css'),
+    'news.php'           => asset_url('css/user/news.css'),
+    'news-detail.php'    => asset_url('css/user/news-detail.css'),
+    'contact.php'        => asset_url('css/user/contact.css'),
+    'recruitment.php'    => asset_url('css/user/recruitment.css'),
 ];
-$active_css = $page_css_map[$current_page] ?? '/test/web_cty/assets/css/user/home.css';
+$active_css = $page_css_map[$current_page] ?? asset_url('css/user/home.css');
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -40,11 +40,11 @@ $active_css = $page_css_map[$current_page] ?? '/test/web_cty/assets/css/user/hom
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Common CSS System -->
-  <link rel="stylesheet" href="/test/web_cty/assets/css/common/reset.css?v=2">
-  <link rel="stylesheet" href="/test/web_cty/assets/css/common/variables.css?v=2">
-  <link rel="stylesheet" href="/test/web_cty/assets/css/common/header.css?v=2">
-  <link rel="stylesheet" href="/test/web_cty/assets/css/common/footer.css">
-  <link rel="stylesheet" href="/test/web_cty/assets/css/common/components.css?v=2">
+  <link rel="stylesheet" href="<?php echo asset_url('css/common/reset.css?v=2'); ?>">
+  <link rel="stylesheet" href="<?php echo asset_url('css/common/variables.css?v=2'); ?>">
+  <link rel="stylesheet" href="<?php echo asset_url('css/common/header.css?v=2'); ?>">
+  <link rel="stylesheet" href="<?php echo asset_url('css/common/footer.css'); ?>">
+  <link rel="stylesheet" href="<?php echo asset_url('css/common/components.css?v=2'); ?>">
   
   <!-- User Page Specific CSS -->
   <link rel="stylesheet" href="<?php echo $active_css; ?>?v=<?php echo time(); ?>">
@@ -60,7 +60,7 @@ $active_css = $page_css_map[$current_page] ?? '/test/web_cty/assets/css/user/hom
         <span><i class="fa-solid fa-clock"></i> <?php echo $working_hours; ?></span>
       </div>
       <div class="topbar-right">
-        <a href="/test/web_cty/admin/login.php" class="topbar-link"><i class="fa-solid fa-lock"></i> Đăng nhập Nhân viên</a>
+        <a href="<?php echo url('/admin/login.php'); ?>" class="topbar-link"><i class="fa-solid fa-lock"></i> Đăng nhập Nhân viên</a>
       </div>
     </div>
   </div>
@@ -68,8 +68,8 @@ $active_css = $page_css_map[$current_page] ?? '/test/web_cty/assets/css/user/hom
   <!-- Main Sticky Header & Navigation -->
   <header class="main-header">
     <div class="header-container navbar">
-      <a href="/test/web_cty/index.php" class="brand-logo">
-        <img src="/test/web_cty/assets/images/logo.png?v=2" alt="<?php echo $short_name; ?> - THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG" class="site-logo-img">
+      <a href="<?php echo url('/index.php'); ?>" class="brand-logo">
+        <img src="<?php echo asset_url('images/logo.png?v=2'); ?>" alt="<?php echo $short_name; ?> - THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG" class="site-logo-img">
       </a>
 
       <button class="menu-toggle" aria-label="Toggle Navigation">
@@ -77,13 +77,13 @@ $active_css = $page_css_map[$current_page] ?? '/test/web_cty/assets/css/user/hom
       </button>
 
       <ul class="nav-menu">
-        <li><a href="/test/web_cty/index.php" class="nav-link <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">Trang chủ</a></li>
-        <li><a href="/test/web_cty/about.php" class="nav-link <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">Giới thiệu</a></li>
-        <li><a href="/test/web_cty/services.php" class="nav-link <?php echo ($current_page == 'services.php') ? 'active' : ''; ?>">Dịch vụ</a></li>
-        <li><a href="/test/web_cty/projects.php" class="nav-link <?php echo ($current_page == 'projects.php' || $current_page == 'project-detail.php') ? 'active' : ''; ?>">Công trình</a></li>
-        <li><a href="/test/web_cty/recruitment.php" class="nav-link <?php echo ($current_page == 'recruitment.php') ? 'active' : ''; ?>">Tuyển dụng</a></li>
-        <li><a href="/test/web_cty/news.php" class="nav-link <?php echo ($current_page == 'news.php' || $current_page == 'news-detail.php') ? 'active' : ''; ?>">Tin tức</a></li>
-        <li><a href="/test/web_cty/contact.php" class="btn btn-primary btn-sm nav-cta-btn"><i class="fa-solid fa-calculator"></i> Liên hệ + Báo giá</a></li>
+        <li><a href="<?php echo url('/index.php'); ?>" class="nav-link <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">Trang chủ</a></li>
+        <li><a href="<?php echo url('/about.php'); ?>" class="nav-link <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">Giới thiệu</a></li>
+        <li><a href="<?php echo url('/services.php'); ?>" class="nav-link <?php echo ($current_page == 'services.php') ? 'active' : ''; ?>">Dịch vụ</a></li>
+        <li><a href="<?php echo url('/projects.php'); ?>" class="nav-link <?php echo ($current_page == 'projects.php' || $current_page == 'project-detail.php') ? 'active' : ''; ?>">Công trình</a></li>
+        <li><a href="<?php echo url('/recruitment.php'); ?>" class="nav-link <?php echo ($current_page == 'recruitment.php') ? 'active' : ''; ?>">Tuyển dụng</a></li>
+        <li><a href="<?php echo url('/news.php'); ?>" class="nav-link <?php echo ($current_page == 'news.php' || $current_page == 'news-detail.php') ? 'active' : ''; ?>">Tin tức</a></li>
+        <li><a href="<?php echo url('/contact.php'); ?>" class="btn btn-primary btn-sm nav-cta-btn"><i class="fa-solid fa-calculator"></i> Liên hệ + Báo giá</a></li>
       </ul>
     </div>
   </header>

@@ -4,9 +4,15 @@
  * PNMEC - Công Ty CP Cơ Khí & Xây Dựng
  */
 
+// Load core configurations first
+require_once dirname(__DIR__) . '/config/database.php';
+require_once dirname(__DIR__) . '/config/constants.php';
+require_once dirname(__DIR__) . '/includes/functions.php';
+require_once dirname(__DIR__) . '/includes/auth.php';
+require_once dirname(__DIR__) . '/includes/rate_limiter.php';
+
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
-    // Cookie params to ensure session cookie is accessible in subdirectories
     $cookieParams = session_get_cookie_params();
     session_set_cookie_params([
         'lifetime' => $cookieParams['lifetime'],
@@ -19,29 +25,38 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// CORS & Response Headers
+// Security Response Headers
 header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 
+// CORS: Whitelist-only origin checking (never reflect arbitrary Origin with credentials)
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-if ($origin) {
+$allowedOrigins = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+];
+
+// Check local config for custom allowed origins
+$localConfigFile = dirname(__DIR__) . '/config/local.php';
+if (file_exists($localConfigFile)) {
+    $localConfig = require $localConfigFile;
+    if (is_array($localConfig) && !empty($localConfig['cors_allowed_origins']) && is_array($localConfig['cors_allowed_origins'])) {
+        $allowedOrigins = array_merge($allowedOrigins, $localConfig['cors_allowed_origins']);
+    }
+}
+
+if ($origin && in_array($origin, $allowedOrigins, true)) {
     header("Access-Control-Allow-Origin: $origin");
     header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token");
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
-
-// Load core configurations
-require_once dirname(__DIR__) . '/config/database.php';
-require_once dirname(__DIR__) . '/config/constants.php';
-require_once dirname(__DIR__) . '/includes/functions.php';
-require_once dirname(__DIR__) . '/includes/auth.php';
 
 /**
  * Standard JSON Response Helper
@@ -59,6 +74,36 @@ function api_response($success, $data = null, $message = '', $status_code = 200)
 }
 
 /**
+ * CSRF Token Helpers
+ */
+function get_csrf_token(): string {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function verify_csrf_token(): bool {
+    $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
+    // Only check mutating methods
+    if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'], true)) {
+        $headers = function_exists('getallheaders') ? getallheaders() : [];
+        $token = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? $headers['X-CSRF-Token'] ?? $headers['x-csrf-token'] ?? '';
+        if (empty($token)) {
+            $input = get_api_input();
+            $token = $input['csrf_token'] ?? '';
+        }
+
+        $sessionToken = $_SESSION['csrf_token'] ?? '';
+        if (empty($sessionToken) || empty($token) || !hash_equals($sessionToken, $token)) {
+            api_response(false, null, 'CSRF token không hợp lệ hoặc đã hết hạn.', 403);
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
  * Read request payload (supports JSON and form-data)
  */
 function get_api_input() {
@@ -72,12 +117,19 @@ function get_api_input() {
 }
 
 /**
- * Check logged-in user for API
+ * Check logged-in user for API and enforce CSRF on mutations
  */
 function require_api_login() {
     if (!is_logged_in()) {
         api_response(false, null, 'Bạn chưa đăng nhập hoặc phiên làm việc đã hết hạn.', 401);
     }
+
+    // Enforce CSRF protection for authenticated mutations
+    $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
+    if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'], true)) {
+        verify_csrf_token();
+    }
+
     return get_logged_user();
 }
 
@@ -93,51 +145,8 @@ function require_api_admin() {
 }
 
 /**
- * Helper to upload image safely
+ * Upload helper using unified secure implementation
  */
 function api_upload_image($file_key, $subfolder = '') {
-    if (!isset($_FILES[$file_key]) || $_FILES[$file_key]['error'] !== UPLOAD_ERR_OK) {
-        return ['status' => false, 'message' => 'Không có tệp nào được gửi lên.'];
-    }
-
-    $file = $_FILES[$file_key];
-    $allowed_types = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-    $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-    $max_size = 8 * 1024 * 1024; // 8MB
-
-    if ($file['size'] > $max_size) {
-        return ['status' => false, 'message' => 'Dung lượng ảnh vượt quá giới hạn (tối đa 8MB).'];
-    }
-
-    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    if (!in_array($ext, $allowed_extensions)) {
-        return ['status' => false, 'message' => 'Định dạng file không hợp lệ (chỉ chấp nhận JPG, PNG, WEBP, GIF).'];
-    }
-
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $mime = finfo_file($finfo, $file['tmp_name']);
-    finfo_close($finfo);
-
-    if (!in_array($mime, $allowed_types)) {
-        return ['status' => false, 'message' => 'MIME type không được phép: ' . $mime];
-    }
-
-    $targetDir = rtrim(UPLOAD_DIR, '/') . '/' . ($subfolder ? trim($subfolder, '/') . '/' : '');
-    if (!file_exists($targetDir)) {
-        mkdir($targetDir, 0777, true);
-    }
-
-    $filename = time() . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
-    $targetFile = $targetDir . $filename;
-
-    if (move_uploaded_file($file['tmp_name'], $targetFile)) {
-        $relativePath = ($subfolder ? trim($subfolder, '/') . '/' : '') . $filename;
-        return [
-            'status' => true,
-            'filename' => $relativePath,
-            'url' => UPLOAD_URL . $relativePath
-        ];
-    }
-
-    return ['status' => false, 'message' => 'Không thể lưu file trên máy chủ.'];
+    return secure_upload_image($file_key, $subfolder, 8);
 }

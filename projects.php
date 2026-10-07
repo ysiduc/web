@@ -80,16 +80,16 @@ if ($db) {
 
 // Fallback project images map for preview
 $image_fallbacks = [
-    'Nhà kết cấu thép' => '/test/web_cty/assets/images/service-cons.png',
+    'Nhà kết cấu thép' => asset_url('images/service-cons.png'),
     'Cầu thang - Ban công' => 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80',
     'Mái tôn - Mái che' => 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80',
     'Nhà cơi nới - Gác lửng' => 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80',
     'Thang thoát hiểm' => 'https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=600&q=80',
     'Nhà xe - Mái che' => 'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=600&q=80',
     'Mái kính' => 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80',
-    'Sắt mỹ thuật' => '/test/web_cty/assets/images/service-cnc.png',
+    'Sắt mỹ thuật' => asset_url('images/service-cnc.png'),
     'Cửa các loại' => 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=600&q=80',
-    'Xây nhà trọn gói' => '/test/web_cty/assets/images/service-plant.png',
+    'Xây nhà trọn gói' => asset_url('images/service-plant.png'),
     'Nội ngoại thất' => 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80',
     'Cải tạo & Phá dỡ' => 'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?auto=format&fit=crop&w=600&q=80',
 ];
@@ -110,7 +110,7 @@ $image_fallbacks = [
       </p>
       
       <div class="proj-breadcrumb">
-        <a href="/test/web_cty/index.php"><i class="fa-solid fa-house"></i> Trang chủ</a>
+        <a href="<?= url('index.php') ?>"><i class="fa-solid fa-house"></i> Trang chủ</a>
         <i class="fa-solid fa-angle-right"></i>
         <span>Công trình</span>
       </div>
@@ -127,19 +127,19 @@ $image_fallbacks = [
     <!-- Main Classification Groups (2 Main Tabs) -->
     <div class="proj-main-tabs-wrap">
       <div class="proj-main-tabs">
-        <a href="/test/web_cty/projects.php?group=all" class="proj-main-tab <?= ($group_filter === 'all' && $category_filter === 'all') ? 'active' : '' ?>">
+        <a href="<?= url('projects.php?group=all') ?>" class="proj-main-tab <?= ($group_filter === 'all' && $category_filter === 'all') ? 'active' : '' ?>">
           <i class="fa-solid fa-layer-group"></i> Tất Cả Công Trình
         </a>
-        <a href="/test/web_cty/projects.php?group=co_khi" class="proj-main-tab proj-main-tab--gold <?= ($group_filter === 'co_khi' || in_array($category_filter, $co_khi_subcats)) ? 'active' : '' ?>">
+        <a href="<?= url('projects.php?group=co_khi') ?>" class="proj-main-tab proj-main-tab--gold <?= ($group_filter === 'co_khi' || in_array($category_filter, $co_khi_subcats)) ? 'active' : '' ?>">
           <i class="fa-solid fa-hammer"></i> Cơ Khí Xây Dựng
         </a>
-        <a href="/test/web_cty/projects.php?group=xay_dung" class="proj-main-tab proj-main-tab--blue <?= ($group_filter === 'xay_dung' || in_array($category_filter, $xay_dung_subcats)) ? 'active' : '' ?>">
+        <a href="<?= url('projects.php?group=xay_dung') ?>" class="proj-main-tab proj-main-tab--blue <?= ($group_filter === 'xay_dung' || in_array($category_filter, $xay_dung_subcats)) ? 'active' : '' ?>">
           <i class="fa-solid fa-building"></i> Xây Dựng &amp; Hoàn Thiện
         </a>
       </div>
 
       <!-- Search Box -->
-      <form action="/test/web_cty/projects.php" method="GET" class="proj-search-form">
+      <form action="<?= url('projects.php') ?>" method="GET" class="proj-search-form">
         <?php if ($group_filter !== 'all'): ?>
           <input type="hidden" name="group" value="<?= htmlspecialchars($group_filter) ?>">
         <?php endif; ?>
@@ -150,7 +150,7 @@ $image_fallbacks = [
           <i class="fa-solid fa-magnifying-glass proj-search-ico"></i>
           <input type="text" name="search" class="proj-search-input" placeholder="Tìm kiếm tên dự án, địa điểm, loại công trình..." value="<?= htmlspecialchars($search_query) ?>">
           <?php if (!empty($search_query)): ?>
-            <a href="/test/web_cty/projects.php?group=<?= urlencode($group_filter) ?>" class="proj-search-clear"><i class="fa-solid fa-xmark"></i></a>
+            <a href="<?= url('projects.php?group=' . urlencode($group_filter)) ?>" class="proj-search-clear"><i class="fa-solid fa-xmark"></i></a>
           <?php endif; ?>
         </div>
         <button type="submit" class="proj-search-btn">Tìm Kiếm</button>
@@ -169,7 +169,7 @@ $image_fallbacks = [
       </div>
       
       <div class="proj-subcats-list">
-        <a href="/test/web_cty/projects.php?group=<?= urlencode($group_filter) ?>" class="proj-subcat-pill <?= ($category_filter === 'all') ? 'active' : '' ?>">
+        <a href="<?= url('projects.php?group=' . urlencode($group_filter)) ?>" class="proj-subcat-pill <?= ($category_filter === 'all') ? 'active' : '' ?>">
           Tất cả hạng mục
         </a>
 
@@ -189,7 +189,7 @@ $image_fallbacks = [
             $isActive = ($category_filter === $cat);
             $isCk = in_array($cat, $co_khi_subcats);
         ?>
-        <a href="/test/web_cty/projects.php?group=<?= $isCk ? 'co_khi' : 'xay_dung' ?>&category=<?= urlencode($cat) ?>" class="proj-subcat-pill <?= $isActive ? 'active' : '' ?> <?= $isCk ? 'proj-subcat-pill--ck' : 'proj-subcat-pill--xd' ?>">
+        <a href="<?= url('projects.php?group=' . ($isCk ? 'co_khi' : 'xay_dung') . '&category=' . urlencode($cat)) ?>" class="proj-subcat-pill <?= $isActive ? 'active' : '' ?> <?= $isCk ? 'proj-subcat-pill--ck' : 'proj-subcat-pill--xd' ?>">
           <i class="fa-solid <?= $isCk ? 'fa-screwdriver-wrench' : 'fa-trowel-bricks' ?> fa-xs"></i> <?= htmlspecialchars($cat) ?>
         </a>
         <?php endforeach; ?>
@@ -212,7 +212,7 @@ $image_fallbacks = [
         <?php endif; ?>
       </div>
       <?php if ($category_filter !== 'all' || $group_filter !== 'all' || !empty($search_query)): ?>
-        <a href="/test/web_cty/projects.php" class="proj-reset-link"><i class="fa-solid fa-rotate-left"></i> Xem toàn bộ công trình</a>
+        <a href="<?= url('projects.php') ?>" class="proj-reset-link"><i class="fa-solid fa-rotate-left"></i> Xem toàn bộ công trình</a>
       <?php endif; ?>
     </div>
 
@@ -224,7 +224,7 @@ $image_fallbacks = [
         <?php foreach ($projects as $p): 
           $isCoKhi = in_array($p['category'], $co_khi_subcats);
           $imgSrc = !empty($p['image']) && $p['image'] !== 'default-project.jpg' 
-                    ? '/test/web_cty/assets/images/' . htmlspecialchars($p['image'])
+                    ? asset_url('images/' . htmlspecialchars($p['image']))
                     : ($image_fallbacks[$p['category']] ?? 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=600&q=80');
         ?>
           <div class="proj-card <?= $isCoKhi ? 'proj-card--ck' : 'proj-card--xd' ?>">
@@ -232,9 +232,9 @@ $image_fallbacks = [
               <span class="proj-card__badge <?= $isCoKhi ? 'proj-card__badge--gold' : 'proj-card__badge--blue' ?>">
                 <i class="fa-solid <?= $isCoKhi ? 'fa-hammer' : 'fa-building' ?> fa-xs"></i> <?= htmlspecialchars($p['category']) ?>
               </span>
-              <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy" onerror="this.src='/test/web_cty/assets/images/service-cons.png'">
+              <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy" onerror="this.src='<?= asset_url('images/service-cons.png') ?>'">
               <div class="proj-card__thumb-overlay">
-                <a href="/test/web_cty/project-detail.php?id=<?= $p['id'] ?>" class="proj-card__quick-view">
+                <a href="<?= url('project-detail.php?id=' . $p['id']) ?>" class="proj-card__quick-view">
                   <i class="fa-solid fa-eye"></i> Xem Chi Tiết
                 </a>
               </div>
@@ -245,7 +245,7 @@ $image_fallbacks = [
                 <?= $isCoKhi ? 'CƠ KHÍ XÂY DỰNG' : 'XÂY DỰNG &amp; HOÀN THIỆN' ?>
               </div>
               <h3 class="proj-card__title">
-                <a href="/test/web_cty/project-detail.php?id=<?= $p['id'] ?>"><?= htmlspecialchars($p['title']) ?></a>
+                <a href="<?= url('project-detail.php?id=' . $p['id']) ?>"><?= htmlspecialchars($p['title']) ?></a>
               </h3>
               
               <div class="proj-card__meta-list">
@@ -262,10 +262,10 @@ $image_fallbacks = [
               <p class="proj-card__desc"><?= htmlspecialchars($p['description']) ?></p>
               
               <div class="proj-card__footer">
-                <a href="/test/web_cty/project-detail.php?id=<?= $p['id'] ?>" class="proj-card__more-btn">
+                <a href="<?= url('project-detail.php?id=' . $p['id']) ?>" class="proj-card__more-btn">
                   Chi Tiết Công Trình <i class="fa-solid fa-arrow-right"></i>
                 </a>
-                <a href="/test/web_cty/quote.php?service=<?= urlencode($p['title']) ?>" class="proj-card__quote-btn">
+                <a href="<?= url('quote.php?service=' . urlencode($p['title'])) ?>" class="proj-card__quote-btn">
                   Báo Giá Tương Tự
                 </a>
               </div>
@@ -277,7 +277,7 @@ $image_fallbacks = [
           <div class="proj-empty-icon"><i class="fa-solid fa-folder-open"></i></div>
           <h3>Chưa Tìm Thấy Công Trình Phù Hợp</h3>
           <p>Hiện không có công trình nào phù hợp với bộ lọc bạn đã chọn. Vui lòng chọn hạng mục khác hoặc xóa từ khóa tìm kiếm.</p>
-          <a href="/test/web_cty/projects.php" class="btn btn-primary"><i class="fa-solid fa-rotate-left"></i> Xem Tất Cả Công Trình</a>
+          <a href="<?= url('projects.php') ?>" class="btn btn-primary"><i class="fa-solid fa-rotate-left"></i> Xem Tất Cả Công Trình</a>
         </div>
       <?php endif; ?>
     </div>
@@ -299,10 +299,10 @@ $image_fallbacks = [
         </p>
       </div>
       <div class="proj-cta__actions">
-        <a href="/test/web_cty/quote.php" class="btn btn-primary btn-lg">
+        <a href="<?= url('quote.php') ?>" class="btn btn-primary btn-lg">
           <i class="fa-solid fa-calculator"></i> Nhận Báo Giá Dự Án
         </a>
-        <a href="/test/web_cty/contact.php" class="btn btn-outline btn-lg">
+        <a href="<?= url('contact.php') ?>" class="btn btn-outline btn-lg">
           <i class="fa-solid fa-headset"></i> Tư Vấn Kỹ Thuật
         </a>
       </div>

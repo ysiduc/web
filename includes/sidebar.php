@@ -9,11 +9,11 @@
       <i class="fa-solid fa-list-check" style="color: var(--accent-gold); margin-right: 8px;"></i> Danh Mục Dịch Vụ
     </h3>
     <ul class="footer-links" style="color: var(--text-main);">
-      <li><a href="/test/web_cty/services.php" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Gia Công Cơ Khí CNC</a></li>
-      <li><a href="/test/web_cty/services.php" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Kết Cấu Thép Nhà Xưởng</a></li>
-      <li><a href="/test/web_cty/services.php" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Hạ Tầng & Công Trình</a></li>
-      <li><a href="/test/web_cty/services.php" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Chế Tạo Bồn Bể & Đường Ống</a></li>
-      <li><a href="/test/web_cty/services.php" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Bảo Dưỡng Công Nghiệp</a></li>
+      <li><a href="<?php echo url('/services.php'); ?>" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Gia Công Cơ Khí CNC</a></li>
+      <li><a href="<?php echo url('/services.php'); ?>" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Kết Cấu Thép Nhà Xưởng</a></li>
+      <li><a href="<?php echo url('/services.php'); ?>" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Hạ Tầng & Công Trình</a></li>
+      <li><a href="<?php echo url('/services.php'); ?>" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Chế Tạo Bồn Bể & Đường Ống</a></li>
+      <li><a href="<?php echo url('/services.php'); ?>" style="color: var(--text-main);"><i class="fa-solid fa-angle-right"></i> Bảo Dưỡng Công Nghiệp</a></li>
     </ul>
   </div>
 

@@ -1,10 +1,21 @@
 <?php
 /**
  * File xử lý xác thực đăng nhập & phân quyền người dùng
- * web_cty - Công ty CP Cơ khí & Xây dựng
+ * web_cty - Công ty CP Cơ kh & Xây dựng
  */
 
+require_once __DIR__ . '/../config/constants.php';
+
 if (session_status() === PHP_SESSION_NONE) {
+    $cookieParams = session_get_cookie_params();
+    session_set_cookie_params([
+        'lifetime' => $cookieParams['lifetime'],
+        'path'     => '/',
+        'domain'   => $cookieParams['domain'],
+        'secure'   => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
     session_start();
 }
 
@@ -43,7 +54,7 @@ function is_admin() {
  */
 function require_login() {
     if (!is_logged_in()) {
-        header("Location: /test/web_cty/admin/login.php?error=unauthorized");
+        header("Location: " . url('/admin/login.php?error=unauthorized'));
         exit;
     }
 }
@@ -54,7 +65,7 @@ function require_login() {
 function require_admin() {
     require_login();
     if (!is_admin()) {
-        header("Location: /test/web_cty/admin/index.php?error=forbidden");
+        header("Location: " . url('/admin/index.php?error=forbidden'));
         exit;
     }
 }
@@ -66,7 +77,7 @@ function login_user($username, $password) {
     require_once __DIR__ . '/../config/database.php';
     $db = getDBConnection();
     if (!$db) {
-        return ['status' => false, 'message' => 'Không thể kết nối cơ sở dữ liệu. Vui lòng kiểm tra file config/db.php.'];
+        return ['status' => false, 'message' => 'Không thể kết nối cơ sở dữ liệu. Vui lòng kiểm tra cấu hình.'];
     }
 
     try {
@@ -82,12 +93,13 @@ function login_user($username, $password) {
             return ['status' => false, 'message' => 'Tài khoản của bạn đã bị khóa hoặc chưa kích hoạt.'];
         }
 
-        if (password_verify($password, $user['password']) || $password === $user['password']) {
-            if ($password === $user['password'] && !password_verify($password, $user['password'])) {
-                $new_hash = password_hash($password, PASSWORD_DEFAULT);
-                $update = $db->prepare("UPDATE users SET password = :p WHERE id = :id");
-                $update->execute(['p' => $new_hash, 'id' => $user['id']]);
-            }
+        // Kiểm tra mật khẩu mã hóa an toàn bằng password_verify
+        if (password_verify($password, $user['password'])) {
+            // Tái tạo Session ID chống Session Fixation
+            session_regenerate_id(true);
+
+            // Sinh CSRF token mới cho phiên làm việc
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
             $_SESSION['user_id']  = $user['id'];
             $_SESSION['username'] = $user['username'];
@@ -107,7 +119,8 @@ function login_user($username, $password) {
             return ['status' => false, 'message' => 'Tên đăng nhập hoặc mật khẩu không chính xác.'];
         }
     } catch (Exception $e) {
-        return ['status' => false, 'message' => 'Lỗi hệ thống: ' . $e->getMessage()];
+        error_log("Login error: " . $e->getMessage());
+        return ['status' => false, 'message' => 'Lỗi hệ thống máy chủ trong quá trình xác thực. Vui lòng thử lại sau.'];
     }
 }
 

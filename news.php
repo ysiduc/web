@@ -41,7 +41,7 @@ if (empty($news_list)) {
   <div class="container">
     <h1>Tin Tức & Sự Kiện</h1>
     <div class="breadcrumb">
-      <a href="/test/web_cty/index.php">Trang chủ</a> / <span>Tin tức</span>
+      <a href="<?= url('index.php') ?>">Trang chủ</a> / <span>Tin tức</span>
     </div>
   </div>
 </div>
@@ -55,10 +55,10 @@ if (empty($news_list)) {
           <div style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column;">
             <span style="font-size: 12px; color: var(--accent-gold); font-weight: 700; margin-bottom: 6px;"><i class="fa-regular fa-calendar-days"></i> <?php echo format_date($n['created_at']); ?></span>
             <h3 style="font-size: 18px; margin-bottom: 10px; line-height: 1.4;">
-              <a href="/test/web_cty/news-detail.php?id=<?php echo $n['id']; ?>"><?php echo htmlspecialchars($n['title']); ?></a>
+              <a href="<?= url('news-detail.php?id=' . (int)$n['id']) ?>"><?php echo htmlspecialchars($n['title']); ?></a>
             </h3>
             <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;"><?php echo htmlspecialchars($n['summary']); ?></p>
-            <a href="/test/web_cty/news-detail.php?id=<?php echo $n['id']; ?>" style="margin-top: auto; font-weight: 700; color: var(--primary-navy); font-size: 14px;">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="<?= url('news-detail.php?id=' . (int)$n['id']) ?>" style="margin-top: auto; font-weight: 700; color: var(--primary-navy); font-size: 14px;">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
       <?php endforeach; ?>

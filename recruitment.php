@@ -8,7 +8,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container">
     <h1>Tuyển Dụng Nhân Tài - Phát Triển Sự Nghiệp</h1>
     <div class="breadcrumb">
-      <a href="/test/web_cty/index.php">Trang chủ</a> / <span>Tuyển dụng</span>
+      <a href="<?= url('index.php') ?>">Trang chủ</a> / <span>Tuyển dụng</span>
     </div>
   </div>
 </section>
@@ -80,7 +80,7 @@ require_once __DIR__ . '/includes/header.php';
       <h3 class="apply-form-title">Nộp Hồ Sơ Ứng Tuyển Trực Tuyến</h3>
       <p class="apply-form-sub">Bộ phận Nhân sự sẽ liên hệ phỏng vấn trong vòng 48 giờ làm việc.</p>
 
-      <form action="/test/web_cty/contact.php?applied=true" method="POST">
+      <form action="<?= url('contact.php?applied=true') ?>" method="POST">
         <div class="form-grid-2col">
           <div class="form-group">
             <label>Họ và tên ứng viên <span style="color: red;">*</span></label>

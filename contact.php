@@ -1,6 +1,6 @@
 <?php
-$page_title = "Liên Hệ & Báo Giá";
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/includes/functions.php';
 
 $sent_status = false;
 $msg_text = '';
@@ -8,49 +8,61 @@ $error_text = '';
 $selected_service = $_GET['service'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $fullname = trim($_POST['fullname'] ?? '');
-    $phone    = trim($_POST['phone'] ?? '');
-    $email    = trim($_POST['email'] ?? '');
-    $service  = trim($_POST['service'] ?? '');
-    $message  = trim($_POST['message'] ?? '');
-
-    if (empty($fullname) || empty($phone)) {
-        $error_text = 'Vui lòng điền đầy đủ Họ tên và Số điện thoại liên hệ.';
+    require_once __DIR__ . '/includes/rate_limiter.php';
+    $rl = check_rate_limit('contact', 5, 300);
+    if (!$rl['allowed']) {
+        http_response_code(429);
+        header("Retry-After: " . $rl['retry_after']);
+        $error_text = 'Bạn đã gửi yêu cầu quá nhiều lần. Vui lòng thử lại sau ' . $rl['retry_after'] . ' giây.';
     } else {
-        $db = getDBConnection();
-        if ($db) {
-            try {
-                // 1. Insert into quotes table
-                $stmt_q = $db->prepare("INSERT INTO quotes (fullname, phone, email, service_type, message, status) VALUES (:fullname, :phone, :email, :service_type, :message, 'new')");
-                $stmt_q->execute([
-                    'fullname'     => $fullname,
-                    'phone'        => $phone,
-                    'email'        => $email,
-                    'service_type' => $service,
-                    'message'      => $message
-                ]);
+        $fullname = trim($_POST['fullname'] ?? '');
+        $phone    = trim($_POST['phone'] ?? '');
+        $email    = trim($_POST['email'] ?? '');
+        $service  = trim($_POST['service'] ?? '');
+        $message  = trim($_POST['message'] ?? '');
 
-                // 2. Insert into contacts table
-                $stmt_c = $db->prepare("INSERT INTO contacts (name, email, phone, subject, message, status) VALUES (:name, :email, :phone, :subject, :message, 'unread')");
-                $stmt_c->execute([
-                    'name'    => $fullname,
-                    'email'   => !empty($email) ? $email : 'khachhang@pnmec.vn',
-                    'phone'   => $phone,
-                    'subject' => 'Yêu cầu tư vấn: ' . (!empty($service) ? $service : 'Dịch vụ tổng hợp'),
-                    'message' => $message
-                ]);
-
-                $sent_status = true;
-                $msg_text = 'Cảm ơn ông/bà <strong>' . htmlspecialchars($fullname) . '</strong>! Yêu cầu tư vấn / báo giá đã được gửi thành công. Đội ngũ kỹ sư của PNMEC sẽ liên hệ trực tiếp qua số điện thoại <strong>' . htmlspecialchars($phone) . '</strong> trong vòng 30 phút.';
-            } catch (Exception $e) {
-                $error_text = 'Lỗi hệ thống: ' . $e->getMessage();
-            }
+        if (empty($fullname) || empty($phone)) {
+            $error_text = 'Vui lòng điền đầy đủ Họ tên và Số điện thoại liên hệ.';
         } else {
-            $sent_status = true;
-            $msg_text = 'Cảm ơn ông/bà <strong>' . htmlspecialchars($fullname) . '</strong>! Yêu cầu tư vấn / báo giá đã được gửi thành công.';
+            $db = getDBConnection();
+            if ($db) {
+                try {
+                    // 1. Insert into quotes table
+                    $stmt_q = $db->prepare("INSERT INTO quotes (fullname, phone, email, service_type, message, status) VALUES (:fullname, :phone, :email, :service_type, :message, 'new')");
+                    $stmt_q->execute([
+                        'fullname'     => $fullname,
+                        'phone'        => $phone,
+                        'email'        => $email,
+                        'service_type' => $service,
+                        'message'      => $message
+                    ]);
+
+                    // 2. Insert into contacts table
+                    $stmt_c = $db->prepare("INSERT INTO contacts (name, email, phone, subject, message, status) VALUES (:name, :email, :phone, :subject, :message, 'unread')");
+                    $stmt_c->execute([
+                        'name'    => $fullname,
+                        'email'   => !empty($email) ? $email : 'khachhang@pnmec.vn',
+                        'phone'   => $phone,
+                        'subject' => 'Yêu cầu tư vấn: ' . (!empty($service) ? $service : 'Dịch vụ tổng hợp'),
+                        'message' => $message
+                    ]);
+
+                    $sent_status = true;
+                    $msg_text = 'Cảm ơn ông/bà <strong>' . htmlspecialchars($fullname) . '</strong>! Yêu cầu tư vấn / báo giá đã được gửi thành công. Đội ngũ kỹ sư của PNMEC sẽ liên hệ trực tiếp qua số điện thoại <strong>' . htmlspecialchars($phone) . '</strong> trong vòng 30 phút.';
+                } catch (Exception $e) {
+                    error_log("Contact submit error: " . $e->getMessage());
+                    $error_text = 'Đã xảy ra lỗi máy chủ trong quá trình gửi yêu cầu. Vui lòng thử lại sau hoặc liên hệ Hotline.';
+                }
+            } else {
+                $sent_status = true;
+                $msg_text = 'Cảm ơn ông/bà <strong>' . htmlspecialchars($fullname) . '</strong>! Yêu cầu tư vấn / báo giá đã được gửi thành công.';
+            }
         }
     }
 }
+
+$page_title = "Liên Hệ & Báo Giá";
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <!-- Page Banner -->
@@ -58,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="container">
     <h1>Liên Hệ Tư Vấn &amp; Báo Giá</h1>
     <div class="breadcrumb">
-      <a href="/test/web_cty/index.php">Trang chủ</a> / <span>Liên hệ</span>
+      <a href="<?= url('/index.php') ?>">Trang chủ</a> / <span>Liên hệ</span>
     </div>
   </div>
 </section>

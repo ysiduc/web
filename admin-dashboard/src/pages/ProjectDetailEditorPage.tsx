@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { api, getImageUrl } from '../api/client';
+import { api, getImageUrl, getPublicPageUrl } from '../api/client';
 import type { DetailBlock, BlockType, GalleryItem, ApiResponse } from '../types';
+
+// Helper to sanitize HTML preview client-side
+const sanitizePreviewHtml = (raw: string): string => {
+  return raw
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/\s+on[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/(href|src)\s*=\s*["']\s*(javascript|vbscript|data):[^"']*["']/gi, '$1="#"');
+};
 import {
   ArrowLeft,
   Save,
@@ -220,12 +229,12 @@ export const ProjectDetailEditorPage: React.FC = () => {
       );
       if (proceed) {
         handleSave().then(() => {
-          window.open(`/test/web_cty/project-detail.php?id=${id}`, '_blank');
+          window.open(getPublicPageUrl(`/project-detail.php?id=${id}`), '_blank');
         });
         return;
       }
     }
-    window.open(`/test/web_cty/project-detail.php?id=${id}`, '_blank');
+    window.open(getPublicPageUrl(`/project-detail.php?id=${id}`), '_blank');
   };
 
   if (isLoading) {
@@ -782,7 +791,7 @@ export const ProjectDetailEditorPage: React.FC = () => {
                         </div>
                         <div
                           className="prose dark:prose-invert max-w-none text-xs"
-                          dangerouslySetInnerHTML={{ __html: block.content || '' }}
+                          dangerouslySetInnerHTML={{ __html: sanitizePreviewHtml(block.content || '') }}
                         />
                       </div>
                     )}

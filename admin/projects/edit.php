@@ -71,14 +71,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
 
                     set_flash_message('success', 'Đã cập nhật công trình thành công!');
-                    header("Location: /test/web_cty/admin/projects/list.php");
+                    header("Location: " . url('admin/projects/list.php'));
                     exit;
                 } catch (Exception $e) {
-                    $error = 'Lỗi cơ sở dữ liệu: ' . $e->getMessage();
+                    error_log('DB Error in admin/projects/edit.php: ' . $e->getMessage());
+                    $error = 'Đã xảy ra lỗi máy chủ khi cập nhật công trình. Vui lòng thử lại sau.';
                 }
             } else {
                 set_flash_message('success', 'Đã lưu chỉnh sửa công trình (chế độ demo).');
-                header("Location: /test/web_cty/admin/projects/list.php");
+                header("Location: " . url('admin/projects/list.php'));
                 exit;
             }
         }
@@ -89,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div style="max-width: 900px; margin: 0 auto;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2><i class="fa-solid fa-pen-to-square"></i> Chỉnh Sửa Công Trình #<?php echo $project['id']; ?></h2>
-    <a href="/test/web_cty/admin/projects/list.php" class="btn-action btn-edit"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách</a>
+    <a href="<?= url('admin/projects/list.php') ?>" class="btn-action btn-edit"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách</a>
   </div>
 
   <?php if (!empty($error)): ?>
@@ -152,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div style="margin-top: 10px; display: flex; align-items: center; gap: 15px;">
           <div>
             <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">Ảnh hiện tại:</span>
-            <img src="/test/web_cty/assets/uploads/<?php echo htmlspecialchars($project['image']); ?>" alt="Current" style="height: 100px; border-radius: 6px; border: 1px solid #cbd5e1;" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=150&q=80'">
+            <img src="<?= asset_url('uploads/' . htmlspecialchars($project['image'])) ?>" alt="Current" style="height: 100px; border-radius: 6px; border: 1px solid #cbd5e1;" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=150&q=80'">
           </div>
           <div>
             <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">Xem trước ảnh mới:</span>
@@ -175,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" class="btn-action" style="padding: 12px 24px; background: #0f172a; color: #fff; font-weight: 700; font-size: 15px; border-radius: 8px;">
           <i class="fa-solid fa-floppy-disk"></i> Cập Nhật Thay Đổi
         </button>
-        <a href="/test/web_cty/admin/projects/list.php" class="btn-action" style="padding: 12px 24px; background: #e2e8f0; color: #334155; font-size: 15px; border-radius: 8px;">
+        <a href="<?= url('admin/projects/list.php') ?>" class="btn-action" style="padding: 12px 24px; background: #e2e8f0; color: #334155; font-size: 15px; border-radius: 8px;">
           Hủy bỏ
         </a>
       </div>

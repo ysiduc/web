@@ -6,7 +6,7 @@ $co_khi_services = [
     [
         'id' => 'CK-01',
         'title' => 'Thiết Kế Thi Công Nhà Kết Cấu Thép',
-        'img' => '/test/web_cty/assets/images/service-cons.png',
+        'img' => asset_url('images/service-cons.png'),
         'desc' => 'Thiết kế, sản xuất cấu kiện thép tại nhà máy và tổ chức lắp dựng an toàn khung kèo nhà xưởng, nhà tiền chế khẩu độ lớn đạt chuẩn chất lượng.',
         'bullets' => [
             'Khung kèo vượt nhịp lớn không cột chịu tải cao',
@@ -83,7 +83,7 @@ $co_khi_services = [
     [
         'id' => 'CK-08',
         'title' => 'Thiết Kế Thi Công Sắt Mỹ Thuật',
-        'img' => '/test/web_cty/assets/images/service-cnc.png',
+        'img' => asset_url('images/service-cnc.png'),
         'desc' => 'Gia công hoa sắt nghệ thuật, cổng sắt uốn mỹ nghệ, hàng rào biệt thự, lan can hoa văn cổ điển và tân cổ điển tinh xảo theo bản vẽ kiến trúc.',
         'bullets' => [
             'Cắt Laser Fiber CNC sắc nét, hoa văn chuẩn xác',
@@ -108,7 +108,7 @@ $xay_dung_services = [
     [
         'id' => 'XD-01',
         'title' => 'Thiết Kế Thi Công Nhà Trọn Gói',
-        'img' => '/test/web_cty/assets/images/service-plant.png',
+        'img' => asset_url('images/service-plant.png'),
         'desc' => 'Tổng thầu chìa khóa trao tay (Design & Build) từ xin phép xây dựng, thiết kế kiến trúc - kết cấu 3D, thi công phần thô đến hoàn thiện nhà phố, biệt thự.',
         'bullets' => [
             'Cam kết không phát sinh bất kỳ chi phí ngoài hợp đồng',
@@ -169,7 +169,7 @@ $xay_dung_services = [
       </div>
 
       <div class="srv-breadcrumb">
-        <a href="/test/web_cty/index.php"><i class="fa-solid fa-house"></i> Trang chủ</a>
+        <a href="<?= url('index.php') ?>"><i class="fa-solid fa-house"></i> Trang chủ</a>
         <i class="fa-solid fa-angle-right"></i>
         <span>Dịch vụ</span>
       </div>
@@ -203,7 +203,7 @@ $xay_dung_services = [
           <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['title']) ?>" loading="lazy">
           <div class="srv-card__badge-code"><?= $item['id'] ?></div>
           <div class="srv-card__overlay">
-            <a href="/test/web_cty/quote.php?service=<?= urlencode($item['title']) ?>" class="srv-card__overlay-btn">
+            <a href="<?= url('quote.php?service=' . urlencode($item['title'])) ?>" class="srv-card__overlay-btn">
               <i class="fa-solid fa-calculator"></i> Báo Giá Nhanh
             </a>
           </div>
@@ -223,10 +223,10 @@ $xay_dung_services = [
           </ul>
 
           <div class="srv-card__footer">
-            <a href="/test/web_cty/contact.php?service=<?= urlencode($item['title']) ?>" class="srv-card__action-btn">
+            <a href="<?= url('contact.php?service=' . urlencode($item['title'])) ?>" class="srv-card__action-btn">
               <i class="fa-solid fa-headset"></i> Tư Vấn Ngay
             </a>
-            <a href="/test/web_cty/projects.php?category=<?= urlencode('Cơ khí chế tạo') ?>" class="srv-card__proj-btn">
+            <a href="<?= url('projects.php?category=' . urlencode('Cơ khí chế tạo')) ?>" class="srv-card__proj-btn">
               Công Trình Đã Hoàn Thiện <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
@@ -264,7 +264,7 @@ $xay_dung_services = [
           <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['title']) ?>" loading="lazy">
           <div class="srv-card__badge-code srv-card__badge-code--blue"><?= $item['id'] ?></div>
           <div class="srv-card__overlay">
-            <a href="/test/web_cty/quote.php?service=<?= urlencode($item['title']) ?>" class="srv-card__overlay-btn">
+            <a href="<?= url('quote.php?service=' . urlencode($item['title'])) ?>" class="srv-card__overlay-btn">
               <i class="fa-solid fa-calculator"></i> Báo Giá Nhanh
             </a>
           </div>
@@ -284,10 +284,10 @@ $xay_dung_services = [
           </ul>
 
           <div class="srv-card__footer">
-            <a href="/test/web_cty/contact.php?service=<?= urlencode($item['title']) ?>" class="srv-card__action-btn srv-card__action-btn--blue">
+            <a href="<?= url('contact.php?service=' . urlencode($item['title'])) ?>" class="srv-card__action-btn srv-card__action-btn--blue">
               <i class="fa-solid fa-headset"></i> Tư Vấn Ngay
             </a>
-            <a href="/test/web_cty/projects.php?category=<?= urlencode('Xây dựng dân dụng') ?>" class="srv-card__proj-btn">
+            <a href="<?= url('projects.php?category=' . urlencode('Xây dựng dân dụng')) ?>" class="srv-card__proj-btn">
               Công Trình Đã Hoàn Thiện <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
@@ -367,10 +367,10 @@ $xay_dung_services = [
         </p>
       </div>
       <div class="srv-cta__actions">
-        <a href="/test/web_cty/quote.php" class="btn btn-primary btn-lg">
+        <a href="<?= url('quote.php') ?>" class="btn btn-primary btn-lg">
           <i class="fa-solid fa-calculator"></i> Nhận Báo Giá Ngay
         </a>
-        <a href="/test/web_cty/contact.php" class="btn btn-outline btn-lg">
+        <a href="<?= url('contact.php') ?>" class="btn btn-outline btn-lg">
           <i class="fa-solid fa-headset"></i> Liên Hệ Trực Tiếp
         </a>
       </div>

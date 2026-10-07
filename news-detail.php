@@ -30,7 +30,7 @@ if (!$news_item) {
   <div class="container">
     <h1><?php echo htmlspecialchars($news_item['title']); ?></h1>
     <div class="breadcrumb">
-      <a href="/test/web_cty/index.php">Trang chủ</a> / <a href="/test/web_cty/news.php">Tin tức</a> / <span>Bài viết</span>
+      <a href="<?= url('index.php') ?>">Trang chủ</a> / <a href="<?= url('news.php') ?>">Tin tức</a> / <span>Bài viết</span>
     </div>
   </div>
 </div>

@@ -23,13 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             set_flash_message('success', 'Đã cập nhật thông tin cấu hình website thành công!');
         } catch (Exception $e) {
-            set_flash_message('danger', 'Lỗi khi lưu cấu hình: ' . $e->getMessage());
+            error_log('DB Error in site_info.php: ' . $e->getMessage());
+            set_flash_message('danger', 'Đã xảy ra lỗi máy chủ khi lưu cấu hình.');
         }
     } else {
         set_flash_message('success', 'Đã cập nhật cài đặt website (chế độ demo).');
     }
 
-    header("Location: /test/web_cty/admin/settings/site_info.php");
+    header("Location: " . url('admin/settings/site_info.php'));
     exit;
 }
 ?>

@@ -1,7 +1,9 @@
 <?php
+require_once __DIR__ . '/../config/constants.php';
+
 // Redirect to modern React Admin Dashboard unless legacy mode requested
 if (!isset($_GET['legacy'])) {
-    header("Location: /test/web_cty/admin-dashboard/dist/");
+    header("Location: " . url('admin-dashboard/dist/'));
     exit;
 }
 
@@ -94,7 +96,7 @@ if ($db) {
       <h4 style="margin: 0 0 6px; font-size: 16px; color: var(--primary-navy);">Đăng Công Trình Hoàn Thiện Mới</h4>
       <p style="margin: 0; font-size: 13px; color: var(--text-muted);">Cập nhật hình ảnh và hồ sơ kỹ thuật cho 12 phân loại công trình.</p>
     </div>
-    <a href="/test/web_cty/admin/projects/add.php" class="btn btn-primary btn-sm" style="white-space: nowrap;"><i class="fa-solid fa-plus"></i> Thêm Công Trình</a>
+    <a href="<?= url('admin/projects/add.php') ?>" class="btn btn-primary btn-sm" style="white-space: nowrap;"><i class="fa-solid fa-plus"></i> Thêm Công Trình</a>
   </div>
 
   <div style="background: #fff; padding: 24px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between;">
@@ -102,7 +104,7 @@ if ($db) {
       <h4 style="margin: 0 0 6px; font-size: 16px; color: var(--primary-navy);">Xem Trước Website Doanh Nghiệp</h4>
       <p style="margin: 0; font-size: 13px; color: var(--text-muted);">Trang chủ, Trang Dịch Vụ, Trang Công Trình &amp; Giới Thiệu.</p>
     </div>
-    <a href="/test/web_cty/index.php" target="_blank" class="btn btn-outline btn-sm" style="white-space: nowrap;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở Website</a>
+    <a href="<?= url('index.php') ?>" target="_blank" class="btn btn-outline btn-sm" style="white-space: nowrap;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở Website</a>
   </div>
 </div>
 
@@ -110,7 +112,7 @@ if ($db) {
 <div class="table-card" style="margin-bottom: 24px;">
   <div style="padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
     <h3 style="margin: 0; font-size: 18px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-gold); margin-right: 8px;"></i> Yêu Cầu Báo Giá Gần Đây</h3>
-    <a href="/test/web_cty/admin/manage-quotes.php" class="btn btn-outline btn-sm">Xem Tất Cả</a>
+    <a href="<?= url('admin/manage-quotes.php') ?>" class="btn btn-outline btn-sm">Xem Tất Cả</a>
   </div>
   <div class="table-responsive">
     <table class="admin-table">
@@ -156,7 +158,7 @@ if ($db) {
 <div class="table-card">
   <div style="padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
     <h3 style="margin: 0; font-size: 18px;"><i class="fa-solid fa-building" style="color: #2563eb; margin-right: 8px;"></i> Công Trình Đã Hoàn Thiện Vừa Đăng</h3>
-    <a href="/test/web_cty/admin/projects/list.php" class="btn btn-outline btn-sm">Quản Lý Tất Cả Công Trình</a>
+    <a href="<?= url('admin/projects/list.php') ?>" class="btn btn-outline btn-sm">Quản Lý Tất Cả Công Trình</a>
   </div>
   <div class="table-responsive">
     <table class="admin-table">

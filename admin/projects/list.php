@@ -231,18 +231,18 @@ if ($db) {
 <!-- Top Compact Bar (Filter Tabs + Add Button) -->
 <div class="adm-compact-bar">
   <div class="adm-pills">
-    <a href="/test/web_cty/admin/projects/list.php" class="adm-pill <?= ($group_filter === 'all' && empty($category_filter)) ? 'active' : '' ?>">
+    <a href="<?= url('admin/projects/list.php') ?>" class="adm-pill <?= ($group_filter === 'all' && empty($category_filter)) ? 'active' : '' ?>">
       <i class="fa-solid fa-layer-group"></i> Tất Cả (<?= $total_count ?>)
     </a>
-    <a href="/test/web_cty/admin/projects/list.php?group=co_khi" class="adm-pill adm-pill--gold <?= ($group_filter === 'co_khi' || in_array($category_filter, $co_khi_cats)) ? 'active' : '' ?>">
+    <a href="<?= url('admin/projects/list.php?group=co_khi') ?>" class="adm-pill adm-pill--gold <?= ($group_filter === 'co_khi' || in_array($category_filter, $co_khi_cats)) ? 'active' : '' ?>">
       <i class="fa-solid fa-hammer"></i> Cơ Khí (<?= $ck_count ?>)
     </a>
-    <a href="/test/web_cty/admin/projects/list.php?group=xay_dung" class="adm-pill adm-pill--blue <?= ($group_filter === 'xay_dung' || in_array($category_filter, $xay_dung_cats)) ? 'active' : '' ?>">
+    <a href="<?= url('admin/projects/list.php?group=xay_dung') ?>" class="adm-pill adm-pill--blue <?= ($group_filter === 'xay_dung' || in_array($category_filter, $xay_dung_cats)) ? 'active' : '' ?>">
       <i class="fa-solid fa-building"></i> Xây Dựng (<?= $xd_count ?>)
     </a>
   </div>
 
-  <a href="/test/web_cty/admin/projects/add.php" class="btn-action" style="background: #f59e0b; color: #0f172a; font-weight: 700; padding: 7px 16px; border-radius: 6px; font-size: 13px;">
+  <a href="<?= url('admin/projects/add.php') ?>" class="btn-action" style="background: #f59e0b; color: #0f172a; font-weight: 700; padding: 7px 16px; border-radius: 6px; font-size: 13px;">
     <i class="fa-solid fa-plus"></i> Đăng Công Trình
   </a>
 </div>
@@ -278,7 +278,7 @@ if ($db) {
       </button>
 
       <?php if (!empty($category_filter) || !empty($search_query) || $group_filter !== 'all'): ?>
-        <a href="/test/web_cty/admin/projects/list.php" style="color: #ef4444; font-size: 12.5px; margin-left: 6px; text-decoration: none;">
+        <a href="<?= url('admin/projects/list.php') ?>" style="color: #ef4444; font-size: 12.5px; margin-left: 6px; text-decoration: none;">
           <i class="fa-solid fa-xmark"></i> Xóa lọc
         </a>
       <?php endif; ?>
@@ -310,13 +310,13 @@ if ($db) {
           <?php foreach ($projects as $item): 
             $isCoKhi = in_array($item['category'], $co_khi_cats);
             $imgSrc = !empty($item['image']) && $item['image'] !== 'default-project.jpg' 
-                      ? '/test/web_cty/assets/images/' . htmlspecialchars($item['image'])
-                      : '/test/web_cty/assets/images/service-cons.png';
+                      ? asset_url('images/' . htmlspecialchars($item['image']))
+                      : asset_url('images/service-cons.png');
           ?>
             <tr>
               <td style="text-align: center; color: #94a3b8; font-weight: 600;"><?= $item['id']; ?></td>
               <td style="text-align: center;">
-                <img src="<?= $imgSrc; ?>" alt="Thumb" class="adm-thumb" onerror="this.src='/test/web_cty/assets/images/service-cons.png'">
+                <img src="<?= $imgSrc; ?>" alt="Thumb" class="adm-thumb" onerror="this.src='<?= asset_url('images/service-cons.png') ?>'">
               </td>
               <td>
                 <div style="font-weight: 700; color: #0f172a;"><?= htmlspecialchars($item['title']); ?></div>
@@ -332,9 +332,9 @@ if ($db) {
               <td style="color: #334155; font-size: 13px;"><?= htmlspecialchars($item['client']); ?></td>
               <td style="color: #64748b; font-size: 12.5px;"><?= date('d/m/Y', strtotime($item['created_at'])); ?></td>
               <td style="text-align: right; white-space: nowrap;">
-                <a href="/test/web_cty/project-detail.php?id=<?= $item['id']; ?>" target="_blank" class="adm-btn-icon" title="Xem trên Web"><i class="fa-solid fa-eye"></i></a>
-                <a href="/test/web_cty/admin/projects/edit.php?id=<?= $item['id']; ?>" class="adm-btn-icon adm-btn-icon--edit" title="Chỉnh sửa"><i class="fa-solid fa-pen-to-square"></i></a>
-                <a href="/test/web_cty/admin/projects/delete.php?id=<?= $item['id']; ?>" class="adm-btn-icon adm-btn-icon--del btn-confirm-delete" title="Xóa công trình"><i class="fa-solid fa-trash"></i></a>
+                <a href="<?= url('project-detail.php?id=' . $item['id']) ?>" target="_blank" class="adm-btn-icon" title="Xem trên Web"><i class="fa-solid fa-eye"></i></a>
+                <a href="<?= url('admin/projects/edit.php?id=' . $item['id']) ?>" class="adm-btn-icon adm-btn-icon--edit" title="Chỉnh sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a href="<?= url('admin/projects/delete.php?id=' . $item['id']) ?>" class="adm-btn-icon adm-btn-icon--del btn-confirm-delete" title="Xóa công trình"><i class="fa-solid fa-trash"></i></a>
               </td>
             </tr>
           <?php endforeach; ?>

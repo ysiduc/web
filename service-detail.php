@@ -29,7 +29,7 @@ if (!$service) {
   <div class="container">
     <h1><?php echo htmlspecialchars($service['title']); ?></h1>
     <div class="breadcrumb">
-      <a href="/test/web_cty/index.php">Trang chủ</a> / <a href="/test/web_cty/services.php">Dịch vụ</a> / <span>Chi tiết</span>
+      <a href="<?= url('index.php') ?>">Trang chủ</a> / <a href="<?= url('services.php') ?>">Dịch vụ</a> / <span>Chi tiết</span>
     </div>
   </div>
 </div>
@@ -37,7 +37,7 @@ if (!$service) {
 <section style="padding: 60px 0; background: #fff;">
   <div class="container" style="display: grid; grid-template-columns: 2.5fr 1fr; gap: 40px;">
     <div>
-      <img src="<?php echo htmlspecialchars(get_service_image_url($service['image'])); ?>" alt="<?php echo htmlspecialchars($service['title']); ?>" style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; margin-bottom: 30px;" onerror="this.onerror=null;this.src='<?= (defined('ROOT_URL') ? ROOT_URL : '/test/web_cty') ?>/assets/images/service-cons.png';">
+      <img src="<?php echo htmlspecialchars(get_service_image_url($service['image'])); ?>" alt="<?php echo htmlspecialchars($service['title']); ?>" style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; margin-bottom: 30px;" onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
       
       <h2 style="font-size: 28px; margin-bottom: 16px; color: var(--primary-navy);"><?php echo htmlspecialchars($service['title']); ?></h2>
       <p style="font-size: 16px; font-weight: 600; color: var(--accent-gold); margin-bottom: 24px; line-height: 1.6;">
@@ -51,7 +51,7 @@ if (!$service) {
       <div style="margin-top: 40px; padding: 30px; background: var(--bg-light); border-radius: 12px; border-left: 4px solid var(--accent-gold);">
         <h3 style="font-size: 18px; margin-bottom: 10px;">Bạn cần tư vấn giải pháp kỹ thuật cho dự án?</h3>
         <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Liên hệ ngay đội ngũ kỹ sư PNMEC để nhận hỗ trợ khảo sát và phương án thi công tối ưu.</p>
-        <a href="/test/web_cty/quote.php" class="btn btn-primary"><i class="fa-solid fa-calculator"></i> Nhận Báo Giá Nhanh</a>
+        <a href="<?= url('quote.php') ?>" class="btn btn-primary"><i class="fa-solid fa-calculator"></i> Nhận Báo Giá Nhanh</a>
       </div>
     </div>
 

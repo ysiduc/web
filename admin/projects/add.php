@@ -49,14 +49,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
 
                     set_flash_message('success', 'Đã thêm mới công trình thành công!');
-                    header("Location: /test/web_cty/admin/projects/list.php");
+                    header("Location: " . url('admin/projects/list.php'));
                     exit;
                 } catch (Exception $e) {
-                    $error = 'Lỗi cơ sở dữ liệu: ' . $e->getMessage();
+                    error_log('DB Error in admin/projects/add.php: ' . $e->getMessage());
+                    $error = 'Đã xảy ra lỗi máy chủ khi lưu công trình. Vui lòng thử lại sau.';
                 }
             } else {
                 set_flash_message('success', 'Đã tạo thành công công trình (chế độ demo).');
-                header("Location: /test/web_cty/admin/projects/list.php");
+                header("Location: " . url('admin/projects/list.php'));
                 exit;
             }
         }
@@ -67,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div style="max-width: 900px; margin: 0 auto;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2><i class="fa-solid fa-folder-plus"></i> Đăng Công Trình Mới</h2>
-    <a href="/test/web_cty/admin/projects/list.php" class="btn-action btn-edit"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách</a>
+    <a href="<?= url('admin/projects/list.php') ?>" class="btn-action btn-edit"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách</a>
   </div>
 
   <?php if (!empty($error)): ?>
@@ -146,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" class="btn-action" style="padding: 12px 24px; background: #f59e0b; color: #0f172a; font-weight: 700; font-size: 15px; border-radius: 8px;">
           <i class="fa-solid fa-floppy-disk"></i> Lưu & Xuất Bản
         </button>
-        <a href="/test/web_cty/admin/projects/list.php" class="btn-action" style="padding: 12px 24px; background: #e2e8f0; color: #334155; font-size: 15px; border-radius: 8px;">
+        <a href="<?= url('admin/projects/list.php') ?>" class="btn-action" style="padding: 12px 24px; background: #e2e8f0; color: #334155; font-size: 15px; border-radius: 8px;">
           Hủy bỏ
         </a>
       </div>

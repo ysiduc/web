@@ -34,5 +34,5 @@ if ($id > 0) {
     }
 }
 
-header("Location: /test/web_cty/admin/projects/list.php");
+header("Location: " . url('admin/projects/list.php'));
 exit;

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { api } from '../api/client';
+import { api, setCsrfToken } from '../api/client';
 import type { User, ApiResponse } from '../types';
 
 interface AuthState {
@@ -28,12 +28,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   login: async (username: string, password: string) => {
     set({ isLoading: true, error: null });
     try {
-      const res = await api.post<ApiResponse<{ user: User }>>('/auth/login.php', {
+      const res = await api.post<ApiResponse<{ user: User; csrf_token?: string }>>('/auth/login.php', {
         username,
         password,
       });
 
       if (res.data.success && res.data.data.user) {
+        if (res.data.data.csrf_token) {
+          setCsrfToken(res.data.data.csrf_token);
+        }
         set({
           user: res.data.data.user,
           isAuthenticated: true,
@@ -61,6 +64,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch (e) {
       console.warn('Logout error', e);
     } finally {
+      setCsrfToken(null);
       set({ user: null, isAuthenticated: false, error: null });
     }
   },
@@ -68,17 +72,22 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   checkAuth: async () => {
     set({ isLoading: true });
     try {
-      const res = await api.get<ApiResponse<{ user: User }>>('/auth/me.php');
+      const res = await api.get<ApiResponse<{ user: User; csrf_token?: string }>>('/auth/me.php');
       if (res.data.success && res.data.data.user) {
+        if (res.data.data.csrf_token) {
+          setCsrfToken(res.data.data.csrf_token);
+        }
         set({
           user: res.data.data.user,
           isAuthenticated: true,
           isLoading: false,
         });
       } else {
+        setCsrfToken(null);
         set({ user: null, isAuthenticated: false, isLoading: false });
       }
     } catch {
+      setCsrfToken(null);
       set({ user: null, isAuthenticated: false, isLoading: false });
     }
   },

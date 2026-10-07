@@ -15,10 +15,10 @@ $page_title = isset($page_title) ? $page_title : 'Hệ Thống Quản Trị Admi
 
   <!-- FontAwesome & Admin CSS Modular Files -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/test/web_cty/assets/css/admin/layout.css">
-  <link rel="stylesheet" href="/test/web_cty/assets/css/admin/dashboard.css">
-  <link rel="stylesheet" href="/test/web_cty/assets/css/admin/tables.css">
-  <link rel="stylesheet" href="/test/web_cty/assets/css/admin/forms.css">
+  <link rel="stylesheet" href="<?= asset_url('css/admin/layout.css') ?>">
+  <link rel="stylesheet" href="<?= asset_url('css/admin/dashboard.css') ?>">
+  <link rel="stylesheet" href="<?= asset_url('css/admin/tables.css') ?>">
+  <link rel="stylesheet" href="<?= asset_url('css/admin/forms.css') ?>">
 </head>
 <body class="admin-body">
 

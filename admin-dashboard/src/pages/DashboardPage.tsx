@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { api, getImageUrl } from '../api/client';
+import { api, getImageUrl, getPublicPageUrl } from '../api/client';
 import type { DashboardStats, ApiResponse } from '../types';
 import { Badge } from '../components/common/Badge';
 import {
@@ -79,7 +79,7 @@ export const DashboardPage: React.FC = () => {
               <span>Quản lý Công Trình</span>
             </a>
             <a
-              href="/test/web_cty/index.php"
+              href={getPublicPageUrl('/index.php')}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur transition"

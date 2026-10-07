@@ -15,56 +15,56 @@ $user = $_SESSION['user'] ?? ['fullname' => 'Admin', 'role' => 'admin'];
   <ul class="sidebar-nav">
     <li class="nav-category">TỔNG QUAN HỆ THỐNG</li>
     <li class="nav-item">
-      <a href="/test/web_cty/admin/index.php" class="nav-link-admin <?= ($current_page == 'index.php') ? 'active' : ''; ?>">
+      <a href="<?= url('admin/index.php') ?>" class="nav-link-admin <?= ($current_page == 'index.php') ? 'active' : ''; ?>">
         <i class="fa-solid fa-chart-line"></i> Dashboard Tổng Quan
       </a>
     </li>
 
     <li class="nav-category">QUẢN LÝ NỘI DUNG &amp; DỰ ÁN</li>
     <li class="nav-item">
-      <a href="/test/web_cty/admin/projects/list.php" class="nav-link-admin <?= ($current_page == 'list.php' || $current_page == 'add.php' || $current_page == 'edit.php' || $current_page == 'manage-projects.php') ? 'active' : ''; ?>">
+      <a href="<?= url('admin/projects/list.php') ?>" class="nav-link-admin <?= ($current_page == 'list.php' || $current_page == 'add.php' || $current_page == 'edit.php' || $current_page == 'manage-projects.php') ? 'active' : ''; ?>">
         <i class="fa-solid fa-building"></i> Quản Lý Công Trình
       </a>
     </li>
     <li class="nav-item">
-      <a href="/test/web_cty/admin/manage-services.php" class="nav-link-admin <?= ($current_page == 'manage-services.php') ? 'active' : ''; ?>">
+      <a href="<?= url('admin/manage-services.php') ?>" class="nav-link-admin <?= ($current_page == 'manage-services.php') ? 'active' : ''; ?>">
         <i class="fa-solid fa-screwdriver-wrench"></i> Quản Lý Dịch Vụ (12 Mục)
       </a>
     </li>
     <li class="nav-item">
-      <a href="/test/web_cty/admin/manage-quotes.php" class="nav-link-admin <?= ($current_page == 'manage-quotes.php') ? 'active' : ''; ?>">
+      <a href="<?= url('admin/manage-quotes.php') ?>" class="nav-link-admin <?= ($current_page == 'manage-quotes.php') ? 'active' : ''; ?>">
         <i class="fa-solid fa-calculator"></i> Yêu Cầu Báo Giá
       </a>
     </li>
     <li class="nav-item">
-      <a href="/test/web_cty/admin/manage-contacts.php" class="nav-link-admin <?= ($current_page == 'manage-contacts.php') ? 'active' : ''; ?>">
+      <a href="<?= url('admin/manage-contacts.php') ?>" class="nav-link-admin <?= ($current_page == 'manage-contacts.php') ? 'active' : ''; ?>">
         <i class="fa-solid fa-envelope-open-text"></i> Khách Hàng Liên Hệ
       </a>
     </li>
     <li class="nav-item">
-      <a href="/test/web_cty/admin/manage-news.php" class="nav-link-admin <?= ($current_page == 'manage-news.php') ? 'active' : ''; ?>">
+      <a href="<?= url('admin/manage-news.php') ?>" class="nav-link-admin <?= ($current_page == 'manage-news.php') ? 'active' : ''; ?>">
         <i class="fa-solid fa-newspaper"></i> Tin Tức &amp; Hoạt Động
       </a>
     </li>
 
     <li class="nav-category">CÀI ĐẶT &amp; LIÊN KẾT</li>
     <li class="nav-item">
-      <a href="/test/web_cty/admin/settings/site_info.php" class="nav-link-admin <?= ($current_page == 'site_info.php') ? 'active' : ''; ?>">
+      <a href="<?= url('admin/settings/site_info.php') ?>" class="nav-link-admin <?= ($current_page == 'site_info.php') ? 'active' : ''; ?>">
         <i class="fa-solid fa-sliders"></i> Cấu Hình Doanh Nghiệp
       </a>
     </li>
     <li class="nav-item">
-      <a href="/test/web_cty/admin/settings/users.php" class="nav-link-admin <?= ($current_page == 'users.php') ? 'active' : ''; ?>">
+      <a href="<?= url('admin/settings/users.php') ?>" class="nav-link-admin <?= ($current_page == 'users.php') ? 'active' : ''; ?>">
         <i class="fa-solid fa-users-gear"></i> Quản Trị Viên &amp; Kỹ Sư
       </a>
     </li>
     <li class="nav-item">
-      <a href="/test/web_cty/index.php" target="_blank" class="nav-link-admin">
+      <a href="<?= url('index.php') ?>" target="_blank" class="nav-link-admin">
         <i class="fa-solid fa-arrow-up-right-from-square"></i> Xem Website Khách Hàng
       </a>
     </li>
     <li class="nav-item">
-      <a href="/test/web_cty/admin/logout.php" class="nav-link-admin" style="color: #ef4444;">
+      <a href="<?= url('admin/logout.php') ?>" class="nav-link-admin" style="color: #ef4444;">
         <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất Hệ Thống
       </a>
     </li>

@@ -32,14 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     'role'     => $role
                 ]);
                 set_flash_message('success', 'Đã tạo tài khoản nhân viên mới thành công!');
-                header("Location: /test/web_cty/admin/settings/users.php");
+                header("Location: " . url('admin/settings/users.php'));
                 exit;
             } catch (Exception $e) {
                 $error = 'Tên đăng nhập đã tồn tại hoặc lỗi CSDL!';
             }
         } else {
             set_flash_message('success', 'Đã thêm nhân viên mới (chế độ demo).');
-            header("Location: /test/web_cty/admin/settings/users.php");
+            header("Location: " . url('admin/settings/users.php'));
             exit;
         }
     }

@@ -46,7 +46,7 @@ require_once __DIR__ . '/includes/header.php';
     <span style="color: var(--accent-gold); font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 1px;"><?php echo htmlspecialchars($project['category']); ?></span>
     <h1 style="font-size: 32px; margin: 10px 0;"><?php echo htmlspecialchars($project['title']); ?></h1>
     <div class="breadcrumb">
-      <a href="/test/web_cty/index.php">Trang chủ</a> / <a href="/test/web_cty/projects.php">Công trình</a> / <span>Chi tiết</span>
+      <a href="<?= url('/index.php') ?>">Trang chủ</a> / <a href="<?= url('/projects.php') ?>">Công trình</a> / <span>Chi tiết</span>
     </div>
   </div>
 </section>
@@ -151,7 +151,7 @@ require_once __DIR__ . '/includes/header.php';
 
               <?php elseif ($type === 'html' && !empty($blk['content'])): ?>
                 <div class="builder-custom-html">
-                  <?= $blk['content'] ?>
+                  <?= sanitize_html_content($blk['content']) ?>
                 </div>
 
               <?php endif; ?>
@@ -178,7 +178,7 @@ require_once __DIR__ . '/includes/header.php';
           <p style="color: var(--text-light); font-size: 14px; margin-bottom: 20px;">
             Quý khách hàng có nhu cầu thi công nhà xưởng, gia công cơ khí hoặc nhận báo giá dự toán chi tiết?
           </p>
-          <a href="/test/web_cty/contact.php" class="btn btn-primary" style="width: 100%; text-align: center;"><i class="fa-solid fa-headset"></i> Gửi Yêu Cầu Báo Giá</a>
+          <a href="<?= url('/contact.php') ?>" class="btn btn-primary" style="width: 100%; text-align: center;"><i class="fa-solid fa-headset"></i> Gửi Yêu Cầu Báo Giá</a>
         </div>
 
         <?php if (count($related_projects) > 0): ?>
@@ -192,7 +192,7 @@ require_once __DIR__ . '/includes/header.php';
                        style="width: 70px; height: 55px; object-fit: cover; border-radius: 6px;"
                        onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=150&q=80'">
                   <div>
-                    <h4 style="font-size: 13px; line-height: 1.3;"><a href="/test/web_cty/project-detail.php?id=<?php echo $rel['id']; ?>"><?php echo htmlspecialchars($rel['title']); ?></a></h4>
+                    <h4 style="font-size: 13px; line-height: 1.3;"><a href="<?= url('/project-detail.php?id=' . $rel['id']) ?>"><?php echo htmlspecialchars($rel['title']); ?></a></h4>
                     <span style="font-size: 11px; color: var(--text-muted);"><?php echo htmlspecialchars($rel['location']); ?></span>
                   </div>
                 </div>

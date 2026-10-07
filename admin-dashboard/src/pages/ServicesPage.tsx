@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { api, getImageUrl } from '../api/client';
+import { api, getImageUrl, getPublicPageUrl } from '../api/client';
 import type { Service, ApiResponse } from '../types';
 import { Modal } from '../components/common/Modal';
 import { ConfirmModal } from '../components/common/ConfirmModal';
@@ -368,7 +368,7 @@ export const ServicesPage: React.FC = () => {
                     <td className="px-6 py-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1.5">
                         <a
-                          href={`/test/web_cty/service-detail.php?id=${s.id}`}
+                          href={getPublicPageUrl(`/service-detail.php?id=${s.id}`)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"

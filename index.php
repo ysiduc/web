@@ -36,10 +36,10 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
       <h1 class="h-hero__title"><?= htmlspecialchars($hero_title) ?></h1>
       <p class="h-hero__sub"><?= htmlspecialchars($hero_sub) ?></p>
       <div class="h-hero__btns">
-        <a href="/test/web_cty/projects.php" class="h-btn-gold">
+        <a href="<?= url('/projects.php') ?>" class="h-btn-gold">
           <i class="fa-solid fa-helmet-safety"></i> Xem Dự Án Công Trình
         </a>
-        <a href="/test/web_cty/contact.php" class="h-btn-outline">
+        <a href="<?= url('/contact.php') ?>" class="h-btn-outline">
           <i class="fa-solid fa-headset"></i> Tư Vấn &amp; Báo Giá
         </a>
       </div>
@@ -57,7 +57,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
         <span class="h-svc__eyebrow">— PNMEC GROUP</span>
         <h2 class="h-svc__title">DỊCH VỤ NỔI BẬT</h2>
       </div>
-      <a href="/test/web_cty/services.php" class="h-svc__all">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="<?= url('/services.php') ?>" class="h-svc__all">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
     </div>
 
     <div class="h-svc__grid" id="svcGrid">
@@ -69,17 +69,16 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
               $featured_services = $stmt->fetchAll(PDO::FETCH_ASSOC);
           } catch (Exception $e) {}
       }
-      $root_url = defined('ROOT_URL') ? ROOT_URL : '/test/web_cty';
 
       if (!empty($featured_services)):
-        foreach($featured_services as $idx => $s):
-          $tag = !empty($s['code']) ? $s['code'] : $s['title'];
-          $desc = !empty($s['summary']) ? $s['summary'] : $s['title'];
-          $img_url = get_service_image_url($s['image']);
-          $detail_url = $root_url . '/service-detail.php?id=' . urlencode($s['id']);
+          foreach ($featured_services as $idx => $s):
+              $tag = !empty($s['title']) ? $s['title'] : 'Dịch vụ';
+              $desc = !empty($s['summary']) ? $s['summary'] : '';
+              $img_url = get_service_image_url($s['image']);
+              $detail_url = url('service-detail.php?id=' . urlencode($s['id']));
       ?>
       <a href="<?= $detail_url ?>" class="h-svc__card<?= $idx === 2 ? ' active' : '' ?>">
-        <img src="<?= htmlspecialchars($img_url) ?>" alt="<?= htmlspecialchars($tag) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= $root_url ?>/assets/images/service-cons.png';">
+        <img src="<?= htmlspecialchars($img_url) ?>" alt="<?= htmlspecialchars($tag) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
         <div class="h-svc__badge-tag"><?= htmlspecialchars($tag) ?></div>
         <div class="h-svc__overlay">
           <p class="h-svc__desc"><?= htmlspecialchars($desc) ?></p>
@@ -121,12 +120,12 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
         <span class="h-about__tag">Về Chúng Tôi</span>
         <h2 class="h-about__heading">Năng Lực Thiết Kế &amp; Thi Công<br>Cơ Khí Xây Dựng Toàn Diện</h2>
         <p class="h-about__body"><?= htmlspecialchars($about_text) ?></p>
-        <a href="/test/web_cty/about.php" class="h-about__btn">Tìm Hiểu Thêm <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="<?= url('/about.php') ?>" class="h-about__btn">Tìm Hiểu Thêm <i class="fa-solid fa-arrow-right"></i></a>
       </div>
       <!-- Right -->
       <div class="h-about__img-wrap">
         <img class="h-about__img"
-             src="/test/web_cty/assets/images/home-about.png"
+             src="<?= asset_url('images/home-about.png') ?>"
              alt="Đội ngũ PNMEC" loading="lazy">
       </div>
     </div>
@@ -152,7 +151,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
       ];
       foreach($projects as $i => $p):
         $img = !empty($p['image']) && $p['image']!='default-project.jpg'
-               ? '/test/web_cty/assets/uploads/'.htmlspecialchars($p['image'])
+               ? asset_url('uploads/'.htmlspecialchars($p['image']))
                : $fallback_imgs[$i%3];
       ?>
       <div class="h-proj__card">
@@ -162,13 +161,13 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
                onerror="this.src='<?= $fallback_imgs[$i%3] ?>'">
         </div>
         <div class="h-proj__body">
-          <h3><a href="/test/web_cty/project-detail.php?id=<?= $p['id'] ?>"><?= htmlspecialchars($p['title']) ?></a></h3>
+          <h3><a href="<?= url('/project-detail.php?id=' . $p['id']) ?>"><?= htmlspecialchars($p['title']) ?></a></h3>
           <div class="h-proj__meta">
             <span><i class="fa-solid fa-building-user"></i><?= htmlspecialchars($p['client']) ?></span>
             <span><i class="fa-solid fa-location-dot"></i><?= htmlspecialchars($p['location']) ?></span>
           </div>
           <p class="h-proj__desc"><?= htmlspecialchars($p['description']) ?></p>
-          <a href="/test/web_cty/project-detail.php?id=<?= $p['id'] ?>" class="h-proj__link">
+          <a href="<?= url('/project-detail.php?id=' . $p['id']) ?>" class="h-proj__link">
             Chi tiết công trình <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
@@ -176,7 +175,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
       <?php endforeach; ?>
     </div>
     <div class="h-proj__cta">
-      <a href="/test/web_cty/projects.php" class="h-btn-navy"><i class="fa-solid fa-grip"></i> Xem Tất Cả Công Trình</a>
+      <a href="<?= url('/projects.php') ?>" class="h-btn-navy"><i class="fa-solid fa-grip"></i> Xem Tất Cả Công Trình</a>
     </div>
   </div>
 </section>
@@ -326,7 +325,7 @@ $first_faq = reset($faqs);
       <!-- Left: company info -->
       <div>
         <div class="h-cta__logo-row">
-          <img src="/test/web_cty/assets/images/logo.png?v=2" alt="PNMEC GROUP" style="height: 72px; width: auto; max-width: 100%;">
+          <img src="<?= asset_url('images/logo.png?v=2') ?>" alt="PNMEC GROUP" style="height: 72px; width: auto; max-width: 100%;">
         </div>
         <ul class="h-cta__info">
           <li><i class="fa-solid fa-location-dot"></i><span>KCN Quang Minh, Mê Linh, Hà Nội (VP)</span></li>
@@ -343,7 +342,7 @@ $first_faq = reset($faqs);
 
       <!-- Right: form -->
       <div class="h-cta__form-box">
-        <form method="POST" action="/test/web_cty/contact.php">
+        <form method="POST" action="<?= url('/contact.php') ?>">
           <input type="hidden" name="action" value="contact_form">
           <div class="h-cta__row2">
             <div class="h-cta__field">
