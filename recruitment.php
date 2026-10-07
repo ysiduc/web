@@ -1,6 +1,17 @@
 <?php
 $page_title = "Tuyển Dụng Nhân Sự";
 require_once __DIR__ . '/includes/header.php';
+
+$db = getDBConnection();
+$recruitments = [];
+if ($db) {
+    try {
+        $stmt = $db->query("SELECT * FROM recruitments WHERE status = 'published' ORDER BY id DESC");
+        $recruitments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        $recruitments = [];
+    }
+}
 ?>
 
 <!-- Page Banner -->
@@ -22,58 +33,75 @@ require_once __DIR__ . '/includes/header.php';
       <p style="color: var(--text-muted); font-size: 14px; max-width: 600px; margin: 8px auto 0;">Gia nhập đội ngũ PNMEC để làm việc trong môi trường chuyên nghiệp, đãi ngộ hấp dẫn và cơ hội thăng tiến rộng mở.</p>
     </div>
 
-    <!-- Vacancy Grid -->
-    <div class="vacancy-grid">
-      
-      <!-- Vacancy 1 -->
-      <div class="vacancy-card">
-        <span class="vacancy-badge">Toàn thời gian</span>
-        <h3 class="vacancy-title">02 Kỹ Sư Thiết Kế Kết Cấu Thép</h3>
-        <div class="vacancy-meta">
-          <span><i class="fa-solid fa-money-bill-wave"></i> 18 - 25 Triệu / tháng</span> | 
-          <span><i class="fa-solid fa-location-dot"></i> Hà Nội</span>
+    <!-- Vacancy Grid / Empty State -->
+    <?php if (empty($recruitments)): ?>
+      <div class="vacancy-empty-state" style="text-align: center; padding: 48px 24px; background: var(--bg-light); border: 1px dashed var(--border-color); border-radius: 12px; margin-bottom: 50px;">
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(245, 158, 11, 0.12); color: var(--accent-gold); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px;">
+          <i class="fa-solid fa-briefcase"></i>
         </div>
-        <ul class="vacancy-list">
-          <li>• Thành thạo Tekla Structures, AutoCAD, Sap2000.</li>
-          <li>• Đọc hiểu bản vẽ kỹ thuật và triển khai bản vẽ shop-drawing gia công.</li>
-          <li>• Kinh nghiệm từ 2 năm tại các công ty kết cấu thép.</li>
-        </ul>
-        <a href="#apply-form" class="btn btn-navy btn-sm"><i class="fa-solid fa-paper-plane"></i> Ứng Tuyển Ngay</a>
+        <h3 style="font-size: 20px; color: var(--primary-navy); margin-bottom: 8px;">Hiện tại chưa có đợt tuyển dụng mới</h3>
+        <p style="color: var(--text-muted); font-size: 14px; max-width: 560px; margin: 0 auto;">PNMEC luôn hoan nghênh những nhân tài có chuyên môn kỹ thuật và nhiệt huyết. Quý ứng viên quan tâm có thể chủ động gửi thông tin và vị trí mong muốn qua mẫu đăng ký bên dưới. Bộ phận Nhân sự sẽ lưu trữ và liên hệ ngay khi có cơ hội phù hợp.</p>
       </div>
+    <?php else: ?>
+      <div class="vacancy-grid">
+        <?php foreach ($recruitments as $item): ?>
+          <?php
+          $display_title = htmlspecialchars($item['title']);
+          if ((int)$item['quantity'] > 1 && !preg_match('/^\d+/', $item['title'])) {
+              $display_title = sprintf('%02d ', (int)$item['quantity']) . $display_title;
+          }
 
-      <!-- Vacancy 2 -->
-      <div class="vacancy-card">
-        <span class="vacancy-badge">Toàn thời gian</span>
-        <h3 class="vacancy-title">03 Kỹ Sư Giám Sát Thi Công Công Trường</h3>
-        <div class="vacancy-meta">
-          <span><i class="fa-solid fa-money-bill-wave"></i> 15 - 22 Triệu / tháng</span> | 
-          <span><i class="fa-solid fa-location-dot"></i> Theo dự án</span>
-        </div>
-        <ul class="vacancy-list">
-          <li>• Trực tiếp quản lý tiến độ, chất lượng lắp dựng kết cấu thép.</li>
-          <li>• Phối hợp với Chủ đầu tư nghiệm thu công việc hiện trường.</li>
-          <li>• Tốt nghiệp Đại học Xây dựng, Giao thông hoặc Kiến trúc.</li>
-        </ul>
-        <a href="#apply-form" class="btn btn-navy btn-sm"><i class="fa-solid fa-paper-plane"></i> Ứng Tuyển Ngay</a>
+          $bullets = [];
+          if (!empty($item['description'])) {
+              $desc_lines = preg_split('/[\r\n]+/', trim($item['description']));
+              foreach ($desc_lines as $line) {
+                  $clean = trim(ltrim(trim($line), '•-* '));
+                  if ($clean !== '') {
+                      $bullets[] = $clean;
+                  }
+              }
+          }
+          if (!empty($item['requirements'])) {
+              $req_lines = preg_split('/[\r\n]+/', trim($item['requirements']));
+              foreach ($req_lines as $line) {
+                  $clean = trim(ltrim(trim($line), '•-* '));
+                  if ($clean !== '') {
+                      $bullets[] = $clean;
+                  }
+              }
+          }
+          ?>
+          <div class="vacancy-card">
+            <span class="vacancy-badge"><?= htmlspecialchars($item['employment_type'] ?: 'Toàn thời gian') ?></span>
+            <h3 class="vacancy-title"><?= $display_title ?></h3>
+            <div class="vacancy-meta">
+              <?php if (!empty($item['salary'])): ?>
+                <span><i class="fa-solid fa-money-bill-wave"></i> <?= htmlspecialchars($item['salary']) ?></span>
+              <?php endif; ?>
+              <?php if (!empty($item['salary']) && !empty($item['location'])): ?> | <?php endif; ?>
+              <?php if (!empty($item['location'])): ?>
+                <span><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($item['location']) ?></span>
+              <?php endif; ?>
+              <?php if ((int)$item['quantity'] > 0): ?>
+                | <span><i class="fa-solid fa-users"></i> <?= (int)$item['quantity'] ?> chỉ tiêu</span>
+              <?php endif; ?>
+            </div>
+
+            <?php if (!empty($bullets)): ?>
+              <ul class="vacancy-list">
+                <?php foreach (array_slice($bullets, 0, 4) as $bullet): ?>
+                  <li>• <?= htmlspecialchars($bullet) ?></li>
+                <?php endforeach; ?>
+              </ul>
+            <?php endif; ?>
+
+            <a href="#apply-form" class="btn btn-navy btn-sm" onclick="selectPosition(<?= htmlspecialchars(json_encode($item['title']), ENT_QUOTES, 'UTF-8') ?>)">
+              <i class="fa-solid fa-paper-plane"></i> Ứng Tuyển Ngay
+            </a>
+          </div>
+        <?php endforeach; ?>
       </div>
-
-      <!-- Vacancy 3 -->
-      <div class="vacancy-card">
-        <span class="vacancy-badge">Nhà máy</span>
-        <h3 class="vacancy-title">10 Thợ Gia Công Cơ Khí & Hàn 6G</h3>
-        <div class="vacancy-meta">
-          <span><i class="fa-solid fa-money-bill-wave"></i> 12 - 18 Triệu / tháng</span> | 
-          <span><i class="fa-solid fa-location-dot"></i> KCN Thăng Long II, Hưng Yên</span>
-        </div>
-        <ul class="vacancy-list">
-          <li>• Thực hiện công việc gá đính, hàn MIG, hàn TIG dầm tổ hợp.</li>
-          <li>• Kiểm tra mối hàn đạt tiêu chuẩn siêu âm NDT.</li>
-          <li>• Có phụ cấp nhà ở và ăn ca tại nhà máy.</li>
-        </ul>
-        <a href="#apply-form" class="btn btn-navy btn-sm"><i class="fa-solid fa-paper-plane"></i> Ứng Tuyển Ngay</a>
-      </div>
-
-    </div>
+    <?php endif; ?>
 
     <!-- Application Form Block -->
     <div id="apply-form" class="apply-form-box">
@@ -99,11 +127,13 @@ require_once __DIR__ . '/includes/header.php';
           </div>
           <div class="form-group">
             <label>Vị trí ứng tuyển <span style="color: red;">*</span></label>
-            <select name="position" class="form-control" required>
-              <option value="Kỹ sư thiết kế kết cấu thép">Kỹ sư thiết kế kết cấu thép</option>
-              <option value="Kỹ sư giám sát thi công">Kỹ sư giám sát thi công</option>
-              <option value="Thợ gia công cơ khí / Hàn 6G">Thợ gia công cơ khí / Hàn 6G</option>
-              <option value="Vị trí khác">Vị trí khác</option>
+            <select id="position-select" name="position" class="form-control" required>
+              <?php if (!empty($recruitments)): ?>
+                <?php foreach ($recruitments as $rec): ?>
+                  <option value="<?= htmlspecialchars($rec['title']) ?>"><?= htmlspecialchars($rec['title']) ?></option>
+                <?php endforeach; ?>
+              <?php endif; ?>
+              <option value="Vị trí khác" <?= empty($recruitments) ? 'selected' : '' ?>>Vị trí khác</option>
             </select>
           </div>
         </div>
@@ -119,5 +149,18 @@ require_once __DIR__ . '/includes/header.php';
 
   </div>
 </section>
+
+<script>
+function selectPosition(title) {
+  var sel = document.getElementById('position-select');
+  if (!sel) return;
+  for (var i = 0; i < sel.options.length; i++) {
+    if (sel.options[i].value === title) {
+      sel.selectedIndex = i;
+      break;
+    }
+  }
+}
+</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

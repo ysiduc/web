@@ -5,6 +5,7 @@ import {
   Building2,
   Wrench,
   Newspaper,
+  Briefcase,
   Calculator,
   MessageSquare,
   Users,
@@ -54,6 +55,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       to: '/news',
       label: 'Tin Tức & Kỹ Thuật',
       icon: Newspaper,
+      badge: null,
+    },
+    {
+      to: '/recruitments',
+      label: 'Tuyển Dụng',
+      icon: Briefcase,
       badge: null,
     },
     {

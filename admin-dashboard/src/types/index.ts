@@ -80,6 +80,20 @@ export interface NewsItem {
   created_at: string;
 }
 
+export interface Recruitment {
+  id: number;
+  title: string;
+  employment_type: string;
+  salary: string;
+  location: string;
+  description?: string | null;
+  requirements?: string | null;
+  quantity: number;
+  status: 'published' | 'draft';
+  created_at: string;
+  updated_at?: string;
+}
+
 export interface Quote {
   id: number;
   fullname: string;
@@ -138,6 +152,10 @@ export interface DashboardStats {
     };
     news: {
       total: number;
+    };
+    recruitments?: {
+      total: number;
+      published: number;
     };
     quotes: {
       total: number;

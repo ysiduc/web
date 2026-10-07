@@ -53,16 +53,20 @@ try {
     // 6. Users stats
     $usersTotal = (int)$db->query("SELECT COUNT(*) FROM users")->fetchColumn();
 
-    // 7. Recent Quotes
+    // 7. Recruitments stats
+    $recruitmentsTotal = (int)$db->query("SELECT COUNT(*) FROM recruitments")->fetchColumn();
+    $recruitmentsPublished = (int)$db->query("SELECT COUNT(*) FROM recruitments WHERE status = 'published'")->fetchColumn();
+
+    // 8. Recent Quotes
     $recentQuotes = $db->query("SELECT id, fullname, phone, email, service_type, status, created_at FROM quotes ORDER BY id DESC LIMIT 5")->fetchAll();
 
-    // 8. Recent Contacts
+    // 9. Recent Contacts
     $recentContacts = $db->query("SELECT id, name, email, phone, subject, status, created_at FROM contacts ORDER BY id DESC LIMIT 5")->fetchAll();
 
-    // 9. Recent Projects
+    // 10. Recent Projects
     $recentProjects = $db->query("SELECT id, title, category, client, location, image, status, created_at FROM projects ORDER BY id DESC LIMIT 5")->fetchAll();
 
-    // 10. Monthly trend for chart (last 6 months)
+    // 11. Monthly trend for chart (last 6 months)
     $monthlyStats = [];
     for ($i = 5; $i >= 0; $i--) {
         $monthStart = date('Y-m-01 00:00:00', strtotime("-$i months"));
@@ -106,6 +110,10 @@ try {
             ],
             'news' => [
                 'total' => $newsTotal,
+            ],
+            'recruitments' => [
+                'total' => $recruitmentsTotal,
+                'published' => $recruitmentsPublished,
             ],
             'quotes' => [
                 'total' => $quotesTotal,

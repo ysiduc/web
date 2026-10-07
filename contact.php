@@ -18,8 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fullname = trim($_POST['fullname'] ?? '');
         $phone    = trim($_POST['phone'] ?? '');
         $email    = trim($_POST['email'] ?? '');
-        $service  = trim($_POST['service'] ?? '');
-        $message  = trim($_POST['message'] ?? '');
+        $service  = trim($_POST['service'] ?? $_POST['position'] ?? '');
+        $message  = trim($_POST['message'] ?? $_POST['experience'] ?? '');
+        $is_apply = isset($_POST['position']) || isset($_GET['applied']);
 
         if (empty($fullname) || empty($phone)) {
             $error_text = 'Vui lòng điền đầy đủ Họ tên và Số điện thoại liên hệ.';
@@ -38,24 +39,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
 
                     // 2. Insert into contacts table
+                    $subject = $is_apply ? ('Ứng tuyển: ' . (!empty($service) ? $service : 'Hồ sơ nhân sự')) : ('Yêu cầu tư vấn: ' . (!empty($service) ? $service : 'Dịch vụ tổng hợp'));
                     $stmt_c = $db->prepare("INSERT INTO contacts (name, email, phone, subject, message, status) VALUES (:name, :email, :phone, :subject, :message, 'unread')");
                     $stmt_c->execute([
                         'name'    => $fullname,
                         'email'   => !empty($email) ? $email : 'khachhang@pnmec.vn',
                         'phone'   => $phone,
-                        'subject' => 'Yêu cầu tư vấn: ' . (!empty($service) ? $service : 'Dịch vụ tổng hợp'),
+                        'subject' => $subject,
                         'message' => $message
                     ]);
 
                     $sent_status = true;
-                    $msg_text = 'Cảm ơn ông/bà <strong>' . htmlspecialchars($fullname) . '</strong>! Yêu cầu tư vấn / báo giá đã được gửi thành công. Đội ngũ kỹ sư của PNMEC sẽ liên hệ trực tiếp qua số điện thoại <strong>' . htmlspecialchars($phone) . '</strong> trong vòng 30 phút.';
+                    if ($is_apply) {
+                        $msg_text = 'Cảm ơn bạn <strong>' . htmlspecialchars($fullname) . '</strong>! Hồ sơ ứng tuyển vị trí <strong>' . htmlspecialchars($service) . '</strong> đã được gửi thành công. Bộ phận Nhân sự PNMEC sẽ liên hệ phỏng vấn qua số điện thoại <strong>' . htmlspecialchars($phone) . '</strong> trong vòng 48 giờ làm việc.';
+                    } else {
+                        $msg_text = 'Cảm ơn ông/bà <strong>' . htmlspecialchars($fullname) . '</strong>! Yêu cầu tư vấn / báo giá đã được gửi thành công. Đội ngũ kỹ sư của PNMEC sẽ liên hệ trực tiếp qua số điện thoại <strong>' . htmlspecialchars($phone) . '</strong> trong vòng 30 phút.';
+                    }
                 } catch (Exception $e) {
                     error_log("Contact submit error: " . $e->getMessage());
                     $error_text = 'Đã xảy ra lỗi máy chủ trong quá trình gửi yêu cầu. Vui lòng thử lại sau hoặc liên hệ Hotline.';
                 }
             } else {
                 $sent_status = true;
-                $msg_text = 'Cảm ơn ông/bà <strong>' . htmlspecialchars($fullname) . '</strong>! Yêu cầu tư vấn / báo giá đã được gửi thành công.';
+                $msg_text = 'Cảm ơn ông/bà <strong>' . htmlspecialchars($fullname) . '</strong>! Thông tin đã được gửi thành công.';
             }
         }
     }
