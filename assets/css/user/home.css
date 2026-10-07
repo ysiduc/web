@@ -445,26 +445,305 @@
 }
 .h-cta__submit:hover{background:var(--accent-gold-hover);transform:translateY(-2px);box-shadow:0 8px 22px rgba(245,158,11,.3);}
 
-/* ── RESPONSIVE ────────────────────────────────────── */
-@media(max-width:1100px){
-  .h-svc__grid{grid-template-columns:repeat(3,1fr);}
-  .h-svc__card{height:420px;}
+/* ── SLIDE ADJUSTMENT ──────────────────────────────── */
+.h-testi__slide{
+  flex:0 0 50%;
+  padding:0 11px;
+  box-sizing:border-box;
 }
-@media(max-width:900px){
-  .h-svc .container{padding:0 20px;}
-  .h-hero__title{font-size:34px;}
-  .h-about__grid{grid-template-columns:1fr;gap:38px;}
-  .h-about__img{height:320px;}
-  .h-proj__grid{grid-template-columns:repeat(2,1fr);}
-  .h-testi__slide{grid-template-columns:1fr;}
-  .h-faq__layout{grid-template-columns:1fr;}
-  .h-faq__panel-wrap{padding-top:0;}
-  .h-cta__grid{grid-template-columns:1fr;gap:36px;}
+.h-testi__arr{
+  min-width:44px;
+  min-height:44px;
 }
-@media(max-width:640px){
-  .h-svc__grid{grid-template-columns:1fr 1fr;}
-  .h-proj__grid{grid-template-columns:1fr;}
-  .h-hero__title{font-size:26px;}
-  .h-cta__row2{grid-template-columns:1fr;}
-  .h-cta__form-box{padding:22px 18px 20px;}
+.h-faq__mobile-ans{
+  display:none;
+  padding:0 0 16px;
+  color:#8fa3bc;
+  font-size:13.5px;
+  line-height:1.75;
 }
+.h-faq__item.on .h-faq__mobile-ans{
+  display:block;
+}
+
+/* ── RESPONSIVE OVERHAUL ───────────────────────────── */
+/* Tablet: 768px – 1023px */
+@media(max-width:1023px){
+  .h-hero{
+    min-height:600px;
+    padding:80px 0 90px;
+  }
+  .h-hero__title{
+    font-size:36px;
+  }
+  .h-svc{
+    padding:50px 0 64px;
+  }
+  .h-svc .container{
+    padding:0 24px;
+  }
+  .h-svc__grid{
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+  }
+  .h-svc__card{
+    height:380px;
+    opacity:1;
+    transform:none;
+  }
+  .h-about{
+    padding:64px 0 72px;
+  }
+  .h-about__grid{
+    grid-template-columns:1fr;
+    gap:40px;
+  }
+  .h-about__img{
+    height:340px;
+  }
+  .h-proj{
+    padding:60px 0;
+  }
+  .h-proj__grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+  }
+  .h-testi{
+    padding:64px 0 56px;
+  }
+  .h-faq{
+    padding:64px 0;
+  }
+  .h-faq__layout{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+  .h-faq__panel-wrap{
+    display:none;
+  }
+  .h-cta{
+    padding:64px 0;
+  }
+  .h-cta__grid{
+    grid-template-columns:1fr;
+    gap:36px;
+  }
+}
+
+/* Mobile: < 768px */
+@media(max-width:767px){
+  .h-hero{
+    min-height:500px;
+    padding:52px 0 60px;
+    background-position:center center;
+  }
+  .h-hero__badge{
+    margin-bottom:16px;
+    font-size:11px;
+    padding:4px 14px;
+  }
+  .h-hero__title{
+    font-size:30px;
+    line-height:1.24;
+    margin-bottom:14px;
+    letter-spacing:-.3px;
+  }
+  .h-hero__sub{
+    font-size:14px;
+    line-height:1.65;
+    margin-bottom:26px;
+  }
+  .h-hero__btns{
+    flex-direction:column;
+    width:100%;
+    gap:12px;
+  }
+  .h-btn-gold,
+  .h-btn-outline{
+    width:100%;
+    justify-content:center;
+    padding:13px 20px;
+    min-height:44px;
+    box-sizing:border-box;
+    font-size:14px;
+  }
+
+  /* Services 1 card/row on mobile */
+  .h-svc{
+    padding:44px 0 52px;
+  }
+  .h-svc .container{
+    padding:0 16px;
+  }
+  .h-svc__head{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+    margin-bottom:22px;
+    opacity:1;
+    transform:none;
+  }
+  .h-svc__title{
+    font-size:25px;
+  }
+  .h-svc__grid{
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+  .h-svc__card{
+    height:280px;
+    opacity:1 !important;
+    transform:none !important;
+  }
+  .h-svc__badge-tag{
+    display:none;
+  }
+  /* Mobile touch overlay: info visible and readable */
+  .h-svc__overlay{
+    opacity:1;
+    visibility:visible;
+    background:linear-gradient(to top, rgba(15,23,42,.94) 0%, rgba(15,23,42,.72) 60%, rgba(15,23,42,.15) 100%);
+    padding:18px 16px;
+  }
+
+  /* About */
+  .h-about{
+    padding:48px 0 56px;
+  }
+  .h-about__grid{
+    gap:28px;
+  }
+  .h-about__stats{
+    gap:18px;
+    margin-bottom:22px;
+  }
+  .h-about__num{
+    font-size:38px;
+  }
+  .h-about__num sup{
+    font-size:20px;
+  }
+  .h-about__heading{
+    font-size:22px;
+    line-height:1.35;
+    margin-bottom:14px;
+  }
+  .h-about__body{
+    font-size:13.5px;
+    line-height:1.75;
+    margin-bottom:24px;
+  }
+  .h-about__img{
+    height:250px;
+  }
+  .h-about__btn{
+    width:100%;
+    justify-content:center;
+    min-height:44px;
+    box-sizing:border-box;
+  }
+
+  /* Projects 1 col on mobile */
+  .h-proj{
+    padding:44px 0;
+  }
+  .h-sec-title{
+    margin-bottom:28px;
+  }
+  .h-sec-title h2{
+    font-size:24px;
+  }
+  .h-proj__grid{
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+  .h-proj__thumb{
+    height:200px;
+  }
+  .h-btn-navy{
+    width:100%;
+    justify-content:center;
+    min-height:44px;
+    box-sizing:border-box;
+  }
+
+  /* Testimonials 1 card/slide on mobile */
+  .h-testi{
+    padding:44px 0 40px;
+  }
+  .h-testi__head{
+    margin-bottom:28px;
+  }
+  .h-testi__head h2{
+    font-size:23px;
+  }
+  .h-testi__shell{
+    gap:8px;
+  }
+  .h-testi__slide{
+    flex:0 0 100%;
+    padding:0 4px;
+  }
+  .h-testi__card{
+    padding:22px 18px 20px;
+  }
+
+  /* FAQ Accordion on mobile */
+  .h-faq{
+    padding:44px 0;
+  }
+  .h-faq__heading{
+    font-size:22px;
+    margin-bottom:20px;
+  }
+  .h-faq__item-btn{
+    min-height:44px;
+    font-size:13px;
+  }
+
+  /* CTA Form */
+  .h-cta{
+    padding:44px 0;
+  }
+  .h-cta__title{
+    margin-bottom:26px;
+  }
+  .h-cta__title h2{
+    font-size:20px;
+  }
+  .h-cta__row2{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+  .h-cta__form-box{
+    padding:20px 16px 18px;
+  }
+  .h-cta__field input,
+  .h-cta__field select,
+  .h-cta__field textarea{
+    min-height:44px;
+    font-size:14.5px;
+    box-sizing:border-box;
+  }
+  .h-cta__submit{
+    min-height:44px;
+    font-size:13.5px;
+  }
+}
+
+/* Mobile Small: <= 360px */
+@media(max-width:360px){
+  .h-hero__title{
+    font-size:25px;
+  }
+  .h-about__num{
+    font-size:32px;
+  }
+  .h-testi__arr{
+    width:38px;
+    height:38px;
+    min-width:38px;
+    min-height:38px;
+  }
+}
+

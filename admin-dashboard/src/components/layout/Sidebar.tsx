@@ -101,7 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <aside
         className={`fixed top-0 bottom-0 left-0 z-40 flex flex-col bg-white dark:bg-navy-900 border-r border-slate-200 dark:border-navy-800 transition-all duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        } ${isCollapsed ? 'lg:w-20' : 'w-64'}`}
+        } ${isCollapsed ? 'lg:w-20' : 'lg:w-64'} w-[82vw] max-w-xs sm:w-64`}
       >
         {/* Brand Header */}
         <div className="flex h-16 items-center justify-between px-4 border-b border-slate-100 dark:border-navy-800">
@@ -138,12 +138,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {/* Mobile close */}
             <button
               onClick={onClose}
-              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition"
+              className="lg:hidden w-11 h-11 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition"
+              aria-label="Đóng menu sidebar"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
+
 
         {/* Navigation list */}
         <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">

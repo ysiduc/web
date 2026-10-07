@@ -206,84 +206,147 @@ export const UsersPage: React.FC = () => {
             <div className="mt-2 text-sm text-slate-400">Đang tải danh sách tài khoản...</div>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
-                <tr>
-                  <th className="px-6 py-4">Tài khoản &amp; Họ tên</th>
-                  <th className="px-4 py-4">Email</th>
-                  <th className="px-4 py-4">Số điện thoại</th>
-                  <th className="px-4 py-4">Vai trò</th>
-                  <th className="px-4 py-4">Trạng thái</th>
-                  <th className="px-6 py-4 text-right">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
-                {users.map((u) => {
-                  const isSelf = u.id === currentUser?.id;
-                  return (
-                    <tr
-                      key={u.id}
-                      className="hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition"
-                    >
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 text-navy-950 font-bold flex items-center justify-center text-sm shadow-sm flex-shrink-0">
-                            {u.fullname ? u.fullname.charAt(0).toUpperCase() : u.username.charAt(0).toUpperCase()}
+          <>
+            {/* Mobile Card List (< 640px) */}
+            <div className="sm:hidden divide-y divide-slate-100 dark:divide-navy-800">
+              {users.map((u) => {
+                const isSelf = u.id === currentUser?.id;
+                return (
+                  <div key={u.id} className="p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 text-navy-950 font-bold flex items-center justify-center text-base shadow-sm flex-shrink-0">
+                          {u.fullname ? u.fullname.charAt(0).toUpperCase() : u.username.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                            <span>{u.fullname}</span>
+                            {isSelf && (
+                              <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold">
+                                Bạn
+                              </span>
+                            )}
                           </div>
-                          <div>
-                            <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                              <span>{u.fullname}</span>
-                              {isSelf && (
-                                <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold">
-                                  Bạn
-                                </span>
-                              )}
-                            </div>
-                            <div className="text-xs text-slate-400 font-mono">
-                              @{u.username}
-                            </div>
+                          <div className="text-xs text-slate-400 font-mono">
+                            @{u.username}
                           </div>
                         </div>
-                      </td>
-                      <td className="px-4 py-4 text-xs font-mono text-slate-600 dark:text-slate-300">
-                        {u.email}
-                      </td>
-                      <td className="px-4 py-4 text-xs font-mono text-slate-600 dark:text-slate-300">
-                        {u.phone || '—'}
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap">
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
                         <Badge status={u.role} />
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap">
                         <Badge status={u.status} />
-                      </td>
-                      <td className="px-6 py-4 text-right whitespace-nowrap">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            onClick={() => handleOpenEdit(u)}
-                            className="p-2 text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition"
-                            title="Sửa tài khoản / Đổi mật khẩu"
-                          >
-                            <Edit2 className="w-4 h-4" />
-                          </button>
-                          {!isSelf && (
+                      </div>
+                    </div>
+
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-navy-950 border border-slate-200 dark:border-navy-800 text-xs space-y-1 font-mono text-slate-600 dark:text-slate-300">
+                      <div>Email: <strong className="text-slate-900 dark:text-white font-normal">{u.email}</strong></div>
+                      {u.phone && <div>SĐT: <strong className="text-slate-900 dark:text-white font-normal">{u.phone}</strong></div>}
+                    </div>
+
+                    <div className="flex items-center justify-end gap-1 pt-1">
+                      <button
+                        onClick={() => handleOpenEdit(u)}
+                        className="p-2.5 text-blue-600 hover:text-blue-800 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition min-w-[44px] min-h-[44px] flex items-center justify-center"
+                        title="Sửa tài khoản / Đổi mật khẩu"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      {!isSelf && (
+                        <button
+                          onClick={() => setDeleteTarget(u)}
+                          className="p-2.5 text-rose-600 hover:text-rose-800 dark:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition min-w-[44px] min-h-[44px] flex items-center justify-center"
+                          title="Xóa tài khoản"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop Table (>= 640px) */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
+                  <tr>
+                    <th className="px-6 py-4">Tài khoản &amp; Họ tên</th>
+                    <th className="px-4 py-4">Email</th>
+                    <th className="px-4 py-4">Số điện thoại</th>
+                    <th className="px-4 py-4">Vai trò</th>
+                    <th className="px-4 py-4">Trạng thái</th>
+                    <th className="px-6 py-4 text-right">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
+                  {users.map((u) => {
+                    const isSelf = u.id === currentUser?.id;
+                    return (
+                      <tr
+                        key={u.id}
+                        className="hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition"
+                      >
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 text-navy-950 font-bold flex items-center justify-center text-sm shadow-sm flex-shrink-0">
+                              {u.fullname ? u.fullname.charAt(0).toUpperCase() : u.username.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                              <div className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                                <span>{u.fullname}</span>
+                                {isSelf && (
+                                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-bold">
+                                    Bạn
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-xs text-slate-400 font-mono">
+                                @{u.username}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 text-xs font-mono text-slate-600 dark:text-slate-300">
+                          {u.email}
+                        </td>
+                        <td className="px-4 py-4 text-xs font-mono text-slate-600 dark:text-slate-300">
+                          {u.phone || '—'}
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          <Badge status={u.role} />
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap">
+                          <Badge status={u.status} />
+                        </td>
+                        <td className="px-6 py-4 text-right whitespace-nowrap">
+                          <div className="flex items-center justify-end gap-1.5">
                             <button
-                              onClick={() => setDeleteTarget(u)}
-                              className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
-                              title="Xóa tài khoản"
+                              onClick={() => handleOpenEdit(u)}
+                              className="p-2 text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition"
+                              title="Sửa tài khoản / Đổi mật khẩu"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Edit2 className="w-4 h-4" />
                             </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                            {!isSelf && (
+                              <button
+                                onClick={() => setDeleteTarget(u)}
+                                className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
+                                title="Xóa tài khoản"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 

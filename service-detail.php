@@ -34,31 +34,35 @@ if (!$service) {
   </div>
 </div>
 
-<section style="padding: 60px 0; background: #fff;">
-  <div class="container" style="display: grid; grid-template-columns: 2.5fr 1fr; gap: 40px;">
-    <div>
-      <img src="<?php echo htmlspecialchars(get_service_image_url($service['image'])); ?>" alt="<?php echo htmlspecialchars($service['title']); ?>" style="width: 100%; height: 400px; object-fit: cover; border-radius: 12px; margin-bottom: 30px;" onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
+<section class="service-detail-section">
+  <div class="container service-detail-container">
+    <div class="service-detail-main">
+      <img src="<?php echo htmlspecialchars(get_service_image_url($service['image'])); ?>" 
+           alt="<?php echo htmlspecialchars($service['title']); ?>" 
+           class="service-detail-img"
+           onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
       
-      <h2 style="font-size: 28px; margin-bottom: 16px; color: var(--primary-navy);"><?php echo htmlspecialchars($service['title']); ?></h2>
-      <p style="font-size: 16px; font-weight: 600; color: var(--accent-gold); margin-bottom: 24px; line-height: 1.6;">
+      <h2 class="service-detail-title"><?php echo htmlspecialchars($service['title']); ?></h2>
+      <p class="service-detail-summary">
         <?php echo htmlspecialchars($service['summary']); ?>
       </p>
 
-      <div style="font-size: 15px; color: var(--text-main); line-height: 1.8;">
+      <div class="service-detail-content">
         <?php echo nl2br(htmlspecialchars($service['content'])); ?>
       </div>
 
-      <div style="margin-top: 40px; padding: 30px; background: var(--bg-light); border-radius: 12px; border-left: 4px solid var(--accent-gold);">
-        <h3 style="font-size: 18px; margin-bottom: 10px;">Bạn cần tư vấn giải pháp kỹ thuật cho dự án?</h3>
-        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Liên hệ ngay đội ngũ kỹ sư PNMEC để nhận hỗ trợ khảo sát và phương án thi công tối ưu.</p>
-        <a href="<?= url('quote.php') ?>" class="btn btn-primary"><i class="fa-solid fa-calculator"></i> Nhận Báo Giá Nhanh</a>
+      <div class="service-cta-card">
+        <h3>Bạn cần tư vấn giải pháp kỹ thuật cho dự án?</h3>
+        <p>Liên hệ ngay đội ngũ kỹ sư PNMEC để nhận hỗ trợ khảo sát và phương án thi công tối ưu.</p>
+        <a href="<?= url('quote.php') ?>" class="btn btn-primary service-cta-btn"><i class="fa-solid fa-calculator"></i> Nhận Báo Giá Nhanh</a>
       </div>
     </div>
 
-    <div>
+    <aside class="service-detail-sidebar">
       <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
-    </div>
+    </aside>
   </div>
 </section>
+
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

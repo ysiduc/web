@@ -170,98 +170,184 @@ export const QuotesPage: React.FC = () => {
             Không tìm thấy yêu cầu báo giá nào.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
-                <tr>
-                  <th className="px-6 py-4">Khách hàng</th>
-                  <th className="px-4 py-4">Liên hệ</th>
-                  <th className="px-4 py-4">Dịch vụ yêu cầu</th>
-                  <th className="px-4 py-4">Trạng thái</th>
-                  <th className="px-4 py-4">Ngày gửi</th>
-                  <th className="px-6 py-4 text-right">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
-                {quotes.map((q) => (
-                  <tr
-                    key={q.id}
-                    className="hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition cursor-pointer"
-                    onClick={() => setSelectedQuote(q)}
-                  >
-                    <td className="px-6 py-4">
-                      <div className="font-bold text-slate-900 dark:text-white">
+          <>
+            {/* Mobile Card List (< 640px) */}
+            <div className="sm:hidden divide-y divide-slate-100 dark:divide-navy-800">
+              {quotes.map((q) => (
+                <div
+                  key={q.id}
+                  className="p-4 space-y-3 cursor-pointer hover:bg-slate-50/50 dark:hover:bg-navy-800/20 transition"
+                  onClick={() => setSelectedQuote(q)}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <h4 className="font-bold text-slate-900 dark:text-white text-base">
                         {q.fullname}
+                      </h4>
+                      <div className="text-xs text-slate-400 mt-0.5">
+                        {new Date(q.created_at).toLocaleDateString('vi-VN')}
                       </div>
-                      <div className="text-xs text-slate-400 mt-0.5 line-clamp-1 max-w-xs">
-                        {q.message || 'Không có ghi chú thêm.'}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-xs" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                        <Phone className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
-                        <a href={`tel:${q.phone}`} className="font-mono hover:text-amber-600 hover:underline">
-                          {q.phone}
-                        </a>
-                      </div>
-                      {q.email && (
-                        <div className="flex items-center gap-1.5 text-slate-400 mt-1">
-                          <Mail className="w-3.5 h-3.5 flex-shrink-0" />
-                          <a href={`mailto:${q.email}`} className="hover:underline truncate max-w-[160px]">
-                            {q.email}
-                          </a>
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-4 py-4">
-                      <div className="font-semibold text-slate-800 dark:text-slate-200 text-xs">
-                        {q.service_type || 'Tư vấn tổng thể'}
-                      </div>
-                      {q.project_location && (
-                        <div className="text-slate-400 text-[11px] flex items-center gap-1 mt-0.5">
-                          <MapPin className="w-3 h-3" />
-                          <span>{q.project_location}</span>
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                    </div>
+                    <div onClick={(e) => e.stopPropagation()}>
                       <select
                         value={q.status}
                         onChange={(e) => handleUpdateStatus(q.id, e.target.value as any)}
-                        className="px-2.5 py-1 text-xs font-semibold rounded-lg border border-slate-200 dark:border-navy-700 bg-white dark:bg-navy-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                        className="px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-navy-700 bg-white dark:bg-navy-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 min-h-[36px]"
                       >
                         <option value="new">Mới gửi</option>
                         <option value="processing">Đang xử lý</option>
                         <option value="completed">Hoàn tất</option>
                         <option value="canceled">Đã hủy</option>
                       </select>
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-xs text-slate-400">
-                      {new Date(q.created_at).toLocaleDateString('vi-VN')}
-                    </td>
-                    <td className="px-6 py-4 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-end gap-1.5">
-                        <button
-                          onClick={() => setSelectedQuote(q)}
-                          className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"
-                          title="Xem chi tiết"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteTarget(q)}
-                          className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
-                          title="Xóa yêu cầu"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-navy-950 border border-slate-200 dark:border-navy-800 text-xs space-y-1.5" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                      <Phone className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+                      <a href={`tel:${q.phone}`} className="font-mono font-bold hover:text-amber-600 hover:underline">
+                        {q.phone}
+                      </a>
+                    </div>
+                    {q.email && (
+                      <div className="flex items-center gap-2 text-slate-500">
+                        <Mail className="w-3.5 h-3.5 flex-shrink-0" />
+                        <a href={`mailto:${q.email}`} className="hover:underline truncate">
+                          {q.email}
+                        </a>
                       </div>
-                    </td>
+                    )}
+                    <div className="text-slate-600 dark:text-slate-400 font-medium">
+                      Dịch vụ: <span className="text-amber-600 dark:text-amber-400 font-semibold">{q.service_type || 'Tư vấn tổng thể'}</span>
+                    </div>
+                    {q.project_location && (
+                      <div className="text-slate-500 flex items-center gap-1.5">
+                        <MapPin className="w-3 h-3 flex-shrink-0" />
+                        <span>{q.project_location}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {q.message && (
+                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 italic bg-amber-50/40 dark:bg-amber-950/20 p-2 rounded-lg">
+                      "{q.message}"
+                    </p>
+                  )}
+
+                  <div className="flex items-center justify-end gap-1 pt-1" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => setSelectedQuote(q)}
+                      className="p-2.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition min-w-[44px] min-h-[44px] flex items-center justify-center"
+                      title="Xem chi tiết"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setDeleteTarget(q)}
+                      className="p-2.5 text-rose-600 hover:text-rose-800 dark:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition min-w-[44px] min-h-[44px] flex items-center justify-center"
+                      title="Xóa yêu cầu"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table (>= 640px) */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
+                  <tr>
+                    <th className="px-6 py-4">Khách hàng</th>
+                    <th className="px-4 py-4">Liên hệ</th>
+                    <th className="px-4 py-4">Dịch vụ yêu cầu</th>
+                    <th className="px-4 py-4">Trạng thái</th>
+                    <th className="px-4 py-4">Ngày gửi</th>
+                    <th className="px-6 py-4 text-right">Thao tác</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
+                  {quotes.map((q) => (
+                    <tr
+                      key={q.id}
+                      className="hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition cursor-pointer"
+                      onClick={() => setSelectedQuote(q)}
+                    >
+                      <td className="px-6 py-4">
+                        <div className="font-bold text-slate-900 dark:text-white">
+                          {q.fullname}
+                        </div>
+                        <div className="text-xs text-slate-400 mt-0.5 line-clamp-1 max-w-xs">
+                          {q.message || 'Không có ghi chú thêm.'}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap text-xs" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+                          <Phone className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+                          <a href={`tel:${q.phone}`} className="font-mono hover:text-amber-600 hover:underline">
+                            {q.phone}
+                          </a>
+                        </div>
+                        {q.email && (
+                          <div className="flex items-center gap-1.5 text-slate-400 mt-1">
+                            <Mail className="w-3.5 h-3.5 flex-shrink-0" />
+                            <a href={`mailto:${q.email}`} className="hover:underline truncate max-w-[160px]">
+                              {q.email}
+                            </a>
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-4">
+                        <div className="font-semibold text-slate-800 dark:text-slate-200 text-xs">
+                          {q.service_type || 'Tư vấn tổng thể'}
+                        </div>
+                        {q.project_location && (
+                          <div className="text-slate-400 text-[11px] flex items-center gap-1 mt-0.5">
+                            <MapPin className="w-3 h-3" />
+                            <span>{q.project_location}</span>
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                        <select
+                          value={q.status}
+                          onChange={(e) => handleUpdateStatus(q.id, e.target.value as any)}
+                          className="px-2.5 py-1 text-xs font-semibold rounded-lg border border-slate-200 dark:border-navy-700 bg-white dark:bg-navy-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                        >
+                          <option value="new">Mới gửi</option>
+                          <option value="processing">Đang xử lý</option>
+                          <option value="completed">Hoàn tất</option>
+                          <option value="canceled">Đã hủy</option>
+                        </select>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap text-xs text-slate-400">
+                        {new Date(q.created_at).toLocaleDateString('vi-VN')}
+                      </td>
+                      <td className="px-6 py-4 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => setSelectedQuote(q)}
+                            className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"
+                            title="Xem chi tiết"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget(q)}
+                            className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
+                            title="Xóa yêu cầu"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 

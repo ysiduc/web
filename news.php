@@ -46,21 +46,21 @@ if (empty($news_list)) {
   </div>
 </div>
 
-<section style="padding: 60px 0; background: var(--bg-light);">
+<section class="news-section">
   <div class="container">
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px;">
+    <div class="news-grid">
       <?php foreach ($news_list as $n): ?>
-        <div style="background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-          <img src="<?php echo htmlspecialchars($n['image']); ?>" alt="<?php echo htmlspecialchars($n['title']); ?>" style="height: 200px; width: 100%; object-fit: cover;">
-          <div style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column;">
-            <span style="font-size: 12px; color: var(--accent-gold); font-weight: 700; margin-bottom: 6px;"><i class="fa-regular fa-calendar-days"></i> <?php echo format_date($n['created_at']); ?></span>
-            <h3 style="font-size: 18px; margin-bottom: 10px; line-height: 1.4;">
+        <article class="news-card">
+          <img src="<?php echo htmlspecialchars($n['image']); ?>" alt="<?php echo htmlspecialchars($n['title']); ?>" class="news-card-img" loading="lazy">
+          <div class="news-card-body">
+            <span class="news-card-date"><i class="fa-regular fa-calendar-days"></i> <?php echo format_date($n['created_at']); ?></span>
+            <h2 class="news-card-title">
               <a href="<?= url('news-detail.php?id=' . (int)$n['id']) ?>"><?php echo htmlspecialchars($n['title']); ?></a>
-            </h3>
-            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;"><?php echo htmlspecialchars($n['summary']); ?></p>
-            <a href="<?= url('news-detail.php?id=' . (int)$n['id']) ?>" style="margin-top: auto; font-weight: 700; color: var(--primary-navy); font-size: 14px;">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+            </h2>
+            <p class="news-card-desc"><?php echo htmlspecialchars($n['summary']); ?></p>
+            <a href="<?= url('news-detail.php?id=' . (int)$n['id']) ?>" class="news-card-link">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
           </div>
-        </div>
+        </article>
       <?php endforeach; ?>
     </div>
   </div>

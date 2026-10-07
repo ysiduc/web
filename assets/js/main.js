@@ -4,10 +4,62 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* Mobile Nav Toggle */
-  const toggle = document.querySelector('.menu-toggle');
-  const menu   = document.querySelector('.nav-menu');
-  if (toggle && menu) toggle.addEventListener('click', () => menu.classList.toggle('show'));
+  /* Mobile Nav Drawer Toggle */
+  const toggleBtn   = document.getElementById('menuToggle') || document.querySelector('.menu-toggle');
+  const drawer      = document.getElementById('mobileDrawer');
+  const backdrop    = document.getElementById('mobileDrawerBackdrop');
+  const closeBtn    = document.getElementById('mobileDrawerClose');
+  const legacyMenu  = document.querySelector('.nav-menu');
+
+  function openDrawer() {
+    if (drawer) {
+      drawer.classList.add('active');
+      drawer.setAttribute('aria-hidden', 'false');
+    }
+    if (backdrop) backdrop.classList.add('active');
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    if (drawer) {
+      drawer.classList.remove('active');
+      drawer.setAttribute('aria-hidden', 'true');
+    }
+    if (backdrop) backdrop.classList.remove('active');
+    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function () {
+      if (drawer) {
+        if (drawer.classList.contains('active')) {
+          closeDrawer();
+        } else {
+          openDrawer();
+        }
+      } else if (legacyMenu) {
+        legacyMenu.classList.toggle('show');
+      }
+    });
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && drawer && drawer.classList.contains('active')) {
+      closeDrawer();
+    }
+  });
+
+  // Close drawer when clicking any link inside it
+  if (drawer) {
+    drawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeDrawer);
+    });
+  }
 
   /* Projects filter (projects.php) */
   const filterTabs  = document.querySelectorAll('.filter-tab');

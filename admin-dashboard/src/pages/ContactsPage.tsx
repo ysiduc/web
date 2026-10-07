@@ -175,96 +175,185 @@ export const ContactsPage: React.FC = () => {
             Chưa có tin nhắn liên hệ nào.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
-                <tr>
-                  <th className="px-6 py-4">Khách hàng</th>
-                  <th className="px-4 py-4">Liên hệ</th>
-                  <th className="px-4 py-4">Tiêu đề &amp; Nội dung</th>
-                  <th className="px-4 py-4">Trạng thái</th>
-                  <th className="px-4 py-4">Ngày gửi</th>
-                  <th className="px-6 py-4 text-right">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
-                {contacts.map((c) => (
-                  <tr
-                    key={c.id}
-                    className={`hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition cursor-pointer ${
-                      c.status === 'unread' ? 'bg-amber-50/30 dark:bg-amber-950/10 font-medium' : ''
-                    }`}
-                    onClick={() => handleOpenDetail(c)}
-                  >
-                    <td className="px-6 py-4">
-                      <div className="font-bold text-slate-900 dark:text-white">
-                        {c.name}
+          <>
+            {/* Mobile Card List (< 640px) */}
+            <div className="sm:hidden divide-y divide-slate-100 dark:divide-navy-800">
+              {contacts.map((c) => (
+                <div
+                  key={c.id}
+                  className={`p-4 space-y-3 cursor-pointer transition ${
+                    c.status === 'unread'
+                      ? 'bg-amber-50/40 dark:bg-amber-950/20'
+                      : 'hover:bg-slate-50/50 dark:hover:bg-navy-800/20'
+                  }`}
+                  onClick={() => handleOpenDetail(c)}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-bold text-slate-900 dark:text-white text-base">
+                          {c.name}
+                        </h4>
+                        {c.status === 'unread' && (
+                          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                        )}
                       </div>
-                      <div className="text-xs text-slate-400">
-                        ID #{c.id}
+                      <div className="text-xs text-slate-400 mt-0.5">
+                        {new Date(c.created_at).toLocaleDateString('vi-VN')} · ID #{c.id}
                       </div>
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-xs" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                        <Mail className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
-                        <a href={`mailto:${c.email}`} className="hover:underline truncate max-w-[160px]">
-                          {c.email}
-                        </a>
-                      </div>
-                      {c.phone && (
-                        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 mt-1">
-                          <Phone className="w-3.5 h-3.5 flex-shrink-0" />
-                          <a href={`tel:${c.phone}`} className="hover:underline">
-                            {c.phone}
-                          </a>
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-4 py-4 max-w-md">
-                      <div className="font-semibold text-slate-800 dark:text-slate-200 text-xs truncate">
-                        {c.subject || 'Tư vấn dịch vụ'}
-                      </div>
-                      <div className="text-slate-400 text-xs line-clamp-1 mt-0.5">
-                        {c.message}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                    </div>
+
+                    <div onClick={(e) => e.stopPropagation()}>
                       <select
                         value={c.status}
                         onChange={(e) => handleUpdateStatus(c.id, e.target.value as any)}
-                        className="px-2.5 py-1 text-xs font-semibold rounded-lg border border-slate-200 dark:border-navy-700 bg-white dark:bg-navy-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                        className="px-2.5 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-navy-700 bg-white dark:bg-navy-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 min-h-[36px]"
                       >
                         <option value="unread">Chưa đọc</option>
                         <option value="read">Đã xem</option>
                         <option value="replied">Đã phản hồi</option>
                       </select>
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-xs text-slate-400">
-                      {new Date(c.created_at).toLocaleDateString('vi-VN')}
-                    </td>
-                    <td className="px-6 py-4 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-end gap-1.5">
-                        <button
-                          onClick={() => handleOpenDetail(c)}
-                          className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"
-                          title="Xem thư"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteTarget(c)}
-                          className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
-                          title="Xóa liên hệ"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-navy-950 border border-slate-200 dark:border-navy-800 text-xs space-y-1.5" onClick={(e) => e.stopPropagation()}>
+                    <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                      <Mail className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
+                      <a href={`mailto:${c.email}`} className="hover:underline truncate">
+                        {c.email}
+                      </a>
+                    </div>
+                    {c.phone && (
+                      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                        <Phone className="w-3.5 h-3.5 flex-shrink-0 text-amber-500" />
+                        <a href={`tel:${c.phone}`} className="font-mono hover:underline">
+                          {c.phone}
+                        </a>
                       </div>
-                    </td>
+                    )}
+                  </div>
+
+                  <div className="text-xs">
+                    <strong className="text-slate-800 dark:text-slate-200 block mb-0.5">
+                      {c.subject || 'Tư vấn dịch vụ'}
+                    </strong>
+                    <p className="text-slate-600 dark:text-slate-400 line-clamp-2">
+                      {c.message}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-1 pt-1" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => handleOpenDetail(c)}
+                      className="p-2.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition min-w-[44px] min-h-[44px] flex items-center justify-center"
+                      title="Xem thư"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setDeleteTarget(c)}
+                      className="p-2.5 text-rose-600 hover:text-rose-800 dark:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition min-w-[44px] min-h-[44px] flex items-center justify-center"
+                      title="Xóa liên hệ"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table (>= 640px) */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
+                  <tr>
+                    <th className="px-6 py-4">Khách hàng</th>
+                    <th className="px-4 py-4">Liên hệ</th>
+                    <th className="px-4 py-4">Tiêu đề &amp; Nội dung</th>
+                    <th className="px-4 py-4">Trạng thái</th>
+                    <th className="px-4 py-4">Ngày gửi</th>
+                    <th className="px-6 py-4 text-right">Thao tác</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
+                  {contacts.map((c) => (
+                    <tr
+                      key={c.id}
+                      className={`hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition cursor-pointer ${
+                        c.status === 'unread' ? 'bg-amber-50/30 dark:bg-amber-950/10 font-medium' : ''
+                      }`}
+                      onClick={() => handleOpenDetail(c)}
+                    >
+                      <td className="px-6 py-4">
+                        <div className="font-bold text-slate-900 dark:text-white">
+                          {c.name}
+                        </div>
+                        <div className="text-xs text-slate-400">
+                          ID #{c.id}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap text-xs" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+                          <Mail className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
+                          <a href={`mailto:${c.email}`} className="hover:underline truncate max-w-[160px]">
+                            {c.email}
+                          </a>
+                        </div>
+                        {c.phone && (
+                          <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 mt-1">
+                            <Phone className="w-3.5 h-3.5 flex-shrink-0" />
+                            <a href={`tel:${c.phone}`} className="hover:underline">
+                              {c.phone}
+                            </a>
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-4 max-w-md">
+                        <div className="font-semibold text-slate-800 dark:text-slate-200 text-xs truncate">
+                          {c.subject || 'Tư vấn dịch vụ'}
+                        </div>
+                        <div className="text-slate-400 text-xs line-clamp-1 mt-0.5">
+                          {c.message}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                        <select
+                          value={c.status}
+                          onChange={(e) => handleUpdateStatus(c.id, e.target.value as any)}
+                          className="px-2.5 py-1 text-xs font-semibold rounded-lg border border-slate-200 dark:border-navy-700 bg-white dark:bg-navy-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                        >
+                          <option value="unread">Chưa đọc</option>
+                          <option value="read">Đã xem</option>
+                          <option value="replied">Đã phản hồi</option>
+                        </select>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap text-xs text-slate-400">
+                        {new Date(c.created_at).toLocaleDateString('vi-VN')}
+                      </td>
+                      <td className="px-6 py-4 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => handleOpenDetail(c)}
+                            className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"
+                            title="Xem thư"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget(c)}
+                            className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
+                            title="Xóa liên hệ"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 

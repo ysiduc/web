@@ -55,12 +55,12 @@ $active_css = $page_css_map[$current_page] ?? asset_url('css/user/home.css');
   <div class="topbar">
     <div class="header-container topbar-content">
       <div class="topbar-info">
-        <span><i class="fa-solid fa-phone"></i> Hotline: <a href="tel:<?php echo $phone; ?>" class="topbar-link"><?php echo $phone; ?></a></span>
-        <span><i class="fa-solid fa-envelope"></i> <?php echo $email; ?></span>
-        <span><i class="fa-solid fa-clock"></i> <?php echo $working_hours; ?></span>
+        <span class="topbar-item topbar-item--hotline"><i class="fa-solid fa-phone"></i> Hotline: <a href="tel:<?php echo $phone; ?>" class="topbar-link"><?php echo $phone; ?></a></span>
+        <span class="topbar-item topbar-item--email"><i class="fa-solid fa-envelope"></i> <?php echo $email; ?></span>
+        <span class="topbar-item topbar-item--hours"><i class="fa-solid fa-clock"></i> <?php echo $working_hours; ?></span>
       </div>
       <div class="topbar-right">
-        <a href="<?php echo url('/admin/login.php'); ?>" class="topbar-link"><i class="fa-solid fa-lock"></i> Đăng nhập Nhân viên</a>
+        <a href="<?php echo url('/admin/login.php'); ?>" class="topbar-link"><i class="fa-solid fa-lock"></i> Đăng nhập</a>
       </div>
     </div>
   </div>
@@ -68,14 +68,15 @@ $active_css = $page_css_map[$current_page] ?? asset_url('css/user/home.css');
   <!-- Main Sticky Header & Navigation -->
   <header class="main-header">
     <div class="header-container navbar">
-      <a href="<?php echo url('/index.php'); ?>" class="brand-logo">
+      <a href="<?php echo url('/index.php'); ?>" class="brand-logo" aria-label="<?php echo $short_name; ?> - Trang chủ">
         <img src="<?php echo asset_url('images/logo.png?v=2'); ?>" alt="<?php echo $short_name; ?> - THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG" class="site-logo-img">
       </a>
 
-      <button class="menu-toggle" aria-label="Toggle Navigation">
+      <button class="menu-toggle" id="menuToggle" aria-label="Mở menu điều hướng" aria-expanded="false" aria-controls="mobileDrawer">
         <i class="fa-solid fa-bars"></i>
       </button>
 
+      <!-- Desktop Nav Menu -->
       <ul class="nav-menu">
         <li><a href="<?php echo url('/index.php'); ?>" class="nav-link <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">Trang chủ</a></li>
         <li><a href="<?php echo url('/about.php'); ?>" class="nav-link <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">Giới thiệu</a></li>
@@ -87,3 +88,59 @@ $active_css = $page_css_map[$current_page] ?? asset_url('css/user/home.css');
       </ul>
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer & Backdrop -->
+  <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" aria-hidden="true"></div>
+  <aside class="mobile-drawer" id="mobileDrawer" aria-label="Mobile Navigation" aria-hidden="true">
+    <div class="mobile-drawer__head">
+      <div class="mobile-drawer__brand">
+        <span class="mobile-drawer__brand-title"><?php echo $short_name; ?></span>
+        <span class="mobile-drawer__brand-sub">Cơ Khí &amp; Xây Dựng</span>
+      </div>
+      <button class="mobile-drawer__close" id="mobileDrawerClose" aria-label="Đóng menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="mobile-drawer__body">
+      <ul class="mobile-nav-list">
+        <li><a href="<?php echo url('/index.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>"><i class="fa-solid fa-house"></i> Trang chủ</a></li>
+        <li><a href="<?php echo url('/about.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>"><i class="fa-solid fa-building"></i> Giới thiệu</a></li>
+        <li><a href="<?php echo url('/services.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'services.php') ? 'active' : ''; ?>"><i class="fa-solid fa-wrench"></i> Dịch vụ</a></li>
+        <li><a href="<?php echo url('/projects.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'projects.php' || $current_page == 'project-detail.php') ? 'active' : ''; ?>"><i class="fa-solid fa-layer-group"></i> Công trình</a></li>
+        <li><a href="<?php echo url('/news.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'news.php' || $current_page == 'news-detail.php') ? 'active' : ''; ?>"><i class="fa-solid fa-newspaper"></i> Tin tức</a></li>
+        <li><a href="<?php echo url('/recruitment.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'recruitment.php') ? 'active' : ''; ?>"><i class="fa-solid fa-user-plus"></i> Tuyển dụng</a></li>
+        <li><a href="<?php echo url('/contact.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>"><i class="fa-solid fa-phone"></i> Liên hệ</a></li>
+      </ul>
+
+      <div class="mobile-drawer__cta">
+        <a href="<?php echo url('/contact.php'); ?>" class="btn btn-primary mobile-cta-btn">
+          <i class="fa-solid fa-calculator"></i> Liên hệ + Báo giá
+        </a>
+      </div>
+
+      <div class="mobile-drawer__info">
+        <div class="mobile-drawer__info-item">
+          <i class="fa-solid fa-phone"></i>
+          <div>
+            <span>Hotline 24/7:</span>
+            <a href="tel:<?php echo $phone; ?>"><strong><?php echo $phone; ?></strong></a>
+          </div>
+        </div>
+        <div class="mobile-drawer__info-item">
+          <i class="fa-solid fa-envelope"></i>
+          <div>
+            <span>Email hỗ trợ:</span>
+            <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
+          </div>
+        </div>
+        <div class="mobile-drawer__info-item">
+          <i class="fa-solid fa-clock"></i>
+          <div>
+            <span>Giờ làm việc:</span>
+            <span><?php echo $working_hours; ?></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>

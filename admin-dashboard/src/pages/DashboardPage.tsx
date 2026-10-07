@@ -58,22 +58,22 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-navy-900 via-navy-800 to-slate-900 text-white p-6 sm:p-8 shadow-xl border border-navy-700/50">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-navy-900 via-navy-800 to-slate-900 text-white p-5 sm:p-8 shadow-xl border border-navy-700/50">
         <div className="relative z-10 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider mb-3">
             <HardHat className="w-3.5 h-3.5" />
             Hệ Thống Quản Trị Trung Tâm PNMEC
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-heading">
+          <h2 className="text-xl sm:text-3xl font-extrabold tracking-tight font-heading leading-tight">
             Xin chào! Chúc một ngày làm việc hiệu quả.
           </h2>
-          <p className="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
+          <p className="mt-2 text-slate-300 text-xs sm:text-base leading-relaxed">
             Hệ thống hiển thị dữ liệu thực tế từ cơ sở dữ liệu PNMEC. Bạn có thể theo dõi yêu cầu báo giá, liên hệ khách hàng và quản lý toàn bộ nội dung dịch vụ, công trình.
           </p>
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap gap-2.5 sm:gap-3">
             <a
               href="#/projects"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-navy-950 font-bold text-sm shadow-md shadow-amber-500/20 transition"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-navy-950 font-bold text-sm shadow-md shadow-amber-500/20 transition min-h-[44px]"
             >
               <PlusCircle className="w-4 h-4" />
               <span>Quản lý Công Trình</span>
@@ -82,7 +82,7 @@ export const DashboardPage: React.FC = () => {
               href={getPublicPageUrl('/index.php')}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur transition"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur transition min-h-[44px]"
             >
               <span>Xem Website Ngoài</span>
               <ArrowUpRight className="w-4 h-4" />
@@ -92,14 +92,14 @@ export const DashboardPage: React.FC = () => {
       </div>
 
       {/* Top 6 KPI Stat Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
         {/* Projects */}
-        <div className="bg-white dark:bg-navy-900 p-5 rounded-2xl border border-slate-200 dark:border-navy-800 shadow-sm hover:shadow-md transition">
+        <div className="bg-white dark:bg-navy-900 p-3.5 sm:p-5 rounded-2xl border border-slate-200 dark:border-navy-800 shadow-sm hover:shadow-md transition">
           <div className="flex items-center justify-between">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-              <Building2 className="w-5 h-5" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+              <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <span className="text-[11px] font-semibold text-slate-400 uppercase">Dự án</span>
+            <span className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase">Dự án</span>
           </div>
           <div className="mt-3">
             <div className="text-2xl font-bold text-slate-900 dark:text-white">

@@ -395,11 +395,11 @@ export const ProjectDetailEditorPage: React.FC = () => {
           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
           <span>Thêm khối nội dung mới:</span>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
           <button
             type="button"
             onClick={() => handleAddBlock('heading')}
-            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-2 transition"
+            className="px-3 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center sm:justify-start gap-2 transition min-h-[40px]"
           >
             <Heading className="w-4 h-4 text-amber-500" />
             <span>Tiêu đề</span>
@@ -408,7 +408,7 @@ export const ProjectDetailEditorPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleAddBlock('paragraph')}
-            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-2 transition"
+            className="px-3 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center sm:justify-start gap-2 transition min-h-[40px]"
           >
             <AlignLeft className="w-4 h-4 text-blue-500" />
             <span>Đoạn văn</span>
@@ -417,7 +417,7 @@ export const ProjectDetailEditorPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleAddBlock('image')}
-            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-2 transition"
+            className="px-3 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center sm:justify-start gap-2 transition min-h-[40px]"
           >
             <ImageIcon className="w-4 h-4 text-emerald-500" />
             <span>Hình ảnh</span>
@@ -426,7 +426,7 @@ export const ProjectDetailEditorPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleAddBlock('gallery')}
-            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-2 transition"
+            className="px-3 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center sm:justify-start gap-2 transition min-h-[40px]"
           >
             <Images className="w-4 h-4 text-purple-500" />
             <span>Bộ sưu tập ảnh</span>
@@ -435,7 +435,7 @@ export const ProjectDetailEditorPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleAddBlock('callout')}
-            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-2 transition"
+            className="px-3 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center sm:justify-start gap-2 transition min-h-[40px]"
           >
             <MessageSquareQuote className="w-4 h-4 text-orange-500" />
             <span>Ghi chú nổi bật</span>
@@ -444,7 +444,7 @@ export const ProjectDetailEditorPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleAddBlock('divider')}
-            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-2 transition"
+            className="px-3 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center sm:justify-start gap-2 transition min-h-[40px]"
           >
             <Minus className="w-4 h-4 text-slate-400" />
             <span>Phân cách</span>
@@ -453,7 +453,7 @@ export const ProjectDetailEditorPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleAddBlock('html')}
-            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center gap-2 transition"
+            className="col-span-2 sm:col-span-1 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center sm:justify-start gap-2 transition min-h-[40px]"
           >
             <Code className="w-4 h-4 text-rose-500" />
             <span>HTML tùy chỉnh</span>

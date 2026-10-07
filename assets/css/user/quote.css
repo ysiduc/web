@@ -5,12 +5,67 @@
 @import '../common/footer.css';
 @import '../common/components.css';
 
-.quote-page-form {
+.quote-page-section {
+  padding: 60px 0;
+  background: var(--bg-light);
+}
+
+.quote-page-card {
   max-width: 800px;
-  margin: 60px auto;
-  background: #fff;
+  margin: 0 auto;
+  background: #ffffff;
   padding: 40px;
   border-radius: 16px;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-md);
 }
+
+.quote-card-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.quote-badge {
+  color: var(--accent-gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.quote-title {
+  font-size: 28px;
+  margin-top: 6px;
+  color: var(--primary-navy);
+}
+
+.quote-sub {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.quote-submit-btn {
+  width: 100%;
+  padding: 15px;
+  font-weight: 800;
+  font-size: 16px;
+  min-height: 48px;
+}
+
+@media (max-width: 767px) {
+  .quote-page-section {
+    padding: 36px 0 48px;
+  }
+  .quote-page-card {
+    padding: 22px 16px;
+    border-radius: 12px;
+  }
+  .quote-title {
+    font-size: 22px;
+  }
+  .quote-card-header {
+    margin-bottom: 22px;
+  }
+}
+

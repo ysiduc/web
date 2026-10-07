@@ -35,21 +35,26 @@ if (!$news_item) {
   </div>
 </div>
 
-<section style="padding: 60px 0; background: #fff;">
-  <div class="container" style="max-width: 860px; margin: 0 auto;">
-    <span style="color: var(--accent-gold); font-weight: 700; font-size: 13px;"><i class="fa-regular fa-calendar-days"></i> <?php echo format_date($news_item['created_at']); ?> | Tác giả: <?php echo htmlspecialchars($news_item['author']); ?></span>
-    <h1 style="font-size: 32px; margin: 10px 0 20px; color: var(--primary-navy);"><?php echo htmlspecialchars($news_item['title']); ?></h1>
-    
-    <p style="font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 24px; line-height: 1.6; font-style: italic;">
-      <?php echo htmlspecialchars($news_item['summary']); ?>
-    </p>
+<section class="news-detail-section">
+  <div class="container">
+    <article class="news-detail-article">
+      <div class="news-detail-meta">
+        <i class="fa-regular fa-calendar-days"></i> <?php echo format_date($news_item['created_at']); ?> | Tác giả: <?php echo htmlspecialchars($news_item['author']); ?>
+      </div>
+      <h1 class="news-detail-title"><?php echo htmlspecialchars($news_item['title']); ?></h1>
+      
+      <p class="news-detail-lead">
+        <?php echo htmlspecialchars($news_item['summary']); ?>
+      </p>
 
-    <img src="<?php echo htmlspecialchars($news_item['image']); ?>" alt="<?php echo htmlspecialchars($news_item['title']); ?>" style="width: 100%; height: 420px; object-fit: cover; border-radius: 12px; margin-bottom: 30px;">
+      <img src="<?php echo htmlspecialchars($news_item['image']); ?>" alt="<?php echo htmlspecialchars($news_item['title']); ?>" class="news-detail-img">
 
-    <div style="font-size: 16px; color: var(--text-main); line-height: 1.8;">
-      <?php echo nl2br(htmlspecialchars($news_item['content'])); ?>
-    </div>
+      <div class="news-detail-body">
+        <?php echo nl2br(htmlspecialchars($news_item['content'])); ?>
+      </div>
+    </article>
   </div>
 </section>
+
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

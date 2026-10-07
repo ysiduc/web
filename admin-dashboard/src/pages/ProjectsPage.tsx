@@ -257,12 +257,12 @@ export const ProjectsPage: React.FC = () => {
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full md:w-auto">
           {/* Sector filter */}
           <select
             value={sector}
             onChange={(e) => setSector(e.target.value)}
-            className="px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[40px]"
           >
             <option value="">Tất cả mảng (Cơ khí &amp; XD)</option>
             <option value="co_khi">Khối Cơ Khí</option>
@@ -273,7 +273,7 @@ export const ProjectsPage: React.FC = () => {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 max-w-[160px]"
+            className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[40px]"
           >
             <option value="">Tất cả hạng mục</option>
             {allCategories.map((c) => (
@@ -287,7 +287,7 @@ export const ProjectsPage: React.FC = () => {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[40px]"
           >
             <option value="">Tất cả trạng thái</option>
             <option value="published">Đã công khai</option>
@@ -296,7 +296,7 @@ export const ProjectsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Projects Table */}
+      {/* Projects Table & Mobile Cards */}
       <div className="bg-white dark:bg-navy-900 rounded-3xl border border-slate-200 dark:border-navy-800 shadow-sm overflow-hidden">
         {isLoading ? (
           <div className="p-12 text-center">
@@ -308,116 +308,210 @@ export const ProjectsPage: React.FC = () => {
             Không tìm thấy công trình nào phù hợp với điều kiện tìm kiếm.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
-                <tr>
-                  <th className="px-6 py-4">Công trình</th>
-                  <th className="px-4 py-4">Phân loại</th>
-                  <th className="px-4 py-4">Chủ đầu tư / Địa điểm</th>
-                  <th className="px-4 py-4">Trạng thái</th>
-                  <th className="px-6 py-4 text-right">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
-                {projects.map((p) => (
-                  <tr
-                    key={p.id}
-                    className="hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition"
-                  >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-14 h-14 rounded-xl bg-slate-100 dark:bg-navy-800 overflow-hidden flex-shrink-0 border border-slate-200 dark:border-navy-700">
-                          <img
-                            src={getImageUrl(p.image)}
-                            alt={p.title}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <div className="font-bold text-slate-900 dark:text-white line-clamp-1 flex items-center gap-1.5">
-                            <span>{p.title}</span>
-                            {p.detail_mode === 'custom' && (
-                              <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-400 border border-amber-300 dark:border-amber-800">
-                                Builder
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-xs text-slate-400 mt-0.5 line-clamp-1">
-                            {p.description}
-                          </div>
-                        </div>
+          <>
+            {/* Mobile Card List (< 640px) */}
+            <div className="sm:hidden divide-y divide-slate-100 dark:divide-navy-800">
+              {projects.map((p) => (
+                <div key={p.id} className="p-4 space-y-3">
+                  <div className="flex gap-3 items-start">
+                    <div className="w-16 h-16 rounded-xl bg-slate-100 dark:bg-navy-800 overflow-hidden flex-shrink-0 border border-slate-200 dark:border-navy-700">
+                      <img
+                        src={getImageUrl(p.image)}
+                        alt={p.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-bold text-slate-900 dark:text-white text-sm line-clamp-2">
+                        {p.title}
                       </div>
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border border-amber-200/60 dark:border-amber-800/60">
-                        {p.category}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4 text-xs">
-                      <div className="font-semibold text-slate-800 dark:text-slate-200">
-                        {p.client || 'Chưa cập nhật'}
-                      </div>
-                      <div className="text-slate-400 flex items-center gap-1 mt-0.5">
-                        <MapPin className="w-3 h-3 flex-shrink-0" />
-                        <span>{p.location || 'Hà Nội'}</span>
-                      </div>
-                      {(p.start_date || p.completion_date) && (
-                        <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1 font-mono">
-                          <Calendar className="w-3 h-3 flex-shrink-0 text-amber-500" />
-                          <span>
-                            {p.start_date ? p.start_date.split('-').reverse().join('/') : '...'} - {p.completion_date ? p.completion_date.split('-').reverse().join('/') : '...'}
+                      <div className="flex flex-wrap gap-1.5 mt-1.5">
+                        <span className="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border border-amber-200/60 dark:border-amber-800/60">
+                          {p.category}
+                        </span>
+                        <Badge status={p.status} />
+                        {p.detail_mode === 'custom' && (
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-400 border border-amber-300 dark:border-amber-800">
+                            Builder
                           </span>
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <Badge status={p.status} />
-                    </td>
-                    <td className="px-6 py-4 text-right whitespace-nowrap">
-                      <div className="flex items-center justify-end gap-1.5">
-                        <Link
-                          to={`/projects/${p.id}/detail-editor`}
-                          className="p-2 text-amber-600 hover:text-amber-700 dark:hover:text-amber-400 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/50 transition font-bold"
-                          title="Soạn trang chi tiết (Nội dung chi tiết nâng cao)"
-                        >
-                          <FilePlus2 className="w-4 h-4" />
-                        </Link>
-                        <a
-                          href={getPublicPageUrl(`/project-detail.php?id=${p.id}`)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"
-                          title="Xem trên website"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                        <button
-                          onClick={() => handleOpenEdit(p)}
-                          className="p-2 text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition"
-                          title="Chỉnh sửa công trình"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteTarget(p)}
-                          className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
-                          title="Xóa công trình"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                        )}
                       </div>
-                    </td>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-50 dark:bg-navy-950/60 p-2.5 rounded-xl space-y-1 text-xs">
+                    <div className="font-semibold text-slate-800 dark:text-slate-200 truncate">
+                      <span className="text-slate-400 font-normal">Chủ đầu tư: </span>
+                      {p.client || 'Chưa cập nhật'}
+                    </div>
+                    <div className="text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-amber-500" />
+                      <span className="truncate">{p.location || 'Hà Nội'}</span>
+                    </div>
+                    {(p.start_date || p.completion_date) && (
+                      <div className="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-mono text-[11px]">
+                        <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-amber-500" />
+                        <span>
+                          {p.start_date ? p.start_date.split('-').reverse().join('/') : '...'} - {p.completion_date ? p.completion_date.split('-').reverse().join('/') : '...'}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center justify-end gap-1.5 pt-1">
+                    <Link
+                      to={`/projects/${p.id}/detail-editor`}
+                      className="px-2.5 py-1.5 text-xs text-amber-600 hover:text-amber-700 dark:hover:text-amber-400 rounded-lg bg-amber-50 dark:bg-amber-950/50 transition font-bold flex items-center gap-1 min-h-[38px]"
+                      title="Soạn trang chi tiết"
+                    >
+                      <FilePlus2 className="w-4 h-4" />
+                      <span>Builder</span>
+                    </Link>
+                    <a
+                      href={getPublicPageUrl(`/project-detail.php?id=${p.id}`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition min-w-[38px] min-h-[38px] flex items-center justify-center"
+                      title="Xem trên website"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                    <button
+                      onClick={() => handleOpenEdit(p)}
+                      className="p-2 text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition min-w-[38px] min-h-[38px] flex items-center justify-center"
+                      title="Chỉnh sửa công trình"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setDeleteTarget(p)}
+                      className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition min-w-[38px] min-h-[38px] flex items-center justify-center"
+                      title="Xóa công trình"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table (>= 640px) */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
+                  <tr>
+                    <th className="px-6 py-4">Công trình</th>
+                    <th className="px-4 py-4">Phân loại</th>
+                    <th className="px-4 py-4">Chủ đầu tư / Địa điểm</th>
+                    <th className="px-4 py-4">Trạng thái</th>
+                    <th className="px-6 py-4 text-right">Thao tác</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
+                  {projects.map((p) => (
+                    <tr
+                      key={p.id}
+                      className="hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition"
+                    >
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-14 h-14 rounded-xl bg-slate-100 dark:bg-navy-800 overflow-hidden flex-shrink-0 border border-slate-200 dark:border-navy-700">
+                            <img
+                              src={getImageUrl(p.image)}
+                              alt={p.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <div className="font-bold text-slate-900 dark:text-white line-clamp-1 flex items-center gap-1.5">
+                              <span>{p.title}</span>
+                              {p.detail_mode === 'custom' && (
+                                <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-400 border border-amber-300 dark:border-amber-800">
+                                  Builder
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-xs text-slate-400 mt-0.5 line-clamp-1">
+                              {p.description}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap">
+                        <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border border-amber-200/60 dark:border-amber-800/60">
+                          {p.category}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4 text-xs">
+                        <div className="font-semibold text-slate-800 dark:text-slate-200">
+                          {p.client || 'Chưa cập nhật'}
+                        </div>
+                        <div className="text-slate-400 flex items-center gap-1 mt-0.5">
+                          <MapPin className="w-3 h-3 flex-shrink-0" />
+                          <span>{p.location || 'Hà Nội'}</span>
+                        </div>
+                        {(p.start_date || p.completion_date) && (
+                          <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1 font-mono">
+                            <Calendar className="w-3 h-3 flex-shrink-0 text-amber-500" />
+                            <span>
+                              {p.start_date ? p.start_date.split('-').reverse().join('/') : '...'} - {p.completion_date ? p.completion_date.split('-').reverse().join('/') : '...'}
+                            </span>
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap">
+                        <Badge status={p.status} />
+                      </td>
+                      <td className="px-6 py-4 text-right whitespace-nowrap">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Link
+                            to={`/projects/${p.id}/detail-editor`}
+                            className="p-2 text-amber-600 hover:text-amber-700 dark:hover:text-amber-400 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/50 transition font-bold"
+                            title="Soạn trang chi tiết (Nội dung chi tiết nâng cao)"
+                          >
+                            <FilePlus2 className="w-4 h-4" />
+                          </Link>
+                          <a
+                            href={getPublicPageUrl(`/project-detail.php?id=${p.id}`)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"
+                            title="Xem trên website"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                          <button
+                            onClick={() => handleOpenEdit(p)}
+                            className="p-2 text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition"
+                            title="Chỉnh sửa công trình"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget(p)}
+                            className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
+                            title="Xóa công trình"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
+
 
       {/* Create / Edit Modal */}
       <Modal

@@ -20,25 +20,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, title }) => {
   const { user, logout, darkMode, toggleDarkMode } = useAuthStore();
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 dark:border-navy-800 bg-white/90 dark:bg-navy-900/90 backdrop-blur px-4 sm:px-6">
-      <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-200 dark:border-navy-800 bg-white/90 dark:bg-navy-900/90 backdrop-blur px-3 sm:px-6">
+      <div className="flex items-center gap-2 sm:gap-4 min-w-0">
         <button
           onClick={onToggleSidebar}
-          className="lg:hidden p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"
+          className="lg:hidden w-11 h-11 flex items-center justify-center text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition flex-shrink-0"
           aria-label="Toggle menu"
         >
           <Menu className="w-5 h-5" />
         </button>
 
-        <div>
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white">
+        <div className="min-w-0">
+          <h1 className="text-sm sm:text-base md:text-lg font-bold text-slate-900 dark:text-white truncate max-w-[150px] xs:max-w-[210px] sm:max-w-xs md:max-w-md">
             {title || 'Bảng Điều Khiển Quản Trị'}
           </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
-            PNMEC Cơ Khí & Xây Dựng • Hệ thống quản trị nội dung
+          <p className="text-xs text-slate-500 dark:text-slate-400 hidden md:block truncate">
+            PNMEC Cơ Khí &amp; Xây Dựng • Hệ thống quản trị nội dung
           </p>
         </div>
       </div>
+
 
       <div className="flex items-center gap-2 sm:gap-4">
         {/* View Public Website */}

@@ -301,102 +301,185 @@ export const ServicesPage: React.FC = () => {
             Không tìm thấy dịch vụ nào.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
-                <tr>
-                  <th className="px-6 py-4">Mã</th>
-                  <th className="px-6 py-4">Tên dịch vụ</th>
-                  <th className="px-4 py-4">Tóm tắt giải pháp</th>
-                  <th className="px-4 py-4">Nổi bật</th>
-                  <th className="px-6 py-4 text-right">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
-                {services.map((s) => (
-                  <tr
-                    key={s.id}
-                    className="hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
-                        {s.code || `ID-${s.id}`}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-navy-800 overflow-hidden flex-shrink-0 border border-slate-200 dark:border-navy-700">
-                          <img
-                            src={getImageUrl(s.image)}
-                            alt={s.title}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <div className="font-bold text-slate-900 dark:text-white">
-                            {s.title}
-                          </div>
-                          <div className="text-xs text-slate-400">
-                            {s.views.toLocaleString()} lượt xem
-                          </div>
-                        </div>
+          <>
+            {/* Mobile Card List (< 640px) */}
+            <div className="sm:hidden divide-y divide-slate-100 dark:divide-navy-800">
+              {services.map((s) => (
+                <div key={s.id} className="p-4 space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-16 h-16 rounded-xl bg-slate-100 dark:bg-navy-800 overflow-hidden flex-shrink-0 border border-slate-200 dark:border-navy-700">
+                      <img
+                        src={getImageUrl(s.image)}
+                        alt={s.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+                          {s.code || `ID-${s.id}`}
+                        </span>
+                        <span className="text-xs text-slate-400">
+                          {s.views.toLocaleString()} lượt xem
+                        </span>
                       </div>
-                    </td>
-                    <td className="px-4 py-4 text-xs max-w-sm">
-                      <p className="line-clamp-2 text-slate-600 dark:text-slate-300">
-                        {s.summary || 'Chưa cập nhật tóm tắt.'}
-                      </p>
-                    </td>
-                    <td className="px-4 py-4 whitespace-nowrap">
-                      <button
-                        type="button"
-                        onClick={() => handleToggleFeatured(s)}
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold cursor-pointer transition shadow-sm ${
-                          s.featured
-                            ? 'bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-700 hover:bg-amber-200'
-                            : 'bg-slate-100 text-slate-500 border border-slate-200 dark:bg-navy-800 dark:text-slate-400 dark:border-navy-700 hover:bg-slate-200'
-                        }`}
-                        title="Bấm để bật/tắt hiển thị Dịch vụ nổi bật trên Trang Chủ"
+                      <h4 className="font-bold text-slate-900 dark:text-white text-sm line-clamp-2 leading-snug">
+                        {s.title}
+                      </h4>
+                    </div>
+                  </div>
+
+                  {s.summary && (
+                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                      {s.summary}
+                    </p>
+                  )}
+
+                  <div className="flex items-center justify-between pt-1">
+                    <button
+                      type="button"
+                      onClick={() => handleToggleFeatured(s)}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition shadow-sm min-h-[36px] ${
+                        s.featured
+                          ? 'bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-700'
+                          : 'bg-slate-100 text-slate-500 border border-slate-200 dark:bg-navy-800 dark:text-slate-400 dark:border-navy-700'
+                      }`}
+                    >
+                      <Star className={`w-3.5 h-3.5 ${s.featured ? 'fill-amber-500 text-amber-500' : 'text-slate-400'}`} />
+                      <span>{s.featured ? 'Nổi bật' : 'Thường'}</span>
+                    </button>
+
+                    <div className="flex items-center gap-1">
+                      <a
+                        href={getPublicPageUrl(`/service-detail.php?id=${s.id}`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition min-w-[44px] min-h-[44px] flex items-center justify-center"
+                        title="Xem trên website"
                       >
-                        <Star className={`w-3.5 h-3.5 ${s.featured ? 'fill-amber-500 text-amber-500' : 'text-slate-400'}`} />
-                        <span>{s.featured ? 'Nổi bật (Home)' : 'Thường'}</span>
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                      <button
+                        onClick={() => handleOpenEdit(s)}
+                        className="p-2.5 text-blue-600 hover:text-blue-800 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition min-w-[44px] min-h-[44px] flex items-center justify-center"
+                        title="Sửa dịch vụ"
+                      >
+                        <Edit2 className="w-4 h-4" />
                       </button>
-                    </td>
-                    <td className="px-6 py-4 text-right whitespace-nowrap">
-                      <div className="flex items-center justify-end gap-1.5">
-                        <a
-                          href={getPublicPageUrl(`/service-detail.php?id=${s.id}`)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"
-                          title="Xem trên website"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                        <button
-                          onClick={() => handleOpenEdit(s)}
-                          className="p-2 text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition"
-                          title="Sửa dịch vụ"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setDeleteTarget(s)}
-                          className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
-                          title="Xóa dịch vụ"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
+                      <button
+                        onClick={() => setDeleteTarget(s)}
+                        className="p-2.5 text-rose-600 hover:text-rose-800 dark:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition min-w-[44px] min-h-[44px] flex items-center justify-center"
+                        title="Xóa dịch vụ"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table (>= 640px) */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+                <thead className="bg-slate-50 dark:bg-navy-950 text-xs uppercase font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-navy-800">
+                  <tr>
+                    <th className="px-6 py-4">Mã</th>
+                    <th className="px-6 py-4">Tên dịch vụ</th>
+                    <th className="px-4 py-4">Tóm tắt giải pháp</th>
+                    <th className="px-4 py-4">Nổi bật</th>
+                    <th className="px-6 py-4 text-right">Thao tác</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
+                  {services.map((s) => (
+                    <tr
+                      key={s.id}
+                      className="hover:bg-slate-50/80 dark:hover:bg-navy-800/40 transition"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+                          {s.code || `ID-${s.id}`}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-navy-800 overflow-hidden flex-shrink-0 border border-slate-200 dark:border-navy-700">
+                            <img
+                              src={getImageUrl(s.image)}
+                              alt={s.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <div className="font-bold text-slate-900 dark:text-white">
+                              {s.title}
+                            </div>
+                            <div className="text-xs text-slate-400">
+                              {s.views.toLocaleString()} lượt xem
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-xs max-w-sm">
+                        <p className="line-clamp-2 text-slate-600 dark:text-slate-300">
+                          {s.summary || 'Chưa cập nhật tóm tắt.'}
+                        </p>
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleFeatured(s)}
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold cursor-pointer transition shadow-sm ${
+                            s.featured
+                              ? 'bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-700 hover:bg-amber-200'
+                              : 'bg-slate-100 text-slate-500 border border-slate-200 dark:bg-navy-800 dark:text-slate-400 dark:border-navy-700 hover:bg-slate-200'
+                          }`}
+                          title="Bấm để bật/tắt hiển thị Dịch vụ nổi bật trên Trang Chủ"
+                        >
+                          <Star className={`w-3.5 h-3.5 ${s.featured ? 'fill-amber-500 text-amber-500' : 'text-slate-400'}`} />
+                          <span>{s.featured ? 'Nổi bật (Home)' : 'Thường'}</span>
+                        </button>
+                      </td>
+                      <td className="px-6 py-4 text-right whitespace-nowrap">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <a
+                            href={getPublicPageUrl(`/service-detail.php?id=${s.id}`)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-navy-800 transition"
+                            title="Xem trên website"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                          <button
+                            onClick={() => handleOpenEdit(s)}
+                            className="p-2 text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition"
+                            title="Sửa dịch vụ"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget(s)}
+                            className="p-2 text-rose-500 hover:text-rose-700 dark:hover:text-rose-300 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
+                            title="Xóa dịch vụ"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 

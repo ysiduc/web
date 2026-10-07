@@ -192,13 +192,13 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
     </div>
 
     <div class="h-testi__shell">
-      <button class="h-testi__arr" id="testiPrev" aria-label="Prev">
+      <button class="h-testi__arr" id="testiPrev" aria-label="Previous Testimonial">
         <i class="fa-solid fa-chevron-left"></i>
       </button>
 
       <div class="h-testi__viewport">
         <div class="h-testi__track" id="testiTrack">
-          <!-- SLIDE 1 -->
+          <!-- CARD 1 -->
           <div class="h-testi__slide">
             <div class="h-testi__card">
               <div class="h-testi__quote"><i class="fa-solid fa-quote-left"></i></div>
@@ -211,6 +211,9 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
                 </div>
               </div>
             </div>
+          </div>
+          <!-- CARD 2 -->
+          <div class="h-testi__slide">
             <div class="h-testi__card">
               <div class="h-testi__quote"><i class="fa-solid fa-quote-left"></i></div>
               <p class="h-testi__text">Rất ấn tượng với năng lực gia công cơ khí CNC của PNMEC. Độ chính xác cao, tiến độ đúng hẹn và giá cả cạnh tranh. Đây là đối tác tin cậy để chúng tôi phát triển dây chuyền sản xuất hiện đại.</p>
@@ -223,7 +226,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
               </div>
             </div>
           </div>
-          <!-- SLIDE 2 -->
+          <!-- CARD 3 -->
           <div class="h-testi__slide">
             <div class="h-testi__card">
               <div class="h-testi__quote"><i class="fa-solid fa-quote-left"></i></div>
@@ -236,6 +239,9 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
                 </div>
               </div>
             </div>
+          </div>
+          <!-- CARD 4 -->
+          <div class="h-testi__slide">
             <div class="h-testi__card">
               <div class="h-testi__quote"><i class="fa-solid fa-quote-left"></i></div>
               <p class="h-testi__text">Hợp tác với PNMEC là quyết định đúng đắn nhất. Họ luôn đặt chất lượng và uy tín lên hàng đầu. Sản phẩm bàn giao đúng thông số kỹ thuật, đạt tiêu chuẩn xuất khẩu quốc tế.</p>
@@ -251,14 +257,16 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
         </div>
       </div>
 
-      <button class="h-testi__arr" id="testiNext" aria-label="Next">
+      <button class="h-testi__arr" id="testiNext" aria-label="Next Testimonial">
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>
 
-    <div class="h-testi__dots">
+    <div class="h-testi__dots" id="testiDots">
       <span class="h-testi__dot on" data-i="0"></span>
       <span class="h-testi__dot" data-i="1"></span>
+      <span class="h-testi__dot" data-i="2"></span>
+      <span class="h-testi__dot" data-i="3"></span>
     </div>
   </div>
 </section>
@@ -292,15 +300,18 @@ $first_faq = reset($faqs);
         <div class="h-faq__list" id="faqList">
           <?php $fi=0; foreach($faqs as $key=>$f): ?>
           <div class="h-faq__item<?= $fi===0?' on':'' ?>" data-ans="<?= htmlspecialchars($f['a']) ?>">
-            <button class="h-faq__item-btn">
+            <button class="h-faq__item-btn" type="button" aria-expanded="<?= $fi===0?'true':'false' ?>">
               <span><?= htmlspecialchars($f['q']) ?></span>
               <i class="fa-solid fa-plus h-faq__ico"></i>
             </button>
+            <div class="h-faq__mobile-ans">
+              <p><?= htmlspecialchars($f['a']) ?></p>
+            </div>
           </div>
           <?php $fi++; endforeach; ?>
         </div>
       </div>
-      <!-- Right: answer panel -->
+      <!-- Right: answer panel (Desktop only) -->
       <div class="h-faq__panel-wrap">
         <div class="h-faq__panel">
           <div class="h-faq__indicator"></div>
@@ -310,6 +321,7 @@ $first_faq = reset($faqs);
     </div>
   </div>
 </section>
+
 
 <!-- ═══════════════════════════════════════════════════
      SECTION 7 · NHẬN TƯ VẤN & BÁO GIÁ
@@ -423,50 +435,80 @@ $first_faq = reset($faqs);
     svcObserver.observe(svcSection);
   }
 
-  /* ── Testimonials slider ──────────────────────── */
+  /* ── Testimonials slider (Responsive with touch swipe) ──────── */
   const track  = document.getElementById('testiTrack');
   const dots   = document.querySelectorAll('.h-testi__dot');
   const prev   = document.getElementById('testiPrev');
   const next   = document.getElementById('testiNext');
-  let cur=0, timer;
-  const total = dots.length;
+  let cur = 0, timer;
+  const isMobile = () => window.innerWidth < 768;
+  const maxStep  = () => isMobile() ? 3 : 2;
 
   function go(n){
-    cur = (n+total)%total;
-    if(track) track.style.transform = `translateX(-${cur*100}%)`;
-    dots.forEach((d,i)=>d.classList.toggle('on', i===cur));
+    const max = maxStep();
+    cur = Math.max(0, Math.min(n, max));
+    if (n > max) cur = 0;
+    if (n < 0) cur = max;
+    
+    const stepPct = isMobile() ? 100 : 50;
+    if (track) track.style.transform = `translateX(-${cur * stepPct}%)`;
+    dots.forEach((d, i) => d.classList.toggle('on', i === cur));
   }
-  function restart(){ clearInterval(timer); timer=setInterval(()=>go(cur+1),5500); }
-  if(track){
-    dots.forEach(d=>d.addEventListener('click',()=>{go(+d.dataset.i);restart();}));
-    prev && prev.addEventListener('click',()=>{go(cur-1);restart();});
-    next && next.addEventListener('click',()=>{go(cur+1);restart();});
+
+  function restart(){
+    clearInterval(timer);
+    timer = setInterval(() => go(cur + 1), 6000);
+  }
+
+  if (track) {
+    dots.forEach(d => d.addEventListener('click', () => { go(+d.dataset.i); restart(); }));
+    prev && prev.addEventListener('click', () => { go(cur - 1); restart(); });
+    next && next.addEventListener('click', () => { go(cur + 1); restart(); });
+    
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    track.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) go(cur + 1);
+        else go(cur - 1);
+        restart();
+      }
+    }, { passive: true });
+
+    window.addEventListener('resize', () => go(cur));
     restart();
   }
 
-  /* ── FAQ two-column panel ─────────────────────── */
+  /* ── FAQ accordion (Mobile inline + Desktop panel) ─────── */
   const items  = document.querySelectorAll('.h-faq__item');
   const ansEl  = document.getElementById('faqAns');
-  items.forEach(item=>{
-    item.addEventListener('click',function(){
-      items.forEach(i=>i.classList.remove('on'));
-      this.classList.add('on');
-      if(ansEl) ansEl.textContent = this.dataset.ans||'';
-    });
-  });
-
-  /* ── Mobile nav ────────────────────────────────── */
-  const toggle = document.querySelector('.menu-toggle');
-  const menu   = document.querySelector('.nav-menu');
-  if(toggle&&menu) toggle.addEventListener('click',()=>menu.classList.toggle('show'));
-
-  /* ── Admin confirm delete ─────────────────────── */
-  document.querySelectorAll('.btn-confirm-delete').forEach(b=>{
-    b.addEventListener('click',e=>{
-      if(!confirm('Xác nhận xóa?')) e.preventDefault();
-    });
+  items.forEach(item => {
+    const btn = item.querySelector('.h-faq__item-btn');
+    if (btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = item.classList.contains('on');
+        items.forEach(i => {
+          i.classList.remove('on');
+          const b = i.querySelector('.h-faq__item-btn');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('on');
+          btn.setAttribute('aria-expanded', 'true');
+          if (ansEl) ansEl.textContent = item.dataset.ans || '';
+        }
+      });
+    }
   });
 })();
 </script>
+
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -310,7 +310,7 @@ export const SettingsPage: React.FC = () => {
           <button
             type="submit"
             disabled={isSaving}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-600 text-navy-950 font-bold text-sm shadow-lg shadow-amber-500/25 transition disabled:opacity-50"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-600 text-navy-950 font-bold text-sm shadow-lg shadow-amber-500/25 transition disabled:opacity-50 min-h-[44px]"
           >
             <Save className="w-5 h-5" />
             <span>{isSaving ? 'Đang lưu cấu hình...' : 'Lưu Cài Đặt Hệ Thống'}</span>

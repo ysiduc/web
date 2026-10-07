@@ -47,7 +47,7 @@ export const LoginPage: React.FC = () => {
         </div>
 
         {/* Login Card */}
-        <div className="bg-white dark:bg-navy-900 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-navy-800">
+        <div className="bg-white dark:bg-navy-900 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl border border-slate-200 dark:border-navy-800">
           {error && (
             <div className="mb-6 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-rose-500 flex-shrink-0 mt-0.5" />

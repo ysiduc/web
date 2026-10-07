@@ -45,12 +45,31 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
 }
 
 .header-container {
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 0 45px;
+  padding: 0 16px;
 }
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 24px;
+  }
+  .header-container {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 20px;
+  }
+  .header-container {
+    padding: 0 45px;
+  }
+}
+

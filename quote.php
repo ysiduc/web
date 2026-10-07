@@ -60,13 +60,13 @@ require_once __DIR__ . '/includes/header.php';
   </div>
 </div>
 
-<section style="padding: 60px 0; background: var(--bg-light);">
+<section class="quote-page-section">
   <div class="container">
-    <div style="max-width: 800px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow-md);">
-      <div style="text-align: center; margin-bottom: 30px;">
-        <span style="color: var(--accent-gold); font-weight: 700; text-transform: uppercase; font-size: 13px;">Tư Vấn Trọn Gói</span>
-        <h2 style="font-size: 28px; margin-top: 6px;">Đăng Ký Nhận Báo Giá Nhanh</h2>
-        <p style="color: var(--text-muted); font-size: 14px;">Quý khách vui lòng cung cấp thông tin dự án để chuyên viên PNMEC lên phương án và bảng giá chi tiết.</p>
+    <div class="quote-page-card">
+      <div class="quote-card-header">
+        <span class="quote-badge">Tư Vấn Trọn Gói</span>
+        <h2 class="quote-title">Đăng Ký Nhận Báo Giá Nhanh</h2>
+        <p class="quote-sub">Quý khách vui lòng cung cấp thông tin dự án để chuyên viên PNMEC lên phương án và bảng giá chi tiết.</p>
       </div>
 
       <?php if ($success): ?>
@@ -78,7 +78,7 @@ require_once __DIR__ . '/includes/header.php';
       <?php endif; ?>
 
       <form action="" method="POST">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="form-grid-2col">
           <div class="form-group">
             <label for="fullname">Họ và Tên *</label>
             <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Nguyễn Văn A" required>
@@ -89,7 +89,7 @@ require_once __DIR__ . '/includes/header.php';
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="form-grid-2col">
           <div class="form-group">
             <label for="email">Địa Chỉ Email</label>
             <input type="email" id="email" name="email" class="form-control" placeholder="example@domain.com">
@@ -116,12 +116,13 @@ require_once __DIR__ . '/includes/header.php';
           <textarea id="message" name="message" class="form-control" placeholder="Ví dụ: Diện tích xưởng 2.000m2, chiều cao 9m, tiến độ thi công 60 ngày..."></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-weight: 800; font-size: 16px;">
+        <button type="submit" class="btn btn-primary quote-submit-btn">
           <i class="fa-solid fa-paper-plane"></i> Gửi Yêu Cầu Báo Giá
         </button>
       </form>
     </div>
   </div>
 </section>
+
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

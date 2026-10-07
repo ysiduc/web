@@ -12,10 +12,50 @@
 
 .vacancy-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   margin-bottom: 60px;
 }
+
+@media (max-width: 1023px) {
+  .recruitment-section {
+    padding: 44px 0;
+  }
+  .vacancy-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .recruitment-section {
+    padding: 32px 0 44px;
+  }
+  .vacancy-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .vacancy-card {
+    padding: 20px 16px;
+  }
+  .vacancy-title {
+    font-size: 18px;
+  }
+  .apply-form-box {
+    padding: 22px 16px;
+    border-radius: 10px;
+  }
+  .apply-form-title {
+    font-size: 20px;
+  }
+  .apply-form-sub {
+    font-size: 13.5px;
+    margin-bottom: 20px;
+  }
+}
+
 
 .vacancy-card {
   background: var(--bg-light);
