@@ -11,7 +11,64 @@ import {
   Trash2,
   ExternalLink,
   Upload,
+  Image as ImageIcon,
+  AlertCircle,
+  X,
 } from 'lucide-react';
+
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const ALLOWED_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+const MAX_IMAGE_SIZE_BYTES = 8 * 1024 * 1024; // 8MB
+
+const validateImageFile = (file: File): string | null => {
+  const extension = '.' + (file.name.split('.').pop() || '').toLowerCase();
+  const isValidExt = ALLOWED_IMAGE_EXTENSIONS.includes(extension);
+  const isValidType = ALLOWED_IMAGE_TYPES.includes(file.type);
+  if (!isValidExt && !isValidType) {
+    return 'Chỉ chấp nhận tệp hình ảnh định dạng JPG, JPEG, PNG, WEBP hoặc GIF.';
+  }
+  if (file.size > MAX_IMAGE_SIZE_BYTES) {
+    const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+    return `Kích thước ảnh vượt quá giới hạn 8MB (hiện tại ${sizeMb}MB). Vui lòng chọn ảnh nhỏ hơn.`;
+  }
+  return null;
+};
+
+const NewsThumbnail: React.FC<{
+  image?: string | null;
+  title: string;
+  className?: string;
+}> = ({ image, title, className = 'w-12 h-12' }) => {
+  const [imgError, setImgError] = useState(false);
+  const url = getImageUrl(image);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [image]);
+
+  if (!url || imgError) {
+    return (
+      <div
+        className={`${className} rounded-xl bg-slate-100 dark:bg-navy-800 flex flex-col items-center justify-center p-1 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-navy-700 flex-shrink-0 select-none`}
+        title="Chưa có ảnh"
+      >
+        <ImageIcon className="w-5 h-5 mb-0.5 opacity-60" />
+        <span className="text-[9px] font-medium leading-none text-center">Chưa có ảnh</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`${className} rounded-xl bg-slate-100 dark:bg-navy-800 overflow-hidden flex-shrink-0 border border-slate-200 dark:border-navy-700`}>
+      <img
+        src={url}
+        alt={title}
+        className="w-full h-full object-cover"
+        onError={() => setImgError(true)}
+      />
+    </div>
+  );
+};
 
 export const NewsPage: React.FC = () => {
   const [news, setNews] = useState<NewsItem[]>([]);
@@ -25,6 +82,7 @@ export const NewsPage: React.FC = () => {
   const [deleteTarget, setDeleteTarget] = useState<NewsItem | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [modalError, setModalError] = useState<string | null>(null);
 
   // Form
   const [formTitle, setFormTitle] = useState('');
@@ -64,6 +122,7 @@ export const NewsPage: React.FC = () => {
     setFormStatus('published');
     setFormImageFile(null);
     setImagePreview('');
+    setModalError(null);
     setIsModalOpen(true);
   };
 
@@ -76,12 +135,20 @@ export const NewsPage: React.FC = () => {
     setFormStatus(item.status || 'published');
     setFormImageFile(null);
     setImagePreview(getImageUrl(item.image));
+    setModalError(null);
     setIsModalOpen(true);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setModalError(null);
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      const errorMsg = validateImageFile(file);
+      if (errorMsg) {
+        setModalError(errorMsg);
+        e.target.value = '';
+        return;
+      }
       setFormImageFile(file);
       setImagePreview(URL.createObjectURL(file));
     }
@@ -89,10 +156,22 @@ export const NewsPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formTitle.trim()) return;
+    if (!formTitle.trim()) {
+      setModalError('Vui lòng nhập tiêu đề bài viết.');
+      return;
+    }
+
+    if (formImageFile) {
+      const errorMsg = validateImageFile(formImageFile);
+      if (errorMsg) {
+        setModalError(errorMsg);
+        return;
+      }
+    }
 
     setIsSubmitting(true);
     setFeedback(null);
+    setModalError(null);
 
     const formData = new FormData();
     formData.append('title', formTitle.trim());
@@ -103,6 +182,8 @@ export const NewsPage: React.FC = () => {
 
     if (formImageFile) {
       formData.append('image', formImageFile);
+    } else if (editingNews && !imagePreview) {
+      formData.append('image', '');
     }
 
     try {
@@ -123,9 +204,11 @@ export const NewsPage: React.FC = () => {
         }
       }
     } catch (err: any) {
+      const msg = err.response?.data?.message || 'Có lỗi xảy ra khi lưu bài viết.';
+      setModalError(msg);
       setFeedback({
         type: 'error',
-        message: err.response?.data?.message || 'Có lỗi xảy ra khi lưu bài viết.',
+        message: msg,
       });
     } finally {
       setIsSubmitting(false);
@@ -234,16 +317,11 @@ export const NewsPage: React.FC = () => {
               {news.map((item) => (
                 <div key={item.id} className="p-4 space-y-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-16 h-16 rounded-xl bg-slate-100 dark:bg-navy-800 overflow-hidden flex-shrink-0 border border-slate-200 dark:border-navy-700">
-                      <img
-                        src={getImageUrl(item.image)}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLElement).style.display = 'none';
-                        }}
-                      />
-                    </div>
+                    <NewsThumbnail
+                      image={item.image}
+                      title={item.title}
+                      className="w-16 h-16"
+                    />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <Badge status={item.status} />
@@ -320,16 +398,11 @@ export const NewsPage: React.FC = () => {
                     >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-navy-800 overflow-hidden flex-shrink-0 border border-slate-200 dark:border-navy-700">
-                            <img
-                              src={getImageUrl(item.image)}
-                              alt={item.title}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                (e.target as HTMLElement).style.display = 'none';
-                              }}
-                            />
-                          </div>
+                          <NewsThumbnail
+                            image={item.image}
+                            title={item.title}
+                            className="w-12 h-12"
+                          />
                           <div>
                             <div className="font-bold text-slate-900 dark:text-white line-clamp-1">
                               {item.title}
@@ -396,6 +469,12 @@ export const NewsPage: React.FC = () => {
         maxWidth="3xl"
       >
         <form onSubmit={handleSubmit} className="space-y-4">
+          {modalError && (
+            <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-rose-500" />
+              <span className="flex-1 font-medium">{modalError}</span>
+            </div>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="sm:col-span-2">
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
@@ -445,21 +524,41 @@ export const NewsPage: React.FC = () => {
                 Ảnh đại diện bài viết
               </label>
               <div className="flex items-center gap-3">
-                {imagePreview && (
-                  <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-navy-800 overflow-hidden border border-slate-200 dark:border-navy-700 flex-shrink-0">
+                {imagePreview ? (
+                  <div className="relative w-12 h-12 rounded-lg bg-slate-100 dark:bg-navy-800 overflow-hidden border border-slate-200 dark:border-navy-700 flex-shrink-0 group">
                     <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormImageFile(null);
+                        setImagePreview('');
+                      }}
+                      className="absolute inset-0 bg-navy-950/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition cursor-pointer"
+                      title="Gỡ ảnh"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-navy-800 flex items-center justify-center border border-dashed border-slate-300 dark:border-navy-700 text-slate-400 flex-shrink-0">
+                    <ImageIcon className="w-4 h-4 opacity-50" />
                   </div>
                 )}
-                <label className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-dashed border-slate-300 dark:border-navy-700 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-navy-800 text-xs text-slate-600 dark:text-slate-300 transition">
-                  <Upload className="w-4 h-4 text-amber-500" />
-                  <span>Chọn ảnh bài viết</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                </label>
+                <div className="flex-1 min-w-0">
+                  <label className="flex items-center justify-center gap-2 px-3 py-2 border border-dashed border-slate-300 dark:border-navy-700 rounded-xl cursor-pointer hover:bg-slate-50 dark:hover:bg-navy-800 text-xs text-slate-600 dark:text-slate-300 transition">
+                    <Upload className="w-4 h-4 text-amber-500" />
+                    <span>{imagePreview ? 'Đổi ảnh khác' : 'Chọn ảnh bài viết'}</span>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/gif"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </label>
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    JPG, JPEG, PNG, WEBP, GIF (tối đa 8MB)
+                  </p>
+                </div>
               </div>
             </div>
           </div>

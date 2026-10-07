@@ -88,7 +88,7 @@ foreach ($services as $s) {
           <img src="<?= htmlspecialchars(get_service_image_url($item['image'])) ?>" 
                alt="<?= htmlspecialchars($item['title']) ?>" 
                loading="lazy" 
-               onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
+               onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
           <?php if (!empty($item['code'])): ?>
           <div class="srv-card__badge-code"><?= htmlspecialchars($item['code']) ?></div>
           <?php endif; ?>
@@ -156,7 +156,7 @@ foreach ($services as $s) {
           <img src="<?= htmlspecialchars(get_service_image_url($item['image'])) ?>" 
                alt="<?= htmlspecialchars($item['title']) ?>" 
                loading="lazy" 
-               onerror="this.onerror=null;this.src='<?= asset_url('images/service-plant.png') ?>';">
+               onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
           <?php if (!empty($item['code'])): ?>
           <div class="srv-card__badge-code srv-card__badge-code--blue"><?= htmlspecialchars($item['code']) ?></div>
           <?php endif; ?>

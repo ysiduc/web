@@ -48,7 +48,7 @@ require_once __DIR__ . '/includes/header.php';
         <div class="project-featured-img">
           <img src="<?= htmlspecialchars(get_project_image_url($project['image'])) ?>" 
                alt="<?php echo htmlspecialchars($project['title']); ?>"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1000&q=80'">
+               onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
         </div>
 
         <div class="project-meta-box">
@@ -177,7 +177,7 @@ require_once __DIR__ . '/includes/header.php';
                 <div style="display: flex; gap: 12px; align-items: center;">
                   <img src="<?= htmlspecialchars(get_project_image_url($rel['image'])) ?>" 
                        style="width: 70px; height: 55px; object-fit: cover; border-radius: 6px;"
-                       onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=150&q=80'">
+                       onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
                   <div>
                     <h4 style="font-size: 13px; line-height: 1.3;"><a href="<?= url('/project-detail.php?id=' . $rel['id']) ?>"><?php echo htmlspecialchars($rel['title']); ?></a></h4>
                     <span style="font-size: 11px; color: var(--text-muted);"><?php echo htmlspecialchars($rel['location']); ?></span>

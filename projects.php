@@ -214,7 +214,7 @@ if ($db) {
               <span class="proj-card__badge <?= $isCoKhi ? 'proj-card__badge--gold' : 'proj-card__badge--blue' ?>">
                 <i class="fa-solid <?= $isCoKhi ? 'fa-hammer' : 'fa-building' ?> fa-xs"></i> <?= htmlspecialchars($p['category']) ?>
               </span>
-              <img src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
+              <img src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
               <div class="proj-card__thumb-overlay">
                 <a href="<?= url('project-detail.php?id=' . $p['id']) ?>" class="proj-card__quick-view">
                   <i class="fa-solid fa-eye"></i> Xem Chi Tiết

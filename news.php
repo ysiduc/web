@@ -26,7 +26,7 @@ if ($db) {
     <div class="news-grid">
       <?php foreach ($news_list as $n): ?>
         <article class="news-card">
-          <img src="<?php echo htmlspecialchars(get_news_image_url($n['image'])); ?>" alt="<?php echo htmlspecialchars($n['title']); ?>" class="news-card-img" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
+          <img src="<?php echo htmlspecialchars(get_news_image_url($n['image'])); ?>" alt="<?php echo htmlspecialchars($n['title']); ?>" class="news-card-img" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
           <div class="news-card-body">
             <span class="news-card-date"><i class="fa-regular fa-calendar-days"></i> <?php echo format_date($n['created_at']); ?></span>
             <h2 class="news-card-title">

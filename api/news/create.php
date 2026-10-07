@@ -24,13 +24,29 @@ if (!$db) {
     api_response(false, null, 'Không thể kết nối cơ sở dữ liệu.', 500);
 }
 
-$image_filename = trim($input['image'] ?? 'default-news.jpg');
-if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+// Xử lý tải ảnh tin tức
+$image_filename = '';
+if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+    $uploadError = (int)$_FILES['image']['error'];
+    if ($uploadError !== UPLOAD_ERR_OK) {
+        api_response(false, null, 'Lỗi tải ảnh: ' . get_upload_error_message($uploadError), 400);
+    }
+
     $upload_res = api_upload_image('image', 'news');
-    if ($upload_res['status']) {
-        $image_filename = $upload_res['filename'];
-    } else {
+    if (!$upload_res['status']) {
         api_response(false, null, 'Lỗi tải ảnh: ' . $upload_res['message'], 400);
+    }
+
+    $image_filename = $upload_res['filename'];
+    $baseUploadDir = defined('UPLOAD_DIR') ? UPLOAD_DIR : (dirname(__DIR__, 2) . '/assets/uploads/');
+    $targetFilePath = rtrim($baseUploadDir, '/') . '/' . $image_filename;
+    if (!file_exists($targetFilePath)) {
+        api_response(false, null, 'Không tìm thấy tệp ảnh vừa tải lên trên máy chủ lưu trữ.', 500);
+    }
+} elseif (isset($input['image']) && is_string($input['image'])) {
+    $providedImage = trim($input['image']);
+    if ($providedImage !== '' && !in_array($providedImage, ['default-news.jpg', 'default-service.jpg', 'default-project.jpg'], true)) {
+        $image_filename = $providedImage;
     }
 }
 

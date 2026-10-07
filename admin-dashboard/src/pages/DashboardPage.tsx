@@ -13,6 +13,7 @@ import {
   PlusCircle,
   HardHat,
   TrendingUp,
+  Image as ImageIcon,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -385,15 +386,28 @@ export const DashboardPage: React.FC = () => {
               key={p.id}
               className="group rounded-2xl border border-slate-200 dark:border-navy-800 bg-slate-50 dark:bg-navy-950 overflow-hidden flex flex-col hover:border-amber-400 dark:hover:border-amber-500 transition"
             >
-              <div className="h-32 bg-slate-200 dark:bg-navy-800 relative overflow-hidden">
-                <img
-                  src={getImageUrl(p.image)}
-                  alt={p.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
+              <div className="h-32 bg-slate-100 dark:bg-navy-800 relative overflow-hidden flex items-center justify-center">
+                {getImageUrl(p.image) ? (
+                  <img
+                    src={getImageUrl(p.image)}
+                    alt={p.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                      const parent = (e.target as HTMLElement).parentElement;
+                      const fallback = parent?.querySelector('.dash-thumb-fallback');
+                      if (fallback) (fallback as HTMLElement).classList.remove('hidden');
+                    }}
+                  />
+                ) : null}
+                <div
+                  className={`dash-thumb-fallback absolute inset-0 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 gap-1 select-none ${
+                    getImageUrl(p.image) ? 'hidden' : ''
+                  }`}
+                >
+                  <ImageIcon className="w-6 h-6 opacity-50" />
+                  <span className="text-[10px] font-medium">Chưa có ảnh</span>
+                </div>
                 <div className="absolute top-2 right-2">
                   <Badge status={p.status} />
                 </div>

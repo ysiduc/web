@@ -87,10 +87,41 @@ function create_slug($str) {
 
 /**
  * Hàm upload hình ảnh an toàn dùng chung cho toàn bộ hệ thống
+/**
+ * Trả về thông báo lỗi chi tiết cho các mã lỗi tải tệp PHP $_FILES
+ */
+function get_upload_error_message(int $errorCode): string {
+    switch ($errorCode) {
+        case UPLOAD_ERR_INI_SIZE:
+            return 'Dung lượng tệp vượt quá giới hạn cấu hình máy chủ (upload_max_filesize).';
+        case UPLOAD_ERR_FORM_SIZE:
+            return 'Dung lượng tệp vượt quá giới hạn biểu mẫu (MAX_FILE_SIZE).';
+        case UPLOAD_ERR_PARTIAL:
+            return 'Tệp tin chỉ mới được tải lên một phần, vui lòng thử lại.';
+        case UPLOAD_ERR_NO_FILE:
+            return 'Không có tệp tin nào được chọn để tải lên.';
+        case UPLOAD_ERR_NO_TMP_DIR:
+            return 'Máy chủ thiếu thư mục lưu trữ tạm (upload_tmp_dir).';
+        case UPLOAD_ERR_CANT_WRITE:
+            return 'Không thể ghi tệp tin vào đĩa máy chủ (lỗi phân quyền).';
+        case UPLOAD_ERR_EXTENSION:
+            return 'Quá trình tải tệp bị chặn bởi tiện ích mở rộng của máy chủ PHP.';
+        default:
+            return 'Lỗi tải tệp không xác định (mã lỗi: ' . $errorCode . ').';
+    }
+}
+
+/**
+ * Xử lý tải ảnh lên máy chủ an toàn
  */
 function secure_upload_image($file_input, $subfolder = '', $max_size_mb = 8) {
-    if (!isset($_FILES[$file_input]) || $_FILES[$file_input]['error'] !== UPLOAD_ERR_OK) {
-        return ['status' => false, 'message' => 'Không có tệp nào được tải lên hoặc có lỗi tải tệp.'];
+    if (!isset($_FILES[$file_input])) {
+        return ['status' => false, 'message' => 'Không tìm thấy dữ liệu tệp tải lên.'];
+    }
+
+    $errorCode = (int)$_FILES[$file_input]['error'];
+    if ($errorCode !== UPLOAD_ERR_OK) {
+        return ['status' => false, 'message' => get_upload_error_message($errorCode), 'error_code' => $errorCode];
     }
 
     $file = $_FILES[$file_input];
@@ -208,9 +239,10 @@ function get_flash_message() {
  */
 function get_service_image_url($image) {
     $basePath = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);
-    $fallback = asset_url('images/service-cons.png');
+    $fallback = asset_url('images/no-image.svg');
 
-    if (empty($image)) {
+    $image = trim((string)$image);
+    if ($image === '' || $image === 'default-service.jpg' || $image === 'default-project.jpg' || $image === 'default-news.jpg') {
         return $fallback;
     }
 
@@ -219,7 +251,10 @@ function get_service_image_url($image) {
     }
 
     if (str_starts_with($image, '/')) {
-        return $image;
+        if (file_exists($basePath . $image)) {
+            return $image;
+        }
+        return $fallback;
     }
 
     // Check in assets/uploads/
@@ -237,12 +272,8 @@ function get_service_image_url($image) {
         return asset_url('images/' . $image);
     }
 
-    // Default image filename
-    if ($image === 'default-service.jpg') {
-        return $fallback;
-    }
-
-    return asset_url('uploads/' . $image);
+    // Nếu không tìm thấy file thật trên đĩa, trả về placeholder trung tính
+    return $fallback;
 }
 
 /**
@@ -250,9 +281,10 @@ function get_service_image_url($image) {
  */
 function get_project_image_url($image) {
     $basePath = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);
-    $fallback = asset_url('images/service-cons.png');
+    $fallback = asset_url('images/no-image.svg');
 
-    if (empty($image)) {
+    $image = trim((string)$image);
+    if ($image === '' || $image === 'default-project.jpg' || $image === 'default-service.jpg' || $image === 'default-news.jpg') {
         return $fallback;
     }
 
@@ -261,7 +293,10 @@ function get_project_image_url($image) {
     }
 
     if (str_starts_with($image, '/')) {
-        return $image;
+        if (file_exists($basePath . $image)) {
+            return $image;
+        }
+        return $fallback;
     }
 
     // Check in assets/uploads/
@@ -279,11 +314,7 @@ function get_project_image_url($image) {
         return asset_url('images/' . $image);
     }
 
-    if ($image === 'default-project.jpg') {
-        return $fallback;
-    }
-
-    return asset_url('uploads/' . $image);
+    return $fallback;
 }
 
 /**
@@ -291,9 +322,10 @@ function get_project_image_url($image) {
  */
 function get_news_image_url($image) {
     $basePath = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);
-    $fallback = asset_url('images/service-cons.png');
+    $fallback = asset_url('images/no-image.svg');
 
-    if (empty($image)) {
+    $image = trim((string)$image);
+    if ($image === '' || $image === 'default-news.jpg' || $image === 'default-service.jpg' || $image === 'default-project.jpg') {
         return $fallback;
     }
 
@@ -302,7 +334,10 @@ function get_news_image_url($image) {
     }
 
     if (str_starts_with($image, '/')) {
-        return $image;
+        if (file_exists($basePath . $image)) {
+            return $image;
+        }
+        return $fallback;
     }
 
     // Check in assets/uploads/
@@ -320,11 +355,7 @@ function get_news_image_url($image) {
         return asset_url('images/' . $image);
     }
 
-    if ($image === 'default-news.jpg') {
-        return $fallback;
-    }
-
-    return asset_url('uploads/' . $image);
+    return $fallback;
 }
 
 /**

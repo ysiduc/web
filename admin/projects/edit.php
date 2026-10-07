@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div style="margin-top: 10px; display: flex; align-items: center; gap: 15px;">
           <div>
             <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">Ảnh hiện tại:</span>
-            <img src="<?= asset_url('uploads/' . htmlspecialchars($project['image'])) ?>" alt="Current" style="height: 100px; border-radius: 6px; border: 1px solid #cbd5e1;" onerror="this.src='https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=150&q=80'">
+            <img src="<?= htmlspecialchars(get_project_image_url($project['image'])) ?>" alt="Current" style="height: 100px; border-radius: 6px; border: 1px solid #cbd5e1;" onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>'">
           </div>
           <div>
             <span style="font-size: 12px; color: #64748b; display: block; margin-bottom: 4px;">Xem trước ảnh mới:</span>

@@ -17,6 +17,12 @@ $cleanFolder = str_replace('..', '', $cleanFolder);
 $upload = api_upload_image('file', $cleanFolder ?: 'general');
 
 if ($upload['status']) {
+    $baseUploadDir = defined('UPLOAD_DIR') ? UPLOAD_DIR : (dirname(__DIR__) . '/assets/uploads/');
+    $targetFilePath = rtrim($baseUploadDir, '/') . '/' . $upload['filename'];
+    if (!file_exists($targetFilePath)) {
+        api_response(false, null, 'Không tìm thấy tệp ảnh vừa tải lên trên máy chủ lưu trữ.', 500);
+    }
+
     api_response(true, [
         'filename' => $upload['filename'],
         'url'      => $upload['url']

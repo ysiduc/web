@@ -36,7 +36,7 @@ require_once __DIR__ . '/includes/header.php';
       <img src="<?php echo htmlspecialchars(get_service_image_url($service['image'])); ?>" 
            alt="<?php echo htmlspecialchars($service['title']); ?>" 
            class="service-detail-img"
-           onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
+           onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
       
       <h2 class="service-detail-title"><?php echo htmlspecialchars($service['title']); ?></h2>
       <p class="service-detail-summary">

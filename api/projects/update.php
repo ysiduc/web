@@ -41,22 +41,38 @@ $gallery         = isset($input['gallery']) ? (is_array($input['gallery']) ? jso
 
 // Handle image replacement if uploaded
 $image_filename = $oldProject['image'];
-if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-    $upload_res = api_upload_image('image', 'projects');
-    if ($upload_res['status']) {
-        // Optionally remove old image if not default
-        if (!empty($oldProject['image']) && !str_starts_with($oldProject['image'], 'default-') && !str_contains($oldProject['image'], 'home-')) {
-            $oldPath = UPLOAD_DIR . $oldProject['image'];
-            if (file_exists($oldPath)) {
-                @unlink($oldPath);
-            }
-        }
-        $image_filename = $upload_res['filename'];
-    } else {
-        api_response(false, null, 'Lỗi tải ảnh: ' . $upload_res['message'], 400);
+if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+    $uploadError = (int)$_FILES['image']['error'];
+    if ($uploadError !== UPLOAD_ERR_OK) {
+        api_response(false, null, 'Lỗi tải ảnh mới: ' . get_upload_error_message($uploadError), 400);
     }
-} elseif (isset($input['image']) && !empty($input['image'])) {
-    $image_filename = trim($input['image']);
+
+    $upload_res = api_upload_image('image', 'projects');
+    if (!$upload_res['status']) {
+        api_response(false, null, 'Lỗi tải ảnh mới: ' . $upload_res['message'], 400);
+    }
+
+    $baseUploadDir = defined('UPLOAD_DIR') ? UPLOAD_DIR : (dirname(__DIR__, 2) . '/assets/uploads/');
+    $targetFilePath = rtrim($baseUploadDir, '/') . '/' . $upload_res['filename'];
+    if (!file_exists($targetFilePath)) {
+        api_response(false, null, 'Không tìm thấy tệp ảnh vừa tải lên trên máy chủ lưu trữ.', 500);
+    }
+
+    // Optionally remove old image if not default or static
+    if (!empty($oldProject['image']) && !str_starts_with($oldProject['image'], 'default-') && !str_contains($oldProject['image'], 'home-') && !str_starts_with($oldProject['image'], 'http') && !str_starts_with($oldProject['image'], '/')) {
+        $oldPath = rtrim($baseUploadDir, '/') . '/' . $oldProject['image'];
+        if (file_exists($oldPath) && is_file($oldPath)) {
+            @unlink($oldPath);
+        }
+    }
+    $image_filename = $upload_res['filename'];
+} elseif (array_key_exists('image', $input)) {
+    $inputImg = trim((string)$input['image']);
+    if (in_array($inputImg, ['default-project.jpg', 'default-service.jpg', 'default-news.jpg'], true)) {
+        $image_filename = '';
+    } else {
+        $image_filename = $inputImg;
+    }
 }
 
 // Update slug if title changed significantly and requested

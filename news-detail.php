@@ -42,7 +42,7 @@ require_once __DIR__ . '/includes/header.php';
         <?php echo htmlspecialchars($news_item['summary']); ?>
       </p>
 
-      <img src="<?php echo htmlspecialchars(get_news_image_url($news_item['image'])); ?>" alt="<?php echo htmlspecialchars($news_item['title']); ?>" class="news-detail-img" onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
+      <img src="<?php echo htmlspecialchars(get_news_image_url($news_item['image'])); ?>" alt="<?php echo htmlspecialchars($news_item['title']); ?>" class="news-detail-img" onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
 
       <div class="news-detail-body">
         <?php echo nl2br(htmlspecialchars($news_item['content'])); ?>

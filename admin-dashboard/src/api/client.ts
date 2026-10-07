@@ -71,22 +71,38 @@ api.interceptors.request.use((config) => {
 // Helper to resolve image URLs for public display
 export const getImageUrl = (imagePath?: string | null): string => {
   if (!imagePath) return '';
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('//')) {
-    return imagePath;
+  const trimmed = imagePath.trim();
+  if (
+    !trimmed ||
+    trimmed === 'default-service.jpg' ||
+    trimmed === 'default-project.jpg' ||
+    trimmed === 'default-news.jpg'
+  ) {
+    return '';
+  }
+
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('//')) {
+    return trimmed;
   }
 
   const base = getAppBasePath();
 
+  // If path already starts with /assets/
+  if (trimmed.startsWith('/assets/')) {
+    return `${base}${trimmed}`;
+  }
+
   // If path already starts with assets/
-  if (imagePath.startsWith('assets/')) {
-    return `${base}/${imagePath}`;
+  if (trimmed.startsWith('assets/')) {
+    return `${base}/${trimmed}`;
   }
 
-  // If it's a default image or legacy image name
-  if (imagePath.startsWith('default-') || imagePath.startsWith('service-') || imagePath.startsWith('home-') || imagePath.startsWith('logo')) {
-    return `${base}/assets/images/${imagePath}`;
+  // If it's a known static asset in assets/images/
+  if (trimmed.startsWith('service-') || trimmed.startsWith('home-') || trimmed.startsWith('logo')) {
+    return `${base}/assets/images/${trimmed}`;
   }
 
-  // Otherwise it's an uploaded image
-  return `${base}/assets/uploads/${imagePath}`;
+  // Otherwise it's an uploaded image (e.g. services/xxx.jpg, projects/xxx.jpg, news/xxx.jpg)
+  const cleanPath = trimmed.replace(/^\/+/, '').replace(/^uploads\//, '');
+  return `${base}/assets/uploads/${cleanPath}`;
 };

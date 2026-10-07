@@ -34,21 +34,37 @@ $content = trim($input['content'] ?? $oldNews['content']);
 $status  = in_array($input['status'] ?? '', ['published', 'draft']) ? $input['status'] : ($oldNews['status'] ?? 'published');
 
 $image_filename = $oldNews['image'];
-if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-    $upload_res = api_upload_image('image', 'news');
-    if ($upload_res['status']) {
-        if (!empty($oldNews['image']) && !str_starts_with($oldNews['image'], 'default-')) {
-            $oldPath = UPLOAD_DIR . $oldNews['image'];
-            if (file_exists($oldPath)) {
-                @unlink($oldPath);
-            }
-        }
-        $image_filename = $upload_res['filename'];
-    } else {
-        api_response(false, null, 'Lỗi tải ảnh: ' . $upload_res['message'], 400);
+if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+    $uploadError = (int)$_FILES['image']['error'];
+    if ($uploadError !== UPLOAD_ERR_OK) {
+        api_response(false, null, 'Lỗi tải ảnh mới: ' . get_upload_error_message($uploadError), 400);
     }
-} elseif (isset($input['image']) && !empty($input['image'])) {
-    $image_filename = trim($input['image']);
+
+    $upload_res = api_upload_image('image', 'news');
+    if (!$upload_res['status']) {
+        api_response(false, null, 'Lỗi tải ảnh mới: ' . $upload_res['message'], 400);
+    }
+
+    $baseUploadDir = defined('UPLOAD_DIR') ? UPLOAD_DIR : (dirname(__DIR__, 2) . '/assets/uploads/');
+    $targetFilePath = rtrim($baseUploadDir, '/') . '/' . $upload_res['filename'];
+    if (!file_exists($targetFilePath)) {
+        api_response(false, null, 'Không tìm thấy tệp ảnh vừa tải lên trên máy chủ lưu trữ.', 500);
+    }
+
+    if (!empty($oldNews['image']) && !str_starts_with($oldNews['image'], 'default-') && !str_starts_with($oldNews['image'], 'http') && !str_starts_with($oldNews['image'], '/')) {
+        $oldPath = rtrim($baseUploadDir, '/') . '/' . $oldNews['image'];
+        if (file_exists($oldPath) && is_file($oldPath)) {
+            @unlink($oldPath);
+        }
+    }
+    $image_filename = $upload_res['filename'];
+} elseif (array_key_exists('image', $input)) {
+    $inputImg = trim((string)$input['image']);
+    if (in_array($inputImg, ['default-news.jpg', 'default-service.jpg', 'default-project.jpg'], true)) {
+        $image_filename = '';
+    } else {
+        $image_filename = $inputImg;
+    }
 }
 
 $slug = $oldNews['slug'];

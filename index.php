@@ -71,7 +71,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
               $detail_url = url('service-detail.php?id=' . urlencode($s['id']));
       ?>
       <a href="<?= $detail_url ?>" class="h-svc__card<?= $idx === 2 ? ' active' : '' ?>">
-        <img src="<?= htmlspecialchars($img_url) ?>" alt="<?= htmlspecialchars($tag) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
+        <img src="<?= htmlspecialchars($img_url) ?>" alt="<?= htmlspecialchars($tag) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
         <div class="h-svc__badge-tag"><?= htmlspecialchars($tag) ?></div>
         <div class="h-svc__overlay">
           <p class="h-svc__desc"><?= htmlspecialchars($desc) ?></p>
@@ -145,7 +145,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
         <div class="h-proj__thumb">
           <span class="h-proj__cat"><?= htmlspecialchars($p['category']) ?></span>
           <img src="<?= htmlspecialchars($img) ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy"
-               onerror="this.onerror=null;this.src='<?= asset_url('images/service-cons.png') ?>';">
+               onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
         </div>
         <div class="h-proj__body">
           <h3><a href="<?= url('/project-detail.php?id=' . $p['id']) ?>"><?= htmlspecialchars($p['title']) ?></a></h3>

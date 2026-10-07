@@ -309,14 +309,12 @@ if ($db) {
         <?php if (count($projects) > 0): ?>
           <?php foreach ($projects as $item): 
             $isCoKhi = in_array($item['category'], $co_khi_cats);
-            $imgSrc = !empty($item['image']) && $item['image'] !== 'default-project.jpg' 
-                      ? asset_url('images/' . htmlspecialchars($item['image']))
-                      : asset_url('images/service-cons.png');
+            $imgSrc = get_project_image_url($item['image']);
           ?>
             <tr>
               <td style="text-align: center; color: #94a3b8; font-weight: 600;"><?= $item['id']; ?></td>
               <td style="text-align: center;">
-                <img src="<?= $imgSrc; ?>" alt="Thumb" class="adm-thumb" onerror="this.src='<?= asset_url('images/service-cons.png') ?>'">
+                <img src="<?= $imgSrc; ?>" alt="Thumb" class="adm-thumb" onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>'">
               </td>
               <td>
                 <div style="font-weight: 700; color: #0f172a;"><?= htmlspecialchars($item['title']); ?></div>
