@@ -82,7 +82,7 @@ $active_css = $page_css_map[$current_page] ?? '/test/web_cty/assets/css/user/hom
         <li><a href="/test/web_cty/services.php" class="nav-link <?php echo ($current_page == 'services.php') ? 'active' : ''; ?>">Dịch vụ</a></li>
         <li><a href="/test/web_cty/projects.php" class="nav-link <?php echo ($current_page == 'projects.php' || $current_page == 'project-detail.php') ? 'active' : ''; ?>">Công trình</a></li>
         <li><a href="/test/web_cty/recruitment.php" class="nav-link <?php echo ($current_page == 'recruitment.php') ? 'active' : ''; ?>">Tuyển dụng</a></li>
-        <li><a href="/test/web_cty/contact.php" class="nav-link <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>">Liên hệ</a></li>
+        <li><a href="/test/web_cty/news.php" class="nav-link <?php echo ($current_page == 'news.php' || $current_page == 'news-detail.php') ? 'active' : ''; ?>">Tin tức</a></li>
         <li><a href="/test/web_cty/contact.php" class="btn btn-primary btn-sm nav-cta-btn"><i class="fa-solid fa-calculator"></i> Liên hệ + Báo giá</a></li>
       </ul>
     </div>
