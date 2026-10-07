@@ -61,6 +61,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Auto-close drawer if viewport resizes to desktop (>= 1024px)
+  const desktopMediaQuery = window.matchMedia('(min-width: 1024px)');
+  function handleDesktopChange(e) {
+    if (e.matches && drawer && drawer.classList.contains('active')) {
+      closeDrawer();
+    }
+  }
+  if (desktopMediaQuery.addEventListener) {
+    desktopMediaQuery.addEventListener('change', handleDesktopChange);
+  } else if (desktopMediaQuery.addListener) {
+    desktopMediaQuery.addListener(handleDesktopChange);
+  }
+
   /* Projects filter (projects.php) */
   const filterTabs  = document.querySelectorAll('.filter-tab');
   const projectItems = document.querySelectorAll('.project-card-item');

@@ -393,3 +393,16 @@ function sanitize_html_content(string $html): string {
     return trim($cleanHtml);
 }
 
+if (!function_exists('versioned_asset_url')) {
+    function versioned_asset_url($path = '') {
+        $cleanPath = explode('?', $path)[0];
+        $base = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);
+        $file = $base . '/assets/' . ltrim($cleanPath, '/');
+        $url = function_exists('asset_url') ? asset_url($cleanPath) : ('/assets/' . ltrim($cleanPath, '/'));
+        if (is_file($file)) {
+            return $url . '?v=' . filemtime($file);
+        }
+        return function_exists('asset_url') ? asset_url($path) : ('/assets/' . ltrim($path, '/'));
+    }
+}
+

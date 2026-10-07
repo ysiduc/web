@@ -11,19 +11,19 @@ $working_hours = get_site_info('working_hours', 'Thứ 2 - Thứ 7: 07:30 - 17:3
 
 // Dynamic Page CSS Map
 $page_css_map = [
-    'index.php'          => asset_url('css/user/home.css'),
-    'about.php'          => asset_url('css/user/about.css'),
-    'services.php'       => asset_url('css/user/services.css'),
-    'service-detail.php' => asset_url('css/user/service-detail.css'),
-    'projects.php'       => asset_url('css/user/projects.css'),
-    'project-detail.php'  => asset_url('css/user/project-detail.css'),
-    'quote.php'          => asset_url('css/user/quote.css'),
-    'news.php'           => asset_url('css/user/news.css'),
-    'news-detail.php'    => asset_url('css/user/news-detail.css'),
-    'contact.php'        => asset_url('css/user/contact.css'),
-    'recruitment.php'    => asset_url('css/user/recruitment.css'),
+    'index.php'          => 'css/user/home.css',
+    'about.php'          => 'css/user/about.css',
+    'services.php'       => 'css/user/services.css',
+    'service-detail.php' => 'css/user/service-detail.css',
+    'projects.php'       => 'css/user/projects.css',
+    'project-detail.php' => 'css/user/project-detail.css',
+    'quote.php'          => 'css/user/quote.css',
+    'news.php'           => 'css/user/news.css',
+    'news-detail.php'    => 'css/user/news-detail.css',
+    'contact.php'        => 'css/user/contact.css',
+    'recruitment.php'    => 'css/user/recruitment.css',
 ];
-$active_css = $page_css_map[$current_page] ?? asset_url('css/user/home.css');
+$active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -39,15 +39,15 @@ $active_css = $page_css_map[$current_page] ?? asset_url('css/user/home.css');
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Common CSS System -->
-  <link rel="stylesheet" href="<?php echo asset_url('css/common/reset.css?v=2'); ?>">
-  <link rel="stylesheet" href="<?php echo asset_url('css/common/variables.css?v=2'); ?>">
-  <link rel="stylesheet" href="<?php echo asset_url('css/common/header.css?v=2'); ?>">
-  <link rel="stylesheet" href="<?php echo asset_url('css/common/footer.css'); ?>">
-  <link rel="stylesheet" href="<?php echo asset_url('css/common/components.css?v=2'); ?>">
+  <!-- Common CSS System (Dynamic Cache-Busting via filemtime) -->
+  <link rel="stylesheet" href="<?php echo versioned_asset_url('css/common/reset.css'); ?>">
+  <link rel="stylesheet" href="<?php echo versioned_asset_url('css/common/variables.css'); ?>">
+  <link rel="stylesheet" href="<?php echo versioned_asset_url('css/common/header.css'); ?>">
+  <link rel="stylesheet" href="<?php echo versioned_asset_url('css/common/footer.css'); ?>">
+  <link rel="stylesheet" href="<?php echo versioned_asset_url('css/common/components.css'); ?>">
   
   <!-- User Page Specific CSS -->
-  <link rel="stylesheet" href="<?php echo $active_css; ?>?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="<?php echo versioned_asset_url($active_css_path); ?>">
 </head>
 <body>
 
@@ -69,7 +69,7 @@ $active_css = $page_css_map[$current_page] ?? asset_url('css/user/home.css');
   <header class="main-header">
     <div class="header-container navbar">
       <a href="<?php echo url('/index.php'); ?>" class="brand-logo" aria-label="<?php echo $short_name; ?> - Trang chủ">
-        <img src="<?php echo asset_url('images/logo.png?v=2'); ?>" alt="<?php echo $short_name; ?> - THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG" class="site-logo-img">
+        <img src="<?php echo versioned_asset_url('images/logo.png'); ?>" alt="<?php echo $short_name; ?> - THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG" class="site-logo-img">
       </a>
 
       <button class="menu-toggle" id="menuToggle" aria-label="Mở menu điều hướng" aria-expanded="false" aria-controls="mobileDrawer">

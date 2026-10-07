@@ -13,7 +13,7 @@ $email = get_site_info('email', 'contact@pnmec.vn');
       <div class="footer-grid">
         <!-- Col 1: Brand Info -->
         <div class="footer-col">
-          <img src="<?php echo asset_url('images/logo.png?v=2'); ?>" alt="<?php echo get_site_info('company_short_name', 'PNMEC'); ?>" style="height: 72px; width: auto; margin-bottom: 16px; display: block; filter: brightness(0) invert(1);">
+          <img src="<?php echo versioned_asset_url('images/logo.png'); ?>" alt="<?php echo get_site_info('company_short_name', 'PNMEC'); ?>" style="height: 72px; width: auto; margin-bottom: 16px; display: block; filter: brightness(0) invert(1);">
           <p><?php echo get_site_info('about_summary'); ?></p>
           <div style="display: flex; gap: 12px; margin-top: 15px;">
             <a href="<?php echo get_site_info('facebook_url', '#'); ?>" target="_blank" style="width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff;"><i class="fa-brands fa-facebook-f"></i></a>
@@ -64,6 +64,6 @@ $email = get_site_info('email', 'contact@pnmec.vn');
   </footer>
 
   <!-- Main JavaScript File -->
-  <script src="<?php echo asset_url('js/main.js'); ?>"></script>
+  <script src="<?php echo versioned_asset_url('js/main.js'); ?>"></script>
 </body>
 </html>

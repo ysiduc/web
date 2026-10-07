@@ -95,6 +95,18 @@ if (!function_exists('asset_url')) {
     }
 }
 
+if (!function_exists('versioned_asset_url')) {
+    function versioned_asset_url($path = '') {
+        $cleanPath = explode('?', $path)[0];
+        $file = BASE_PATH . '/assets/' . ltrim($cleanPath, '/');
+        $url = asset_url($cleanPath);
+        if (is_file($file)) {
+            return $url . '?v=' . filemtime($file);
+        }
+        return asset_url($path);
+    }
+}
+
 if (!function_exists('api_url')) {
     function api_url($path = '') {
         return url('/api/' . ltrim($path, '/'));
