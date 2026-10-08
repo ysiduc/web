@@ -1,5 +1,5 @@
 <?php
-$page_title = "Cấu Hình Thông Tin Website";
+$page_title = "Cài Đặt Thông Tin & Liên Hệ Website";
 require_once __DIR__ . '/../includes/admin-header.php';
 
 require_admin(); // Bắt buộc phải là role = admin mới được truy cập
@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fields = [
         'site_name', 'company_short_name', 'phone', 'hotline', 
         'email', 'address', 'factory_address', 'working_hours',
+        'facebook_url', 'youtube_url', 'zalo_url',
         'hero_title', 'hero_subtitle', 'about_summary'
     ];
 
@@ -37,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div style="max-width: 900px; margin: 0 auto;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-    <h2><i class="fa-solid fa-sliders"></i> Cài Đặt Thông Tin & Banner Website</h2>
+    <h2><i class="fa-solid fa-sliders"></i> Cài Đặt Website — Thông Tin Doanh Nghiệp &amp; Liên Hệ</h2>
     <span class="badge badge-admin" style="font-size: 13px; padding: 6px 14px;"><i class="fa-solid fa-lock"></i> Khu Vực Cho Admin</span>
   </div>
 
@@ -45,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="" method="POST">
       
       <h3 style="font-size: 16px; margin-bottom: 20px; color: #0f172a; border-bottom: 2px solid #f59e0b; padding-bottom: 8px; display: inline-block;">
-        <i class="fa-solid fa-building"></i> Thông Tin Thương Hiệu Công Ty
+        <i class="fa-solid fa-building"></i> Thông Tin Doanh Nghiệp &amp; Liên Hệ Cốt Lõi
       </h3>
 
       <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
@@ -62,40 +63,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
         <div class="form-group">
-          <label>Số điện thoại liên hệ</label>
-          <input type="text" name="phone" class="form-control" value="<?php echo htmlspecialchars($info['phone'] ?? '0988.123.456'); ?>">
+          <label>Hotline</label>
+          <input type="text" name="hotline" class="form-control" value="<?php echo htmlspecialchars($info['hotline'] ?? '0911391999'); ?>">
         </div>
 
         <div class="form-group">
-          <label>Hotline tổng đài</label>
-          <input type="text" name="hotline" class="form-control" value="<?php echo htmlspecialchars($info['hotline'] ?? '1900.6868'); ?>">
+          <label>Điện thoại tư vấn kỹ thuật</label>
+          <input type="text" name="phone" class="form-control" value="<?php echo htmlspecialchars($info['phone'] ?? '0981700888'); ?>">
         </div>
 
         <div class="form-group">
-          <label>Email chính</label>
-          <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($info['email'] ?? 'contact@pnmec.vn'); ?>">
+          <label>Email tiếp nhận hồ sơ / Báo giá</label>
+          <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($info['email'] ?? 'pnmec.vn@gmail.com'); ?>">
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
         <div class="form-group">
-          <label>Địa chỉ văn phòng chính</label>
-          <input type="text" name="address" class="form-control" value="<?php echo htmlspecialchars($info['address'] ?? 'Khu Công Nghiệp Quang Minh, Mê Linh, Hà Nội'); ?>">
+          <label>Trụ sở chính &amp; Văn phòng</label>
+          <input type="text" name="address" class="form-control" value="<?php echo htmlspecialchars($info['address'] ?? 'Số 26 Ngõ 139, Phố Hoa Lâm, Việt Hưng, Hà Nội'); ?>">
         </div>
 
         <div class="form-group">
-          <label>Địa chỉ nhà máy gia công cơ khí</label>
-          <input type="text" name="factory_address" class="form-control" value="<?php echo htmlspecialchars($info['factory_address'] ?? 'Lô C2, KCN Thăng Long II, Yên Mỹ, Hưng Yên'); ?>">
+          <label>Nhà xưởng chế tạo cơ khí <small style="font-weight: normal; color: #64748b;">(để trống nếu chưa có - website sẽ tự ẩn)</small></label>
+          <input type="text" name="factory_address" class="form-control" placeholder="Để trống nếu chưa có địa chỉ cụ thể" value="<?php echo htmlspecialchars($info['factory_address'] ?? ''); ?>">
         </div>
       </div>
 
       <div class="form-group">
         <label>Thời gian làm việc</label>
-        <input type="text" name="working_hours" class="form-control" value="<?php echo htmlspecialchars($info['working_hours'] ?? 'Thứ 2 - Thứ 7: 07:30 - 17:30'); ?>">
+        <input type="text" name="working_hours" class="form-control" placeholder="VD: 24/7" value="<?php echo htmlspecialchars($info['working_hours'] ?? '24/7'); ?>">
       </div>
 
       <h3 style="font-size: 16px; margin: 30px 0 20px; color: #0f172a; border-bottom: 2px solid #f59e0b; padding-bottom: 8px; display: inline-block;">
-        <i class="fa-solid fa-display"></i> Nội Dung Banner & Giới Thiệu Trang Chủ
+        <i class="fa-solid fa-share-nodes"></i> Mạng Xã Hội &amp; Kênh Liên Lạc
+      </h3>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+        <div class="form-group">
+          <label>Facebook URL</label>
+          <input type="text" name="facebook_url" class="form-control" value="<?php echo htmlspecialchars($info['facebook_url'] ?? 'https://facebook.com/pnmec'); ?>">
+        </div>
+
+        <div class="form-group">
+          <label>YouTube URL</label>
+          <input type="text" name="youtube_url" class="form-control" value="<?php echo htmlspecialchars($info['youtube_url'] ?? 'https://youtube.com/@pnmec'); ?>">
+        </div>
+
+        <div class="form-group">
+          <label>Zalo URL / Số điện thoại Zalo</label>
+          <input type="text" name="zalo_url" class="form-control" placeholder="VD: https://zalo.me/0911391999" value="<?php echo htmlspecialchars($info['zalo_url'] ?? ''); ?>">
+        </div>
+      </div>
+
+      <h3 style="font-size: 16px; margin: 30px 0 20px; color: #0f172a; border-bottom: 2px solid #f59e0b; padding-bottom: 8px; display: inline-block;">
+        <i class="fa-solid fa-display"></i> Nội Dung Banner &amp; Giới Thiệu Trang Chủ
       </h3>
 
       <div class="form-group">
@@ -109,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
 
       <div class="form-group">
-        <label>Tóm tắt năng lực công ty (Footer & Giới thiệu)</label>
+        <label>Tóm tắt năng lực công ty (Footer &amp; Giới thiệu)</label>
         <textarea name="about_summary" class="form-control" style="min-height: 90px;"><?php echo htmlspecialchars($info['about_summary'] ?? 'PNMEC là đơn vị tiên phong trong lĩnh vực thiết kế, gia công cơ khí chính xác và thi công nhà xưởng kết cấu thép với hơn 15 năm kinh nghiệm.'); ?></textarea>
       </div>
 

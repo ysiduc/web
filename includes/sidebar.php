@@ -2,6 +2,12 @@
 /**
  * Shared Sidebar Component (Used in detail/category pages)
  */
+require_once __DIR__ . '/functions.php';
+
+$sb_phone = get_site_info('phone', '0981700888');
+$sb_hotline = get_site_info('hotline', '0911391999');
+$sb_hours = get_site_info('working_hours', '24/7');
+$primary_phone = $sb_hotline ?: $sb_phone;
 ?>
 <aside class="sidebar-widget-container">
   <div class="sidebar-widget">
@@ -19,7 +25,7 @@
 
   <div class="sidebar-widget" style="background: var(--primary-navy); color: #fff; border-radius: 12px; padding: 24px;">
     <h3 style="color: #fff; font-size: 18px; margin-bottom: 12px;"><i class="fa-solid fa-headset" style="color: var(--accent-gold);"></i> Tư Vấn Trực Tiếp</h3>
-    <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">Đội ngũ kỹ sư PNMEC sẵn sàng giải đáp mọi thắc mắc 24/7.</p>
-    <a href="tel:0988123456" class="btn btn-primary" style="width: 100%; text-align: center;"><i class="fa-solid fa-phone"></i> Hotline: 0988.123.456</a>
+    <p style="font-size: 13px; color: var(--text-light); margin-bottom: 16px;">Đội ngũ kỹ sư PNMEC sẵn sàng giải đáp mọi thắc mắc <?php echo htmlspecialchars($sb_hours); ?>.</p>
+    <a href="<?php echo tel_url($primary_phone); ?>" class="btn btn-primary" style="width: 100%; text-align: center;"><i class="fa-solid fa-phone"></i> Hotline: <?php echo htmlspecialchars($primary_phone); ?></a>
   </div>
 </aside>

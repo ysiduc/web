@@ -201,10 +201,11 @@ export const SettingsPage: React.FC = () => {
 
             <div className="sm:col-span-3">
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
-                Địa Chỉ Nhà Máy Sản Xuất &amp; Gia Công Cơ Khí
+                Địa Chỉ Nhà Máy Sản Xuất &amp; Gia Công Cơ Khí <span className="font-normal text-slate-400 lowercase">(để trống nếu chưa có)</span>
               </label>
               <input
                 type="text"
+                placeholder="Để trống nếu chưa có địa chỉ cụ thể"
                 value={settings.factory_address || ''}
                 onChange={(e) => handleChange('factory_address', e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-navy-700 bg-slate-50 dark:bg-navy-950 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"

@@ -330,18 +330,68 @@ $first_faq = reset($faqs);
       <!-- Left: company info -->
       <div>
         <div class="h-cta__logo-row">
-          <img src="<?= asset_url('images/logo.png?v=2') ?>" alt="PNMEC GROUP" style="height: 72px; width: auto; max-width: 100%;">
+          <img src="<?= asset_url('images/logo.png?v=2') ?>" alt="<?= htmlspecialchars(get_site_info('company_short_name', 'PNMEC')) ?> GROUP" style="height: 72px; width: auto; max-width: 100%;">
         </div>
         <ul class="h-cta__info">
-          <li><i class="fa-solid fa-location-dot"></i><span>KCN Quang Minh, Mê Linh, Hà Nội (VP)</span></li>
-          <li><i class="fa-solid fa-industry"></i><span>Lô C2, KCN Thăng Long II, Yên Mỹ, Hưng Yên</span></li>
-          <li><i class="fa-solid fa-phone"></i><a href="tel:0988123456">0988.123.456</a></li>
-          <li><i class="fa-solid fa-envelope"></i><a href="mailto:contact@pnmec.vn">contact@pnmec.vn</a></li>
+          <?php 
+          $h_address = get_site_info('address');
+          if (!empty($h_address)): 
+          ?>
+          <li><i class="fa-solid fa-location-dot"></i><span><?= htmlspecialchars($h_address) ?></span></li>
+          <?php endif; ?>
+
+          <?php 
+          $h_factory = get_site_info('factory_address');
+          if (!empty(trim($h_factory))): 
+          ?>
+          <li><i class="fa-solid fa-industry"></i><span><?= htmlspecialchars($h_factory) ?></span></li>
+          <?php endif; ?>
+
+          <?php 
+          $h_phone = get_site_info('phone');
+          $h_hotline = get_site_info('hotline');
+          if (!empty($h_phone) || !empty($h_hotline)): 
+          ?>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <span>
+              <?php if (!empty($h_phone)): ?>
+                <a href="<?= tel_url($h_phone) ?>"><?= htmlspecialchars($h_phone) ?></a>
+              <?php endif; ?>
+              <?php if (!empty($h_hotline)): ?>
+                <?php if (!empty($h_phone)): ?> (Hotline: <?php endif; ?>
+                <a href="<?= tel_url($h_hotline) ?>" style="<?= !empty($h_phone) ? 'color: var(--accent-gold); font-weight: 600;' : '' ?>"><?= htmlspecialchars($h_hotline) ?></a>
+                <?php if (!empty($h_phone)): ?>)<?php endif; ?>
+              <?php endif; ?>
+            </span>
+          </li>
+          <?php endif; ?>
+
+          <?php 
+          $h_email = get_site_info('email');
+          if (!empty($h_email)): 
+          ?>
+          <li><i class="fa-solid fa-envelope"></i><a href="mailto:<?= htmlspecialchars($h_email) ?>"><?= htmlspecialchars($h_email) ?></a></li>
+          <?php endif; ?>
+
+          <?php 
+          $h_hours = get_site_info('working_hours');
+          if (!empty($h_hours)): 
+          ?>
+          <li><i class="fa-solid fa-clock"></i><span><?= htmlspecialchars($h_hours) ?></span></li>
+          <?php endif; ?>
         </ul>
+
+        <?php 
+        $h_facebook = get_site_info('facebook_url', '#');
+        $h_youtube  = get_site_info('youtube_url', '#');
+        $h_zalo     = get_site_info('zalo_url');
+        $zalo_target = !empty($h_zalo) ? $h_zalo : ('https://zalo.me/' . preg_replace('/[^0-9]/', '', $h_hotline ?: $h_phone));
+        ?>
         <div class="h-cta__social">
-          <a href="#" class="h-cta__soc-btn"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#" class="h-cta__soc-btn"><i class="fa-brands fa-youtube"></i></a>
-          <a href="#" class="h-cta__soc-btn"><i class="fa-solid fa-comment-dots"></i></a>
+          <a href="<?= htmlspecialchars(!empty($h_facebook) ? $h_facebook : '#') ?>" class="h-cta__soc-btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="<?= htmlspecialchars(!empty($h_youtube) ? $h_youtube : '#') ?>" class="h-cta__soc-btn" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="<?= htmlspecialchars($zalo_target) ?>" class="h-cta__soc-btn" target="_blank" rel="noopener noreferrer" aria-label="Zalo"><i class="fa-solid fa-comment-dots"></i></a>
         </div>
       </div>
 
@@ -352,11 +402,11 @@ $first_faq = reset($faqs);
           <div class="h-cta__row2">
             <div class="h-cta__field">
               <label for="fn">Họ Tên *</label>
-              <input type="text" id="fn" name="name" placeholder="Nguyễn Văn A" required>
+              <input type="text" id="fn" name="fullname" placeholder="Nguyễn Văn A" required>
             </div>
             <div class="h-cta__field">
               <label for="fp">Số Điện Thoại *</label>
-              <input type="tel" id="fp" name="phone" placeholder="0988.xxx.xxx" required>
+              <input type="tel" id="fp" name="phone" placeholder="09xxxxxxxx" required>
             </div>
           </div>
           <div class="h-cta__field">

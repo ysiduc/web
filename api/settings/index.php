@@ -9,13 +9,9 @@ if (!$db) {
 }
 
 try {
+    $settings = get_all_site_info();
     $stmt = $db->query("SELECT info_key, info_value FROM site_info ORDER BY id ASC");
     $rows = $stmt->fetchAll();
-
-    $settings = [];
-    foreach ($rows as $r) {
-        $settings[$r['info_key']] = $r['info_value'];
-    }
 
     api_response(true, [
         'settings' => $settings,

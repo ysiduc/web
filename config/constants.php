@@ -64,13 +64,16 @@ if (!defined('SITE_NAME_DEFAULT')) {
     define('SITE_NAME_DEFAULT', 'Công Ty CP Cơ Khí & Xây Dựng PNMEC');
 }
 if (!defined('SITE_HOTLINE_DEFAULT')) {
-    define('SITE_HOTLINE_DEFAULT', '0988.123.456');
+    define('SITE_HOTLINE_DEFAULT', '0911391999');
+}
+if (!defined('SITE_PHONE_DEFAULT')) {
+    define('SITE_PHONE_DEFAULT', '0981700888');
 }
 if (!defined('SITE_EMAIL_DEFAULT')) {
-    define('SITE_EMAIL_DEFAULT', 'contact@pnmec.vn');
+    define('SITE_EMAIL_DEFAULT', 'pnmec.vn@gmail.com');
 }
 if (!defined('SITE_ADDRESS_DEFAULT')) {
-    define('SITE_ADDRESS_DEFAULT', 'KCN Quang Minh, Mê Linh, Hà Nội');
+    define('SITE_ADDRESS_DEFAULT', 'Số 26 Ngõ 139, Phố Hoa Lâm, Việt Hưng, Hà Nội');
 }
 
 // 5. Environment & Debug

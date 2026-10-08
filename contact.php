@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Retry-After: " . $rl['retry_after']);
         $error_text = 'Bạn đã gửi yêu cầu quá nhiều lần. Vui lòng thử lại sau ' . $rl['retry_after'] . ' giây.';
     } else {
-        $fullname = trim($_POST['fullname'] ?? '');
+        $fullname = trim($_POST['fullname'] ?? $_POST['name'] ?? '');
         $phone    = trim($_POST['phone'] ?? '');
         $email    = trim($_POST['email'] ?? '');
         $service  = trim($_POST['service'] ?? $_POST['position'] ?? '');
@@ -102,50 +102,78 @@ require_once __DIR__ . '/includes/header.php';
     <div class="contact-grid">
       <!-- Left Column: Company Info Card -->
       <div class="contact-info-card">
-        <h3><?= get_site_info('company_short_name', 'PNMEC'); ?></h3>
+        <h3><?= htmlspecialchars(get_site_info('company_short_name', 'PNMEC')); ?></h3>
         <p style="color: var(--text-light); font-size: 14px; margin-bottom: 30px;">
           Hãy liên hệ với chúng tôi để nhận bản vẽ khảo sát miễn phí và phương án dự toán tối ưu nhất cho công trình của quý vị.
         </p>
 
+        <?php $c_address = get_site_info('address'); if (!empty($c_address)): ?>
         <div class="contact-detail-item">
           <i class="fa-solid fa-location-dot"></i>
           <div>
             <strong style="color: #fff; display: block; font-size: 15px;">Trụ sở chính &amp; Văn phòng:</strong>
-            <span style="color: var(--text-light); font-size: 14px;"><?= get_site_info('address'); ?></span>
+            <span style="color: var(--text-light); font-size: 14px;"><?= htmlspecialchars($c_address); ?></span>
           </div>
         </div>
+        <?php endif; ?>
 
+        <?php 
+        $c_factory = get_site_info('factory_address'); 
+        if (!empty(trim($c_factory))): 
+        ?>
         <div class="contact-detail-item">
           <i class="fa-solid fa-industry"></i>
           <div>
             <strong style="color: #fff; display: block; font-size: 15px;">Nhà xưởng chế tạo cơ khí:</strong>
-            <span style="color: var(--text-light); font-size: 14px;"><?= get_site_info('factory_address'); ?></span>
+            <span style="color: var(--text-light); font-size: 14px;"><?= htmlspecialchars($c_factory); ?></span>
           </div>
         </div>
+        <?php endif; ?>
 
+        <?php 
+        $c_phone = get_site_info('phone');
+        $c_hotline = get_site_info('hotline');
+        if (!empty($c_phone) || !empty($c_hotline)): 
+        ?>
         <div class="contact-detail-item">
           <i class="fa-solid fa-phone"></i>
           <div>
-            <strong style="color: #fff; display: block; font-size: 15px;">Điện thoại tư vấn kỹ thuật:</strong>
-            <span style="color: var(--text-light); font-size: 14px;"><?= get_site_info('phone'); ?> (Hotline: <?= get_site_info('hotline'); ?>)</span>
+            <strong style="color: #fff; display: block; font-size: 15px;">Điện thoại tư vấn kỹ thuật &amp; Hotline:</strong>
+            <span style="color: var(--text-light); font-size: 14px;">
+              <?php if (!empty($c_phone)): ?>
+                <a href="<?= tel_url($c_phone); ?>" style="color: var(--text-light); text-decoration: none;"><?= htmlspecialchars($c_phone); ?></a>
+              <?php endif; ?>
+              <?php if (!empty($c_hotline)): ?>
+                <?php if (!empty($c_phone)): ?> (Hotline: <?php endif; ?>
+                <a href="<?= tel_url($c_hotline); ?>" style="color: var(--accent-gold); text-decoration: none; font-weight: 600;"><?= htmlspecialchars($c_hotline); ?></a>
+                <?php if (!empty($c_phone)): ?>)<?php endif; ?>
+              <?php endif; ?>
+            </span>
           </div>
         </div>
+        <?php endif; ?>
 
+        <?php $c_email = get_site_info('email'); if (!empty($c_email)): ?>
         <div class="contact-detail-item">
           <i class="fa-solid fa-envelope"></i>
           <div>
             <strong style="color: #fff; display: block; font-size: 15px;">Email tiếp nhận hồ sơ / Báo giá:</strong>
-            <span style="color: var(--text-light); font-size: 14px;"><?= get_site_info('email'); ?></span>
+            <span style="color: var(--text-light); font-size: 14px;">
+              <a href="mailto:<?= htmlspecialchars($c_email); ?>" style="color: var(--text-light); text-decoration: none;"><?= htmlspecialchars($c_email); ?></a>
+            </span>
           </div>
         </div>
+        <?php endif; ?>
 
+        <?php $c_hours = get_site_info('working_hours'); if (!empty($c_hours)): ?>
         <div class="contact-detail-item">
           <i class="fa-solid fa-clock"></i>
           <div>
             <strong style="color: #fff; display: block; font-size: 15px;">Thời gian làm việc:</strong>
-            <span style="color: var(--text-light); font-size: 14px;"><?= get_site_info('working_hours'); ?></span>
+            <span style="color: var(--text-light); font-size: 14px;"><?= htmlspecialchars($c_hours); ?></span>
           </div>
         </div>
+        <?php endif; ?>
       </div>
 
       <!-- Right Column: Inquiry Form -->

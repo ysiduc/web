@@ -4,10 +4,10 @@ require_once __DIR__ . '/functions.php';
 $current_page = basename($_SERVER['SCRIPT_NAME']);
 $site_name = get_site_info('site_name', 'Công ty TNHH THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG PNMEC');
 $short_name = get_site_info('company_short_name', 'PNMEC');
-$hotline = get_site_info('hotline', '1900.6868');
-$phone = get_site_info('phone', '0988.123.456');
-$email = get_site_info('email', 'contact@pnmec.vn');
-$working_hours = get_site_info('working_hours', 'Thứ 2 - Thứ 7: 07:30 - 17:30');
+$hotline = get_site_info('hotline', '0911391999');
+$phone = get_site_info('phone', '0981700888');
+$email = get_site_info('email', 'pnmec.vn@gmail.com');
+$working_hours = get_site_info('working_hours', '24/7');
 
 // Dynamic Page CSS Map
 $page_css_map = [
@@ -31,7 +31,7 @@ $active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo isset($page_title) ? $page_title . ' - ' . $short_name : $site_name; ?></title>
-  <meta name="description" content="<?php echo get_site_info('about_summary'); ?>">
+  <meta name="description" content="<?php echo htmlspecialchars(get_site_info('about_summary')); ?>">
   
   <!-- Google Fonts (Montserrat) & FontAwesome CDN -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,19 +58,31 @@ $active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
         <span class="topbar-item topbar-item--hotline">
           <i class="fa-solid fa-phone"></i>
           Hotline:
-          <a href="tel:<?php echo $phone; ?>" class="topbar-link">
-            <?php echo $phone; ?>
+          <a href="<?php echo tel_url($hotline ?: $phone); ?>" class="topbar-link">
+            <?php echo htmlspecialchars($hotline ?: $phone); ?>
           </a>
         </span>
 
+        <?php if (!empty($phone) && $phone !== $hotline): ?>
+        <span class="topbar-item topbar-item--phone">
+          <i class="fa-solid fa-headset"></i>
+          Tư vấn:
+          <a href="<?php echo tel_url($phone); ?>" class="topbar-link">
+            <?php echo htmlspecialchars($phone); ?>
+          </a>
+        </span>
+        <?php endif; ?>
+
         <span class="topbar-item topbar-item--email">
           <i class="fa-solid fa-envelope"></i>
-          <?php echo $email; ?>
+          <a href="mailto:<?php echo htmlspecialchars($email); ?>" class="topbar-link">
+            <?php echo htmlspecialchars($email); ?>
+          </a>
         </span>
 
         <span class="topbar-item topbar-item--hours">
           <i class="fa-solid fa-clock"></i>
-          <?php echo $working_hours; ?>
+          <?php echo htmlspecialchars($working_hours); ?>
         </span>
       </div>
     </div>
@@ -135,21 +147,30 @@ $active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
           <i class="fa-solid fa-phone"></i>
           <div>
             <span>Hotline 24/7:</span>
-            <a href="tel:<?php echo $phone; ?>"><strong><?php echo $phone; ?></strong></a>
+            <a href="<?php echo tel_url($hotline ?: $phone); ?>"><strong><?php echo htmlspecialchars($hotline ?: $phone); ?></strong></a>
           </div>
         </div>
+        <?php if (!empty($phone) && $phone !== $hotline): ?>
+        <div class="mobile-drawer__info-item">
+          <i class="fa-solid fa-headset"></i>
+          <div>
+            <span>Tư vấn kỹ thuật:</span>
+            <a href="<?php echo tel_url($phone); ?>"><strong><?php echo htmlspecialchars($phone); ?></strong></a>
+          </div>
+        </div>
+        <?php endif; ?>
         <div class="mobile-drawer__info-item">
           <i class="fa-solid fa-envelope"></i>
           <div>
             <span>Email hỗ trợ:</span>
-            <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
+            <a href="mailto:<?php echo htmlspecialchars($email); ?>"><?php echo htmlspecialchars($email); ?></a>
           </div>
         </div>
         <div class="mobile-drawer__info-item">
           <i class="fa-solid fa-clock"></i>
           <div>
             <span>Giờ làm việc:</span>
-            <span><?php echo $working_hours; ?></span>
+            <span><?php echo htmlspecialchars($working_hours); ?></span>
           </div>
         </div>
       </div>

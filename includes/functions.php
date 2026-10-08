@@ -17,36 +17,57 @@ function sanitize($data) {
 }
 
 /**
+/**
+ * Chuẩn hóa số điện thoại cho liên kết tel:
+ */
+function tel_url($phone) {
+    return 'tel:' . preg_replace('/[^0-9+]/', '', (string)$phone);
+}
+
+/**
  * Lấy thông tin cấu hình trang web từ CSDL `site_info`
+ * Sử dụng static memory cache trong vòng đời một request để tối ưu hiệu năng
  */
 function get_site_info($key, $default = '') {
-    $db = getDBConnection();
-    if (!$db) {
-        // Trả về giá trị mặc định nếu chưa khởi tạo database
-        $defaults = [
-            'site_name' => 'Công ty TNHH THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG PNMEC',
-            'company_short_name' => 'PNMEC',
-            'phone' => '0988.123.456',
-            'hotline' => '1900.6868',
-            'email' => 'contact@pnmec.vn',
-            'address' => 'Khu Công Nghiệp Quang Minh, Mê Linh, Hà Nội',
-            'factory_address' => 'Lô C2, KCN Thăng Long II, Yên Mỹ, Hưng Yên',
-            'working_hours' => 'Thứ 2 - Thứ 7: 07:30 - 17:30',
-            'hero_title' => 'GIẢI PHÁP CƠ KHÍ CHẾ TẠO & THI CÔNG XÂY DỰNG TIÊN TIẾN',
-            'hero_subtitle' => 'Đồng hành cùng hàng trăm nhà xưởng, dự án kết cấu thép và công trình công nghiệp quy mô lớn.',
-            'about_summary' => 'PNMEC là đơn vị tiên phong trong lĩnh vực thiết kế, gia công cơ khí chính xác và thi công nhà xưởng kết cấu thép.'
-        ];
-        return $defaults[$key] ?? $default;
+    static $cache = null;
+
+    $defaults = [
+        'site_name'          => 'Công ty TNHH THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG PNMEC',
+        'company_short_name' => 'PNMEC',
+        'phone'              => '0981700888',
+        'hotline'            => '0911391999',
+        'email'              => 'pnmec.vn@gmail.com',
+        'address'            => 'Số 26 Ngõ 139, Phố Hoa Lâm, Việt Hưng, Hà Nội',
+        'factory_address'    => '',
+        'working_hours'      => '24/7',
+        'hero_title'         => 'GIẢI PHÁP CƠ KHÍ CHẾ TẠO & THI CÔNG XÂY DỰNG TIÊN TIẾN',
+        'hero_subtitle'      => 'Đồng hành cùng hàng trăm nhà xưởng, dự án kết cấu thép và công trình công nghiệp quy mô lớn.',
+        'about_summary'      => 'PNMEC là đơn vị tiên phong trong lĩnh vực thiết kế, gia công cơ khí chính xác và thi công nhà xưởng kết cấu thép.',
+        'facebook_url'       => 'https://facebook.com/pnmec',
+        'youtube_url'        => 'https://youtube.com/@pnmec',
+        'zalo_url'           => ''
+    ];
+
+    if ($cache === null) {
+        $db = getDBConnection();
+        $cache = [];
+        if ($db) {
+            try {
+                $stmt = $db->query("SELECT info_key, info_value FROM site_info");
+                while ($row = $stmt->fetch()) {
+                    $cache[$row['info_key']] = $row['info_value'];
+                }
+            } catch (Exception $e) {
+                // Table might not exist or DB connection error
+            }
+        }
     }
 
-    try {
-        $stmt = $db->prepare("SELECT info_value FROM site_info WHERE info_key = :key LIMIT 1");
-        $stmt->execute(['key' => $key]);
-        $row = $stmt->fetch();
-        return $row ? $row['info_value'] : $default;
-    } catch (Exception $e) {
-        return $default;
+    if (array_key_exists($key, $cache) && $cache[$key] !== null) {
+        return $cache[$key];
     }
+
+    return $defaults[$key] ?? $default;
 }
 
 /**
@@ -54,17 +75,34 @@ function get_site_info($key, $default = '') {
  */
 function get_all_site_info() {
     $db = getDBConnection();
-    if (!$db) return [];
+    $defaults = [
+        'site_name'          => 'Công ty TNHH THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG PNMEC',
+        'company_short_name' => 'PNMEC',
+        'phone'              => '0981700888',
+        'hotline'            => '0911391999',
+        'email'              => 'pnmec.vn@gmail.com',
+        'address'            => 'Số 26 Ngõ 139, Phố Hoa Lâm, Việt Hưng, Hà Nội',
+        'factory_address'    => '',
+        'working_hours'      => '24/7',
+        'hero_title'         => 'GIẢI PHÁP CƠ KHÍ CHẾ TẠO & THI CÔNG XÂY DỰNG TIÊN TIẾN',
+        'hero_subtitle'      => 'Đồng hành cùng hàng trăm nhà xưởng, dự án kết cấu thép và công trình công nghiệp quy mô lớn.',
+        'about_summary'      => 'PNMEC là đơn vị tiên phong trong lĩnh vực thiết kế, gia công cơ khí chính xác và thi công nhà xưởng kết cấu thép.',
+        'facebook_url'       => 'https://facebook.com/pnmec',
+        'youtube_url'        => 'https://youtube.com/@pnmec',
+        'zalo_url'           => ''
+    ];
+
+    if (!$db) return $defaults;
     try {
         $stmt = $db->query("SELECT info_key, info_value FROM site_info");
         $results = $stmt->fetchAll();
-        $settings = [];
+        $settings = $defaults;
         foreach ($results as $row) {
             $settings[$row['info_key']] = $row['info_value'];
         }
         return $settings;
     } catch (Exception $e) {
-        return [];
+        return $defaults;
     }
 }
 
