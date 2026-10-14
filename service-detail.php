@@ -16,7 +16,34 @@ if ($db && $id > 0) {
     } catch (Exception $e) {}
 }
 
-$page_title = $service ? $service['title'] : "Không Tìm Thấy Dịch Vụ";
+if ($service) {
+    $page_title = $service['title'];
+    $page_description = !empty($service['summary']) ? $service['summary'] : mb_substr(strip_tags($service['content']), 0, 160, 'UTF-8');
+    $page_image = get_service_image_url($service['image']);
+    $page_canonical = absolute_url('/service-detail?id=' . (int)$service['id']);
+    $page_robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    $page_og_type = 'website';
+    
+    $schema_data = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'Service',
+        '@id'         => absolute_url('/service-detail?id=' . (int)$service['id'] . '#service'),
+        'name'        => $service['title'],
+        'description' => $page_description,
+        'url'         => $page_canonical,
+        'image'       => absolute_url($page_image),
+        'provider'    => [
+            '@id' => 'https://pnmec.vn/#organization'
+        ]
+    ];
+} else {
+    http_response_code(404);
+    $page_title = "Không Tìm Thấy Dịch Vụ";
+    $page_description = "Dịch vụ bạn đang tìm kiếm không tồn tại hoặc đã tạm dừng cung cấp trên hệ thống PNMEC.";
+    $page_robots = 'noindex, follow';
+    $page_canonical = absolute_url('/services');
+}
+
 require_once __DIR__ . '/includes/header.php';
 ?>
 

@@ -1,5 +1,8 @@
 <?php
-$page_title = "Tin Tức & Hoạt Động Doanh Nghiệp - PNMEC";
+require_once __DIR__ . '/includes/functions.php';
+$page_title = "Tin Tức & Hoạt Động Doanh Nghiệp";
+$page_description = "Cập nhật tin tức mới nhất về các dự án công trình, hoạt động sản xuất thi công và kiến thức chuyên ngành cơ khí xây dựng từ PNMEC.";
+$page_canonical = absolute_url('/news');
 require_once __DIR__ . '/includes/header.php';
 
 $db = getDBConnection();

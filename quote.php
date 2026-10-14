@@ -47,7 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$page_title = "Yêu Cầu Báo Giá Thi Công - PNMEC";
+$page_title = "Yêu Cầu Báo Giá Thi Công";
+$page_description = "Nhận báo giá thiết kế & thi công cơ khí, nhà xưởng kết cấu thép và công trình xây dựng từ đội ngũ kỹ sư PNMEC nhanh chóng, minh bạch.";
+$page_canonical = absolute_url('/quote');
 require_once __DIR__ . '/includes/header.php';
 ?>
 

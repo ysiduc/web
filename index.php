@@ -1,5 +1,14 @@
 <?php
-$page_title = "Trang Chủ - Gia Công Cơ Khí & Thi Công Xây Dựng";
+require_once __DIR__ . '/includes/functions.php';
+
+$hero_title = get_site_info('hero_title', 'GIẢI PHÁP CƠ KHÍ CHẾ TẠO & THI CÔNG XÂY DỰNG TIÊN TIẾN');
+$hero_sub   = get_site_info('hero_subtitle', 'Cung cấp giải pháp tổng thầu cơ khí & xây dựng công nghiệp uy tín — đúng tiến độ, đúng chất lượng, tối ưu chi phí.');
+$about_text = get_site_info('about_summary', 'PNMEC là đơn vị tiên phong trong lĩnh vực thiết kế, gia công cơ khí chính xác và thi công nhà xưởng kết cấu thép, công trình công nghiệp.');
+
+$page_title = "Tổng Thầu Cơ Khí Chế Tạo & Thi Công Xây Dựng Công Nghiệp";
+$page_description = $about_text;
+$page_canonical = absolute_url('/');
+
 require_once __DIR__ . '/includes/header.php';
 
 // Load projects
@@ -11,9 +20,6 @@ if ($db) {
         $projects = $stmt->fetchAll();
     } catch (Exception $e) {}
 }
-$about_text = get_site_info('about_summary','PNMEC Group là đơn vị tiên phong trong lĩnh vực gia công cơ khí chính xác và thi công xây dựng công nghiệp tại Việt Nam. Chúng tôi cung cấp giải pháp trọn gói từ thiết kế, chế tạo đến thi công và bàn giao công trình với tiêu chuẩn quốc tế.');
-$hero_title = get_site_info('hero_title','GIẢI PHÁP CƠ KHÍ CHẾ TẠO & THI CÔNG XÂY DỰNG TIÊN TIẾN');
-$hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng thầu cơ khí & xây dựng công nghiệp uy tín — đúng tiến độ, đúng chất lượng, tối ưu chi phí.');
 ?>
 
 
@@ -21,6 +27,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
      SECTION 1 · HERO BANNER (ẢNH BÌA NGUYÊN BẢN)
 ═══════════════════════════════════════════════════ -->
 <section class="h-hero-banner">
+  <h1 class="sr-only"><?= htmlspecialchars($hero_title) ?> - PNMEC</h1>
   <img src="<?= versioned_asset_url('images/home-hero.png') ?>" 
        alt="<?= htmlspecialchars($hero_title) ?>" 
        class="h-hero-banner__img" 

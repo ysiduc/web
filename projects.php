@@ -1,5 +1,8 @@
 <?php
+require_once __DIR__ . '/includes/functions.php';
 $page_title = "Hồ Sơ Năng Lực & Các Công Trình Đã Hoàn Thiện";
+$page_description = "Khám phá các dự án kết cấu thép tiêu biểu, nhà xưởng công nghiệp và công trình xây dựng thực tế do PNMEC thiết kế và thi công hoàn thiện.";
+$page_canonical = absolute_url('/projects');
 require_once __DIR__ . '/includes/header.php';
 
 $db = getDBConnection();

@@ -29,12 +29,23 @@ Options -Indexes
     RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s+(.*?/)(about|contact|services|service-detail|projects|project-detail|quote|recruitment|news|news-detail)\.php[?\s] [NC]
     RewriteRule ^(about|contact|services|service-detail|projects|project-detail|quote|recruitment|news|news-detail)\.php$ %1%2 [R=301,L,NE]
 
+    # 3C. Redirect /sitemap.php to /sitemap.xml
+    RewriteCond %{REQUEST_METHOD} !POST
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s+(.*?/)sitemap\.php[?\s] [NC]
+    RewriteRule ^sitemap\.php$ %1sitemap.xml [R=301,L,NE]
+
     # -------------------------------------------------------------
     # 4. INTERNAL REWRITE: CLEAN URLs -> .php
     # -------------------------------------------------------------
+    # 4A. Dynamic XML Sitemap
+    RewriteRule ^sitemap\.xml$ sitemap.php [L,NC]
+
+    # 4B. Clean URLs to PHP
     # Do not rewrite if request is an existing file or directory
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+
     # Check if a corresponding .php file exists in the directory
     RewriteCond %{REQUEST_FILENAME}.php -f
     RewriteRule ^(about|contact|services|service-detail|projects|project-detail|quote|recruitment|news|news-detail)/?$ $1.php [L,QSA]

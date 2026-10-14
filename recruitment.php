@@ -1,5 +1,8 @@
 <?php
-$page_title = "Tuyển Dụng Nhân Sự";
+require_once __DIR__ . '/includes/functions.php';
+$page_title = "Tuyển Dụng Nhân Tài - Cơ Hội Việc Làm";
+$page_description = "Gia nhập đội ngũ PNMEC: Tuyển dụng kỹ sư kết cấu thép, kỹ sư cơ khí, thợ thi công lành nghề với mức thu nhập cạnh tranh và môi trường chuyên nghiệp.";
+$page_canonical = absolute_url('/recruitment');
 require_once __DIR__ . '/includes/header.php';
 
 $db = getDBConnection();

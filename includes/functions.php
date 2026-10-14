@@ -516,3 +516,22 @@ if (!function_exists('versioned_asset_url')) {
     }
 }
 
+if (!function_exists('absolute_url')) {
+    /**
+     * Chuyển đổi đường dẫn tương đối thành URL tuyệt đối HTTPS chuẩn SEO
+     */
+    function absolute_url($path = '') {
+        $path = trim((string)$path);
+        if ($path === '' || $path === '/') {
+            return 'https://pnmec.vn/';
+        }
+        if (preg_match('#^https?://#i', $path)) {
+            return $path;
+        }
+        if (defined('APP_BASE_URL') && APP_BASE_URL !== '' && str_starts_with($path, APP_BASE_URL)) {
+            $path = substr($path, strlen(APP_BASE_URL));
+        }
+        return 'https://pnmec.vn/' . ltrim($path, '/');
+    }
+}
+

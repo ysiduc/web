@@ -1,5 +1,8 @@
 <?php
+require_once __DIR__ . '/includes/functions.php';
 $page_title = "Giới Thiệu Doanh Nghiệp";
+$page_description = "Tìm hiểu về Công ty PNMEC - Đơn vị chuyên nghiệp hàng đầu trong lĩnh vực thi công cơ khí xây dựng, gia công kết cấu thép và xây dựng công trình công nghiệp.";
+$page_canonical = absolute_url('/about');
 require_once __DIR__ . '/includes/header.php';
 ?>
 

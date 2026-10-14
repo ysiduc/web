@@ -21,7 +21,40 @@ if ($db && $id > 0) {
     } catch (Exception $e) {}
 }
 
-$page_title = $project ? $project['title'] : "Không Tìm Thấy Công Trình";
+if ($project) {
+    $page_title = $project['title'];
+    $page_description = !empty($project['description']) ? $project['description'] : mb_substr(strip_tags($project['content']), 0, 160, 'UTF-8');
+    $page_image = get_project_image_url($project['image']);
+    $page_canonical = absolute_url('/project-detail?id=' . (int)$project['id']);
+    $page_robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    $page_og_type = 'website';
+
+    $schema_data = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'CreativeWork',
+        '@id'         => absolute_url('/project-detail?id=' . (int)$project['id'] . '#project'),
+        'name'        => $project['title'],
+        'description' => $page_description,
+        'url'         => $page_canonical,
+        'image'       => absolute_url($page_image),
+        'creator'     => [
+            '@id' => 'https://pnmec.vn/#organization'
+        ]
+    ];
+    if (!empty($project['location'])) {
+        $schema_data['locationCreated'] = [
+            '@type' => 'Place',
+            'name'  => $project['location']
+        ];
+    }
+} else {
+    http_response_code(404);
+    $page_title = "Không Tìm Thấy Công Trình";
+    $page_description = "Công trình bạn đang tìm kiếm không tồn tại hoặc chưa được công bố trên hệ thống PNMEC.";
+    $page_robots = 'noindex, follow';
+    $page_canonical = absolute_url('/projects');
+}
+
 require_once __DIR__ . '/includes/header.php';
 ?>
 

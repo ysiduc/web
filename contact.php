@@ -67,7 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$page_title = "Liên Hệ & Báo Giá";
+$page_title = "Liên Hệ & Nhận Tư Vấn Kỹ Thuật";
+$page_description = "Liên hệ với Công ty PNMEC để được tư vấn chuyên sâu về thiết kế, gia công cơ khí và báo giá thi công xây dựng nhà xưởng tối ưu chi phí.";
+$page_canonical = absolute_url('/contact');
 require_once __DIR__ . '/includes/header.php';
 ?>
 

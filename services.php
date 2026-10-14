@@ -1,5 +1,8 @@
 <?php
+require_once __DIR__ . '/includes/functions.php';
 $page_title = "Dịch Vụ Thiết Kế & Thi Công Cơ Khí - Xây Dựng";
+$page_description = "Khám phá danh mục dịch vụ cơ khí chế tạo, thi công nhà xưởng kết cấu thép, gia công bồn bể áp lực và xây dựng công nghiệp chuyên nghiệp tại PNMEC.";
+$page_canonical = absolute_url('/services');
 require_once __DIR__ . '/includes/header.php';
 
 $db = getDBConnection();

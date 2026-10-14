@@ -16,14 +16,52 @@ if ($db && $id > 0) {
     } catch (Exception $e) {}
 }
 
-$page_title = $news_item ? $news_item['title'] : "Không Tìm Thấy Bài Viết";
+if ($news_item) {
+    $page_title = $news_item['title'];
+    $page_description = !empty($news_item['summary']) ? $news_item['summary'] : mb_substr(strip_tags($news_item['content']), 0, 160, 'UTF-8');
+    $page_image = get_news_image_url($news_item['image']);
+    $page_canonical = absolute_url('/news-detail?id=' . (int)$news_item['id']);
+    $page_robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    $page_og_type = 'article';
+    $article_published_time = !empty($news_item['created_at']) ? date('c', strtotime($news_item['created_at'])) : date('c');
+    $article_author = !empty($news_item['author']) ? $news_item['author'] : 'PNMEC';
+
+    $schema_data = [
+        '@context'         => 'https://schema.org',
+        '@type'            => 'NewsArticle',
+        '@id'              => absolute_url('/news-detail?id=' . (int)$news_item['id'] . '#article'),
+        'headline'         => $news_item['title'],
+        'description'      => $page_description,
+        'image'            => [absolute_url($page_image)],
+        'datePublished'    => $article_published_time,
+        'dateModified'     => $article_published_time,
+        'mainEntityOfPage' => [
+            '@type' => 'WebPage',
+            '@id'   => $page_canonical
+        ],
+        'author'           => [
+            '@type' => 'Person',
+            'name'  => $article_author
+        ],
+        'publisher'        => [
+            '@id' => 'https://pnmec.vn/#organization'
+        ]
+    ];
+} else {
+    http_response_code(404);
+    $page_title = "Không Tìm Thấy Bài Viết";
+    $page_description = "Bài viết bạn đang tìm kiếm không tồn tại hoặc đã bị gỡ bỏ trên hệ thống PNMEC.";
+    $page_robots = 'noindex, follow';
+    $page_canonical = absolute_url('/news');
+}
+
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <?php if ($news_item): ?>
 <div class="page-banner">
   <div class="container">
-    <h1><?php echo htmlspecialchars($news_item['title']); ?></h1>
+    <div style="font-size: 28px; font-weight: 700; margin-bottom: 8px;"><?php echo htmlspecialchars($news_item['title']); ?></div>
     <div class="breadcrumb">
       <a href="<?= url('/') ?>">Trang chủ</a> / <a href="<?= url('/news') ?>">Tin tức</a> / <span>Bài viết</span>
     </div>
