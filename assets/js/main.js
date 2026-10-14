@@ -111,4 +111,94 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  /* ==========================================================================
+     Scroll Reveal Animation System (Hiệu ứng rõ dần khi cuộn trang)
+     ========================================================================== */
+  function initScrollReveal() {
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const selectorList = [
+      'section:not(.h-hero-banner):not(.page-banner)',
+      '.section-title',
+      '.section-header',
+      '.page-banner .container',
+      '.h-services__card',
+      '.h-why__card',
+      '.h-projects__card',
+      '.h-stats__item',
+      '.h-reviews__card',
+      '.h-news__card',
+      '.h-cta__box',
+      '.srv-card',
+      '.service-card',
+      '.project-card-item',
+      '.proj-card',
+      '.project-detail-grid > div',
+      '.service-detail-main',
+      '.service-detail-sidebar',
+      '.news-card',
+      '.news-detail-article',
+      '.ab-hero__inner',
+      '.ab-card',
+      '.ab-timeline__item',
+      '.recruit-card',
+      '.contact-card',
+      '.quote-page-card'
+    ];
+
+    const elements = document.querySelectorAll(selectorList.join(', '));
+    if (!elements.length) return;
+
+    elements.forEach(el => {
+      // Avoid double-animating nested items inside already-animated cards
+      if (el.closest('.h-services__card, .h-why__card, .h-projects__card, .h-reviews__card, .h-news__card, .srv-card, .project-card-item, .news-card') &&
+          !el.matches('.h-services__card, .h-why__card, .h-projects__card, .h-reviews__card, .h-news__card, .srv-card, .project-card-item, .news-card')) {
+        return;
+      }
+
+      el.classList.add('reveal-on-scroll');
+
+      // Stagger delays for grid / card siblings
+      const parent = el.parentElement;
+      if (parent) {
+        const siblings = Array.from(parent.children).filter(child => child.classList.contains('reveal-on-scroll'));
+        if (siblings.length > 1) {
+          const index = siblings.indexOf(el);
+          const delayClass = 'reveal-delay-' + Math.min((index % 6) + 1, 6);
+          el.classList.add(delayClass);
+        }
+      }
+    });
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.05
+    });
+
+    elements.forEach(el => {
+      if (el.classList.contains('reveal-on-scroll')) {
+        const rect = el.getBoundingClientRect();
+        // If element is already in the viewport on initial page load, reveal it smoothly
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          setTimeout(() => el.classList.add('is-revealed'), 80);
+        } else {
+          observer.observe(el);
+        }
+      }
+    });
+  }
+
+  initScrollReveal();
+
 });
+
