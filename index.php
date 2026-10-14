@@ -80,7 +80,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
               $img_url = get_service_image_url($s['image']);
               $detail_url = url('/service-detail?id=' . urlencode($s['id']));
       ?>
-      <a href="<?= $detail_url ?>" class="h-svc__card<?= $idx === 2 ? ' active' : '' ?>">
+      <a href="<?= $detail_url ?>" class="h-svc__card">
         <img src="<?= htmlspecialchars($img_url) ?>" alt="<?= htmlspecialchars($tag) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
         <div class="h-svc__badge-tag"><?= htmlspecialchars($tag) ?></div>
         <div class="h-svc__overlay">
