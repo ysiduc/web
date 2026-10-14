@@ -15,7 +15,7 @@ if ($db) {
   <div class="container">
     <h1>Tin Tức & Sự Kiện</h1>
     <div class="breadcrumb">
-      <a href="<?= url('index.php') ?>">Trang chủ</a> / <span>Tin tức</span>
+      <a href="<?= url('/') ?>">Trang chủ</a> / <span>Tin tức</span>
     </div>
   </div>
 </div>
@@ -30,10 +30,10 @@ if ($db) {
           <div class="news-card-body">
             <span class="news-card-date"><i class="fa-regular fa-calendar-days"></i> <?php echo format_date($n['created_at']); ?></span>
             <h2 class="news-card-title">
-              <a href="<?= url('news-detail.php?id=' . (int)$n['id']) ?>"><?php echo htmlspecialchars($n['title']); ?></a>
+              <a href="<?= url('/news-detail?id=' . (int)$n['id']) ?>"><?php echo htmlspecialchars($n['title']); ?></a>
             </h2>
             <p class="news-card-desc"><?php echo htmlspecialchars($n['summary']); ?></p>
-            <a href="<?= url('news-detail.php?id=' . (int)$n['id']) ?>" class="news-card-link">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="<?= url('/news-detail?id=' . (int)$n['id']) ?>" class="news-card-link">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </article>
       <?php endforeach; ?>

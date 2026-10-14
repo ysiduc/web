@@ -18,8 +18,17 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
 
 
 <!-- ═══════════════════════════════════════════════════
-     SECTION 1 · HERO BANNER
+     SECTION 1 · HERO BANNER (ẢNH BÌA NGUYÊN BẢN)
 ═══════════════════════════════════════════════════ -->
+<section class="h-hero-banner">
+  <img src="<?= versioned_asset_url('images/home-hero.png') ?>" 
+       alt="<?= htmlspecialchars($hero_title) ?>" 
+       class="h-hero-banner__img" 
+       loading="eager" 
+       fetchpriority="high">
+</section>
+
+<!-- SECTION HERO CŨ (ĐÃ ẨN ĐỂ DÙNG ẢNH BÌA CÓ SẴN CHỮ)
 <section class="h-hero">
   <div class="container">
     <div class="h-hero__inner">
@@ -29,16 +38,17 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
       <h1 class="h-hero__title"><?= htmlspecialchars($hero_title) ?></h1>
       <p class="h-hero__sub"><?= htmlspecialchars($hero_sub) ?></p>
       <div class="h-hero__btns">
-        <a href="<?= url('/projects.php') ?>" class="h-btn-gold">
+        <a href="<?= url('/projects') ?>" class="h-btn-gold">
           <i class="fa-solid fa-helmet-safety"></i> Xem Dự Án Công Trình
         </a>
-        <a href="<?= url('/contact.php') ?>" class="h-btn-outline">
+        <a href="<?= url('/contact') ?>" class="h-btn-outline">
           <i class="fa-solid fa-headset"></i> Tư Vấn &amp; Báo Giá
         </a>
       </div>
     </div>
   </div>
 </section>
+-->
 
 <!-- ═══════════════════════════════════════════════════
      SECTION 2 · DỊCH VỤ NỔI BẬT (5 CARDS)
@@ -50,7 +60,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
         <span class="h-svc__eyebrow">— PNMEC GROUP</span>
         <h2 class="h-svc__title">DỊCH VỤ NỔI BẬT</h2>
       </div>
-      <a href="<?= url('/services.php') ?>" class="h-svc__all">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="<?= url('/services') ?>" class="h-svc__all">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
     </div>
 
     <div class="h-svc__grid" id="svcGrid">
@@ -68,7 +78,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
               $tag = !empty($s['title']) ? $s['title'] : 'Dịch vụ';
               $desc = !empty($s['summary']) ? $s['summary'] : '';
               $img_url = get_service_image_url($s['image']);
-              $detail_url = url('service-detail.php?id=' . urlencode($s['id']));
+              $detail_url = url('/service-detail?id=' . urlencode($s['id']));
       ?>
       <a href="<?= $detail_url ?>" class="h-svc__card<?= $idx === 2 ? ' active' : '' ?>">
         <img src="<?= htmlspecialchars($img_url) ?>" alt="<?= htmlspecialchars($tag) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
@@ -113,7 +123,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
         <span class="h-about__tag">Về Chúng Tôi</span>
         <h2 class="h-about__heading">Năng Lực Thiết Kế &amp; Thi Công<br>Cơ Khí Xây Dựng Toàn Diện</h2>
         <p class="h-about__body"><?= htmlspecialchars($about_text) ?></p>
-        <a href="<?= url('/about.php') ?>" class="h-about__btn">Tìm Hiểu Thêm <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="<?= url('/about') ?>" class="h-about__btn">Tìm Hiểu Thêm <i class="fa-solid fa-arrow-right"></i></a>
       </div>
       <!-- Right -->
       <div class="h-about__img-wrap">
@@ -148,13 +158,13 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
                onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
         </div>
         <div class="h-proj__body">
-          <h3><a href="<?= url('/project-detail.php?id=' . $p['id']) ?>"><?= htmlspecialchars($p['title']) ?></a></h3>
+          <h3><a href="<?= url('/project-detail?id=' . $p['id']) ?>"><?= htmlspecialchars($p['title']) ?></a></h3>
           <div class="h-proj__meta">
             <span><i class="fa-solid fa-building-user"></i><?= htmlspecialchars($p['client']) ?></span>
             <span><i class="fa-solid fa-location-dot"></i><?= htmlspecialchars($p['location']) ?></span>
           </div>
           <p class="h-proj__desc"><?= htmlspecialchars($p['description']) ?></p>
-          <a href="<?= url('/project-detail.php?id=' . $p['id']) ?>" class="h-proj__link">
+          <a href="<?= url('/project-detail?id=' . $p['id']) ?>" class="h-proj__link">
             Chi tiết công trình <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
@@ -162,7 +172,7 @@ $hero_sub   = get_site_info('hero_subtitle','Cung cấp giải pháp tổng th�
       <?php endforeach; ?>
     </div>
     <div class="h-proj__cta">
-      <a href="<?= url('/projects.php') ?>" class="h-btn-navy"><i class="fa-solid fa-grip"></i> Xem Tất Cả Công Trình</a>
+      <a href="<?= url('/projects') ?>" class="h-btn-navy"><i class="fa-solid fa-grip"></i> Xem Tất Cả Công Trình</a>
     </div>
     <?php else: ?>
     <div class="h-proj__empty">
@@ -397,7 +407,7 @@ $first_faq = reset($faqs);
 
       <!-- Right: form -->
       <div class="h-cta__form-box">
-        <form method="POST" action="<?= url('/contact.php') ?>">
+        <form method="POST" action="<?= url('/contact') ?>">
           <input type="hidden" name="action" value="contact_form">
           <div class="h-cta__row2">
             <div class="h-cta__field">
@@ -489,9 +499,9 @@ $first_faq = reset($faqs);
 
   function go(n){
     const max = maxStep();
-    cur = Math.max(0, Math.min(n, max));
     if (n > max) cur = 0;
-    if (n < 0) cur = max;
+    else if (n < 0) cur = max;
+    else cur = n;
     
     const stepPct = isMobile() ? 100 : 50;
     if (track) track.style.transform = `translateX(-${cur * stepPct}%)`;

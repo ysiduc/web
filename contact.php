@@ -76,7 +76,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container">
     <h1>Liên Hệ Tư Vấn &amp; Báo Giá</h1>
     <div class="breadcrumb">
-      <a href="<?= url('/index.php') ?>">Trang chủ</a> / <span>Liên hệ</span>
+      <a href="<?= url('/') ?>">Trang chủ</a> / <span>Liên hệ</span>
     </div>
   </div>
 </section>

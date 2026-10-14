@@ -17,7 +17,7 @@ require_once __DIR__ . '/includes/header.php';
         Đơn vị chuyên nghiệp hàng đầu trong lĩnh vực thi công cơ khí xây dựng và xây dựng công trình dân dụng.
       </p>
       <div class="ab-breadcrumb">
-        <a href="<?= url('index.php') ?>"><i class="fa-solid fa-house"></i> Trang chủ</a>
+        <a href="<?= url('/') ?>"><i class="fa-solid fa-house"></i> Trang chủ</a>
         <i class="fa-solid fa-angle-right"></i>
         <span>Giới thiệu</span>
       </div>
@@ -209,7 +209,7 @@ require_once __DIR__ . '/includes/header.php';
           </ul>
 
           <div class="ab-sector-footer">
-            <a href="<?= url('services.php') ?>" class="ab-link-btn">
+            <a href="<?= url('/services') ?>" class="ab-link-btn">
               Xem chi tiết dịch vụ <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
@@ -250,7 +250,7 @@ require_once __DIR__ . '/includes/header.php';
           </ul>
 
           <div class="ab-sector-footer">
-            <a href="<?= url('services.php') ?>" class="ab-link-btn">
+            <a href="<?= url('/services') ?>" class="ab-link-btn">
               Xem chi tiết dịch vụ <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
@@ -411,10 +411,10 @@ require_once __DIR__ . '/includes/header.php';
         </p>
       </div>
       <div class="ab-cta__actions">
-        <a href="<?= url('contact.php') ?>" class="btn btn-primary btn-lg">
+        <a href="<?= url('/contact') ?>" class="btn btn-primary btn-lg">
           <i class="fa-solid fa-phone"></i> Liên Hệ Ngay
         </a>
-        <a href="<?= url('projects.php') ?>" class="btn btn-navy btn-lg">
+        <a href="<?= url('/projects') ?>" class="btn btn-navy btn-lg">
           <i class="fa-solid fa-helmet-safety"></i> Xem Dự Án Thực Tế
         </a>
       </div>

@@ -6,8 +6,39 @@ Options -Indexes
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Block direct HTTP access to private directories
+    # 1. Block direct HTTP access to private directories
     RewriteRule ^(database|config|storage)/ - [F,L,NC]
+
+    # 2. Allow direct access to admin, api, and assets without frontend rewrite
+    RewriteRule ^(admin|api|assets)(/.*)?$ - [L,NC]
+
+    # -------------------------------------------------------------
+    # 3. 301 REDIRECTS: .php -> CLEAN URLs (Frontend Only)
+    # -------------------------------------------------------------
+    # Exclude POST requests to preserve form submissions and API payloads
+    # Prevent infinite loop on internal redirects using REDIRECT_STATUS
+    # 3A. Redirect /index.php or /index to /
+    RewriteCond %{REQUEST_METHOD} !POST
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s+(.*?/)index(\.php)?[?\s] [NC]
+    RewriteRule ^(.*)index(\.php)?$ %1 [R=301,L,NE]
+
+    # 3B. Redirect valid frontend .php files to clean URLs (e.g. /about.php -> /about)
+    RewriteCond %{REQUEST_METHOD} !POST
+    RewriteCond %{ENV:REDIRECT_STATUS} ^$
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s+(.*?/)(about|contact|services|service-detail|projects|project-detail|quote|recruitment|news|news-detail)\.php[?\s] [NC]
+    RewriteRule ^(about|contact|services|service-detail|projects|project-detail|quote|recruitment|news|news-detail)\.php$ %1%2 [R=301,L,NE]
+
+    # -------------------------------------------------------------
+    # 4. INTERNAL REWRITE: CLEAN URLs -> .php
+    # -------------------------------------------------------------
+    # Do not rewrite if request is an existing file or directory
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Check if a corresponding .php file exists in the directory
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(about|contact|services|service-detail|projects|project-detail|quote|recruitment|news|news-detail)/?$ $1.php [L,QSA]
+
 </IfModule>
 
 # Security Headers

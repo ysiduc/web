@@ -39,6 +39,13 @@ $active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <!-- Canonical URL -->
+  <?php
+    $clean_current = ($current_page === 'index.php') ? '' : str_replace('.php', '', $current_page);
+    $canonical_url = 'https://pnmec.vn' . ($clean_current ? '/' . $clean_current : '/');
+  ?>
+  <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url); ?>">
+  
   <!-- Common CSS System (Dynamic Cache-Busting via filemtime) -->
   <link rel="stylesheet" href="<?php echo versioned_asset_url('css/common/reset.css'); ?>">
   <link rel="stylesheet" href="<?php echo versioned_asset_url('css/common/variables.css'); ?>">
@@ -91,7 +98,7 @@ $active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
   <!-- Main Sticky Header & Navigation -->
   <header class="main-header">
     <div class="header-container navbar">
-      <a href="<?php echo url('/index.php'); ?>" class="brand-logo" aria-label="<?php echo $short_name; ?> - Trang chủ">
+      <a href="<?php echo url('/'); ?>" class="brand-logo" aria-label="<?php echo $short_name; ?> - Trang chủ">
         <img src="<?php echo versioned_asset_url('images/logo.png'); ?>" alt="<?php echo $short_name; ?> - THIẾT KẾ & THI CÔNG CƠ KHÍ XÂY DỰNG" class="site-logo-img">
       </a>
 
@@ -101,13 +108,13 @@ $active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
 
       <!-- Desktop Nav Menu -->
       <ul class="nav-menu">
-        <li><a href="<?php echo url('/index.php'); ?>" class="nav-link <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">Trang chủ</a></li>
-        <li><a href="<?php echo url('/about.php'); ?>" class="nav-link <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">Giới thiệu</a></li>
-        <li><a href="<?php echo url('/services.php'); ?>" class="nav-link <?php echo ($current_page == 'services.php') ? 'active' : ''; ?>">Dịch vụ</a></li>
-        <li><a href="<?php echo url('/projects.php'); ?>" class="nav-link <?php echo ($current_page == 'projects.php' || $current_page == 'project-detail.php') ? 'active' : ''; ?>">Công trình</a></li>
-        <li><a href="<?php echo url('/recruitment.php'); ?>" class="nav-link <?php echo ($current_page == 'recruitment.php') ? 'active' : ''; ?>">Tuyển dụng</a></li>
-        <li><a href="<?php echo url('/news.php'); ?>" class="nav-link <?php echo ($current_page == 'news.php' || $current_page == 'news-detail.php') ? 'active' : ''; ?>">Tin tức</a></li>
-        <li><a href="<?php echo url('/contact.php'); ?>" class="btn btn-primary btn-sm nav-cta-btn"><i class="fa-solid fa-calculator"></i> Liên hệ + Báo giá</a></li>
+        <li><a href="<?php echo url('/'); ?>" class="nav-link <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>">Trang chủ</a></li>
+        <li><a href="<?php echo url('/about'); ?>" class="nav-link <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>">Giới thiệu</a></li>
+        <li><a href="<?php echo url('/services'); ?>" class="nav-link <?php echo ($current_page == 'services.php') ? 'active' : ''; ?>">Dịch vụ</a></li>
+        <li><a href="<?php echo url('/projects'); ?>" class="nav-link <?php echo ($current_page == 'projects.php' || $current_page == 'project-detail.php') ? 'active' : ''; ?>">Công trình</a></li>
+        <li><a href="<?php echo url('/recruitment'); ?>" class="nav-link <?php echo ($current_page == 'recruitment.php') ? 'active' : ''; ?>">Tuyển dụng</a></li>
+        <li><a href="<?php echo url('/news'); ?>" class="nav-link <?php echo ($current_page == 'news.php' || $current_page == 'news-detail.php') ? 'active' : ''; ?>">Tin tức</a></li>
+        <li><a href="<?php echo url('/contact'); ?>" class="btn btn-primary btn-sm nav-cta-btn"><i class="fa-solid fa-calculator"></i> Liên hệ + Báo giá</a></li>
       </ul>
     </div>
   </header>
@@ -127,17 +134,17 @@ $active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
 
     <div class="mobile-drawer__body">
       <ul class="mobile-nav-list">
-        <li><a href="<?php echo url('/index.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>"><i class="fa-solid fa-house"></i> Trang chủ</a></li>
-        <li><a href="<?php echo url('/about.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>"><i class="fa-solid fa-building"></i> Giới thiệu</a></li>
-        <li><a href="<?php echo url('/services.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'services.php') ? 'active' : ''; ?>"><i class="fa-solid fa-wrench"></i> Dịch vụ</a></li>
-        <li><a href="<?php echo url('/projects.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'projects.php' || $current_page == 'project-detail.php') ? 'active' : ''; ?>"><i class="fa-solid fa-layer-group"></i> Công trình</a></li>
-        <li><a href="<?php echo url('/news.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'news.php' || $current_page == 'news-detail.php') ? 'active' : ''; ?>"><i class="fa-solid fa-newspaper"></i> Tin tức</a></li>
-        <li><a href="<?php echo url('/recruitment.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'recruitment.php') ? 'active' : ''; ?>"><i class="fa-solid fa-user-plus"></i> Tuyển dụng</a></li>
-        <li><a href="<?php echo url('/contact.php'); ?>" class="mobile-nav-link <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>"><i class="fa-solid fa-phone"></i> Liên hệ</a></li>
+        <li><a href="<?php echo url('/'); ?>" class="mobile-nav-link <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>"><i class="fa-solid fa-house"></i> Trang chủ</a></li>
+        <li><a href="<?php echo url('/about'); ?>" class="mobile-nav-link <?php echo ($current_page == 'about.php') ? 'active' : ''; ?>"><i class="fa-solid fa-building"></i> Giới thiệu</a></li>
+        <li><a href="<?php echo url('/services'); ?>" class="mobile-nav-link <?php echo ($current_page == 'services.php') ? 'active' : ''; ?>"><i class="fa-solid fa-wrench"></i> Dịch vụ</a></li>
+        <li><a href="<?php echo url('/projects'); ?>" class="mobile-nav-link <?php echo ($current_page == 'projects.php' || $current_page == 'project-detail.php') ? 'active' : ''; ?>"><i class="fa-solid fa-layer-group"></i> Công trình</a></li>
+        <li><a href="<?php echo url('/news'); ?>" class="mobile-nav-link <?php echo ($current_page == 'news.php' || $current_page == 'news-detail.php') ? 'active' : ''; ?>"><i class="fa-solid fa-newspaper"></i> Tin tức</a></li>
+        <li><a href="<?php echo url('/recruitment'); ?>" class="mobile-nav-link <?php echo ($current_page == 'recruitment.php') ? 'active' : ''; ?>"><i class="fa-solid fa-user-plus"></i> Tuyển dụng</a></li>
+        <li><a href="<?php echo url('/contact'); ?>" class="mobile-nav-link <?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>"><i class="fa-solid fa-phone"></i> Liên hệ</a></li>
       </ul>
 
       <div class="mobile-drawer__cta">
-        <a href="<?php echo url('/contact.php'); ?>" class="btn btn-primary mobile-cta-btn">
+        <a href="<?php echo url('/contact'); ?>" class="btn btn-primary mobile-cta-btn">
           <i class="fa-solid fa-calculator"></i> Liên hệ + Báo giá
         </a>
       </div>

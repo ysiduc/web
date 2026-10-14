@@ -94,7 +94,7 @@ if ($db) {
       </p>
       
       <div class="proj-breadcrumb">
-        <a href="<?= url('index.php') ?>"><i class="fa-solid fa-house"></i> Trang chủ</a>
+        <a href="<?= url('/') ?>"><i class="fa-solid fa-house"></i> Trang chủ</a>
         <i class="fa-solid fa-angle-right"></i>
         <span>Công trình</span>
       </div>
@@ -111,19 +111,19 @@ if ($db) {
     <!-- Main Classification Groups (2 Main Tabs) -->
     <div class="proj-main-tabs-wrap">
       <div class="proj-main-tabs">
-        <a href="<?= url('projects.php?group=all') ?>" class="proj-main-tab <?= ($group_filter === 'all' && $category_filter === 'all') ? 'active' : '' ?>">
+        <a href="<?= url('/projects?group=all') ?>" class="proj-main-tab <?= ($group_filter === 'all' && $category_filter === 'all') ? 'active' : '' ?>">
           <i class="fa-solid fa-layer-group"></i> Tất Cả Công Trình
         </a>
-        <a href="<?= url('projects.php?group=co_khi') ?>" class="proj-main-tab proj-main-tab--gold <?= ($group_filter === 'co_khi' || in_array($category_filter, $co_khi_subcats)) ? 'active' : '' ?>">
+        <a href="<?= url('/projects?group=co_khi') ?>" class="proj-main-tab proj-main-tab--gold <?= ($group_filter === 'co_khi' || in_array($category_filter, $co_khi_subcats)) ? 'active' : '' ?>">
           <i class="fa-solid fa-hammer"></i> Cơ Khí Xây Dựng
         </a>
-        <a href="<?= url('projects.php?group=xay_dung') ?>" class="proj-main-tab proj-main-tab--blue <?= ($group_filter === 'xay_dung' || in_array($category_filter, $xay_dung_subcats)) ? 'active' : '' ?>">
+        <a href="<?= url('/projects?group=xay_dung') ?>" class="proj-main-tab proj-main-tab--blue <?= ($group_filter === 'xay_dung' || in_array($category_filter, $xay_dung_subcats)) ? 'active' : '' ?>">
           <i class="fa-solid fa-building"></i> Xây Dựng &amp; Hoàn Thiện
         </a>
       </div>
 
       <!-- Search Box -->
-      <form action="<?= url('projects.php') ?>" method="GET" class="proj-search-form">
+      <form action="<?= url('/projects') ?>" method="GET" class="proj-search-form">
         <?php if ($group_filter !== 'all'): ?>
           <input type="hidden" name="group" value="<?= htmlspecialchars($group_filter) ?>">
         <?php endif; ?>
@@ -134,7 +134,7 @@ if ($db) {
           <i class="fa-solid fa-magnifying-glass proj-search-ico"></i>
           <input type="text" name="search" class="proj-search-input" placeholder="Tìm kiếm tên dự án, địa điểm, loại công trình..." value="<?= htmlspecialchars($search_query) ?>">
           <?php if (!empty($search_query)): ?>
-            <a href="<?= url('projects.php?group=' . urlencode($group_filter)) ?>" class="proj-search-clear"><i class="fa-solid fa-xmark"></i></a>
+            <a href="<?= url('/projects?group=' . urlencode($group_filter)) ?>" class="proj-search-clear"><i class="fa-solid fa-xmark"></i></a>
           <?php endif; ?>
         </div>
         <button type="submit" class="proj-search-btn">Tìm Kiếm</button>
@@ -153,7 +153,7 @@ if ($db) {
       </div>
       
       <div class="proj-subcats-list">
-        <a href="<?= url('projects.php?group=' . urlencode($group_filter)) ?>" class="proj-subcat-pill <?= ($category_filter === 'all') ? 'active' : '' ?>">
+        <a href="<?= url('/projects?group=' . urlencode($group_filter)) ?>" class="proj-subcat-pill <?= ($category_filter === 'all') ? 'active' : '' ?>">
           Tất cả hạng mục
         </a>
 
@@ -173,7 +173,7 @@ if ($db) {
             $isActive = ($category_filter === $cat);
             $isCk = in_array($cat, $co_khi_subcats);
         ?>
-        <a href="<?= url('projects.php?group=' . ($isCk ? 'co_khi' : 'xay_dung') . '&category=' . urlencode($cat)) ?>" class="proj-subcat-pill <?= $isActive ? 'active' : '' ?> <?= $isCk ? 'proj-subcat-pill--ck' : 'proj-subcat-pill--xd' ?>">
+        <a href="<?= url('/projects?group=' . ($isCk ? 'co_khi' : 'xay_dung') . '&category=' . urlencode($cat)) ?>" class="proj-subcat-pill <?= $isActive ? 'active' : '' ?> <?= $isCk ? 'proj-subcat-pill--ck' : 'proj-subcat-pill--xd' ?>">
           <i class="fa-solid <?= $isCk ? 'fa-screwdriver-wrench' : 'fa-trowel-bricks' ?> fa-xs"></i> <?= htmlspecialchars($cat) ?>
         </a>
         <?php endforeach; ?>
@@ -196,7 +196,7 @@ if ($db) {
         <?php endif; ?>
       </div>
       <?php if ($category_filter !== 'all' || $group_filter !== 'all' || !empty($search_query)): ?>
-        <a href="<?= url('projects.php') ?>" class="proj-reset-link"><i class="fa-solid fa-rotate-left"></i> Xem toàn bộ công trình</a>
+        <a href="<?= url('/projects') ?>" class="proj-reset-link"><i class="fa-solid fa-rotate-left"></i> Xem toàn bộ công trình</a>
       <?php endif; ?>
     </div>
 
@@ -216,7 +216,7 @@ if ($db) {
               </span>
               <img src="<?= htmlspecialchars($imgSrc) ?>" alt="<?= htmlspecialchars($p['title']) ?>" loading="lazy" onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
               <div class="proj-card__thumb-overlay">
-                <a href="<?= url('project-detail.php?id=' . $p['id']) ?>" class="proj-card__quick-view">
+                <a href="<?= url('/project-detail?id=' . $p['id']) ?>" class="proj-card__quick-view">
                   <i class="fa-solid fa-eye"></i> Xem Chi Tiết
                 </a>
               </div>
@@ -227,7 +227,7 @@ if ($db) {
                 <?= $isCoKhi ? 'CƠ KHÍ XÂY DỰNG' : 'XÂY DỰNG &amp; HOÀN THIỆN' ?>
               </div>
               <h3 class="proj-card__title">
-                <a href="<?= url('project-detail.php?id=' . $p['id']) ?>"><?= htmlspecialchars($p['title']) ?></a>
+                <a href="<?= url('/project-detail?id=' . $p['id']) ?>"><?= htmlspecialchars($p['title']) ?></a>
               </h3>
               
               <div class="proj-card__meta-list">
@@ -244,10 +244,10 @@ if ($db) {
               <p class="proj-card__desc"><?= htmlspecialchars($p['description']) ?></p>
               
               <div class="proj-card__footer">
-                <a href="<?= url('project-detail.php?id=' . $p['id']) ?>" class="proj-card__more-btn">
+                <a href="<?= url('/project-detail?id=' . $p['id']) ?>" class="proj-card__more-btn">
                   Chi Tiết Công Trình <i class="fa-solid fa-arrow-right"></i>
                 </a>
-                <a href="<?= url('quote.php?service=' . urlencode($p['title'])) ?>" class="proj-card__quote-btn">
+                <a href="<?= url('/quote?service=' . urlencode($p['title'])) ?>" class="proj-card__quote-btn">
                   Báo Giá Tương Tự
                 </a>
               </div>
@@ -259,7 +259,7 @@ if ($db) {
           <div class="proj-empty-icon"><i class="fa-solid fa-folder-open"></i></div>
           <h3>Chưa Tìm Thấy Công Trình Phù Hợp</h3>
           <p>Hiện không có công trình nào phù hợp với bộ lọc bạn đã chọn. Vui lòng chọn hạng mục khác hoặc xóa từ khóa tìm kiếm.</p>
-          <a href="<?= url('projects.php') ?>" class="btn btn-primary"><i class="fa-solid fa-rotate-left"></i> Xem Tất Cả Công Trình</a>
+          <a href="<?= url('/projects') ?>" class="btn btn-primary"><i class="fa-solid fa-rotate-left"></i> Xem Tất Cả Công Trình</a>
         </div>
       <?php endif; ?>
     </div>
@@ -281,10 +281,10 @@ if ($db) {
         </p>
       </div>
       <div class="proj-cta__actions">
-        <a href="<?= url('quote.php') ?>" class="btn btn-primary btn-lg">
+        <a href="<?= url('/quote') ?>" class="btn btn-primary btn-lg">
           <i class="fa-solid fa-calculator"></i> Nhận Báo Giá Dự Án
         </a>
-        <a href="<?= url('contact.php') ?>" class="btn btn-outline btn-lg">
+        <a href="<?= url('/contact') ?>" class="btn btn-outline btn-lg">
           <i class="fa-solid fa-headset"></i> Tư Vấn Kỹ Thuật
         </a>
       </div>

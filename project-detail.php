@@ -33,7 +33,7 @@ require_once __DIR__ . '/includes/header.php';
     <span style="color: var(--accent-gold); font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 1px;"><?php echo htmlspecialchars($project['category']); ?></span>
     <h1 style="font-size: 32px; margin: 10px 0;"><?php echo htmlspecialchars($project['title']); ?></h1>
     <div class="breadcrumb">
-      <a href="<?= url('/index.php') ?>">Trang chủ</a> / <a href="<?= url('/projects.php') ?>">Công trình</a> / <span>Chi tiết</span>
+      <a href="<?= url('/') ?>">Trang chủ</a> / <a href="<?= url('/projects') ?>">Công trình</a> / <span>Chi tiết</span>
     </div>
   </div>
 </section>
@@ -165,7 +165,7 @@ require_once __DIR__ . '/includes/header.php';
           <p style="color: var(--text-light); font-size: 14px; margin-bottom: 20px;">
             Quý khách hàng có nhu cầu thi công nhà xưởng, gia công cơ khí hoặc nhận báo giá dự toán chi tiết?
           </p>
-          <a href="<?= url('/contact.php') ?>" class="btn btn-primary" style="width: 100%; text-align: center;"><i class="fa-solid fa-headset"></i> Gửi Yêu Cầu Báo Giá</a>
+          <a href="<?= url('/contact') ?>" class="btn btn-primary" style="width: 100%; text-align: center;"><i class="fa-solid fa-headset"></i> Gửi Yêu Cầu Báo Giá</a>
         </div>
 
         <?php if (count($related_projects) > 0): ?>
@@ -179,7 +179,7 @@ require_once __DIR__ . '/includes/header.php';
                        style="width: 70px; height: 55px; object-fit: cover; border-radius: 6px;"
                        onerror="this.onerror=null;this.src='<?= asset_url('images/no-image.svg') ?>';">
                   <div>
-                    <h4 style="font-size: 13px; line-height: 1.3;"><a href="<?= url('/project-detail.php?id=' . $rel['id']) ?>"><?php echo htmlspecialchars($rel['title']); ?></a></h4>
+                    <h4 style="font-size: 13px; line-height: 1.3;"><a href="<?= url('/project-detail?id=' . $rel['id']) ?>"><?php echo htmlspecialchars($rel['title']); ?></a></h4>
                     <span style="font-size: 11px; color: var(--text-muted);"><?php echo htmlspecialchars($rel['location']); ?></span>
                   </div>
                 </div>
@@ -199,7 +199,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container">
     <h1>Không Tìm Thấy Công Trình</h1>
     <div class="breadcrumb">
-      <a href="<?= url('/index.php') ?>">Trang chủ</a> / <a href="<?= url('/projects.php') ?>">Công trình</a> / <span>Không tìm thấy</span>
+      <a href="<?= url('/') ?>">Trang chủ</a> / <a href="<?= url('/projects') ?>">Công trình</a> / <span>Không tìm thấy</span>
     </div>
   </div>
 </section>
@@ -209,7 +209,7 @@ require_once __DIR__ . '/includes/header.php';
     <i class="fa-solid fa-folder-open" style="font-size: 48px; color: #94a3b8; margin-bottom: 20px; display: block; opacity: 0.6;"></i>
     <h2 style="font-size: 22px; color: var(--primary-navy, #0f172a); margin-bottom: 8px;">Công trình không tồn tại hoặc chưa được công bố</h2>
     <p style="color: #64748b; max-width: 500px; margin: 10px auto 25px;">Dự án bạn đang tìm kiếm hiện không khả dụng trong hệ thống.</p>
-    <a href="<?= url('/projects.php') ?>" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách công trình</a>
+    <a href="<?= url('/projects') ?>" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách công trình</a>
   </div>
 </section>
 <?php endif; ?>

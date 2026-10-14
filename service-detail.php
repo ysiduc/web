@@ -25,7 +25,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container">
     <h1><?php echo htmlspecialchars($service['title']); ?></h1>
     <div class="breadcrumb">
-      <a href="<?= url('index.php') ?>">Trang chủ</a> / <a href="<?= url('services.php') ?>">Dịch vụ</a> / <span>Chi tiết</span>
+      <a href="<?= url('/') ?>">Trang chủ</a> / <a href="<?= url('/services') ?>">Dịch vụ</a> / <span>Chi tiết</span>
     </div>
   </div>
 </div>
@@ -50,7 +50,7 @@ require_once __DIR__ . '/includes/header.php';
       <div class="service-cta-card">
         <h3>Bạn cần tư vấn giải pháp kỹ thuật cho dự án?</h3>
         <p>Liên hệ ngay đội ngũ kỹ sư PNMEC để nhận hỗ trợ khảo sát và phương án thi công tối ưu.</p>
-        <a href="<?= url('quote.php') ?>" class="btn btn-primary service-cta-btn"><i class="fa-solid fa-calculator"></i> Nhận Báo Giá Nhanh</a>
+        <a href="<?= url('/quote') ?>" class="btn btn-primary service-cta-btn"><i class="fa-solid fa-calculator"></i> Nhận Báo Giá Nhanh</a>
       </div>
     </div>
 
@@ -64,7 +64,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container">
     <h1>Không Tìm Thấy Dịch Vụ</h1>
     <div class="breadcrumb">
-      <a href="<?= url('index.php') ?>">Trang chủ</a> / <a href="<?= url('services.php') ?>">Dịch vụ</a> / <span>Không tìm thấy</span>
+      <a href="<?= url('/') ?>">Trang chủ</a> / <a href="<?= url('/services') ?>">Dịch vụ</a> / <span>Không tìm thấy</span>
     </div>
   </div>
 </div>
@@ -74,7 +74,7 @@ require_once __DIR__ . '/includes/header.php';
     <i class="fa-solid fa-screwdriver-wrench" style="font-size: 48px; color: #94a3b8; margin-bottom: 20px; display: block; opacity: 0.6;"></i>
     <h2 style="font-size: 22px; color: var(--primary-navy, #0f172a); margin-bottom: 8px;">Dịch vụ không tồn tại hoặc đã tạm dừng</h2>
     <p style="color: #64748b; max-width: 500px; margin: 10px auto 25px;">Dịch vụ bạn đang tìm kiếm không tồn tại hoặc đã ngừng cung cấp.</p>
-    <a href="<?= url('services.php') ?>" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách dịch vụ</a>
+    <a href="<?= url('/services') ?>" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách dịch vụ</a>
   </div>
 </section>
 <?php endif; ?>

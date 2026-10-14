@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /config/
+Disallow: /database/
+Disallow: /storage/
+
+Sitemap: https://pnmec.vn/sitemap.xml

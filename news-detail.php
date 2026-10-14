@@ -25,7 +25,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container">
     <h1><?php echo htmlspecialchars($news_item['title']); ?></h1>
     <div class="breadcrumb">
-      <a href="<?= url('index.php') ?>">Trang chủ</a> / <a href="<?= url('news.php') ?>">Tin tức</a> / <span>Bài viết</span>
+      <a href="<?= url('/') ?>">Trang chủ</a> / <a href="<?= url('/news') ?>">Tin tức</a> / <span>Bài viết</span>
     </div>
   </div>
 </div>
@@ -55,7 +55,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container">
     <h1>Không Tìm Thấy Bài Viết</h1>
     <div class="breadcrumb">
-      <a href="<?= url('index.php') ?>">Trang chủ</a> / <a href="<?= url('news.php') ?>">Tin tức</a> / <span>Không tìm thấy</span>
+      <a href="<?= url('/') ?>">Trang chủ</a> / <a href="<?= url('/news') ?>">Tin tức</a> / <span>Không tìm thấy</span>
     </div>
   </div>
 </div>
@@ -65,7 +65,7 @@ require_once __DIR__ . '/includes/header.php';
     <i class="fa-regular fa-newspaper" style="font-size: 48px; color: #94a3b8; margin-bottom: 20px; display: block; opacity: 0.6;"></i>
     <h2 style="font-size: 22px; color: var(--primary-navy, #0f172a); margin-bottom: 8px;">Bài viết không tồn tại hoặc đã bị gỡ bỏ</h2>
     <p style="color: #64748b; max-width: 500px; margin: 10px auto 25px;">Nội dung bạn đang tìm kiếm hiện không khả dụng trong hệ thống.</p>
-    <a href="<?= url('news.php') ?>" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách tin tức</a>
+    <a href="<?= url('/news') ?>" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách tin tức</a>
   </div>
 </section>
 <?php endif; ?>

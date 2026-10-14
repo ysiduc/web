@@ -52,7 +52,7 @@ foreach ($services as $s) {
       </div>
 
       <div class="srv-breadcrumb">
-        <a href="<?= url('index.php') ?>"><i class="fa-solid fa-house"></i> Trang chủ</a>
+        <a href="<?= url('/') ?>"><i class="fa-solid fa-house"></i> Trang chủ</a>
         <i class="fa-solid fa-angle-right"></i>
         <span>Dịch vụ</span>
       </div>
@@ -93,7 +93,7 @@ foreach ($services as $s) {
           <div class="srv-card__badge-code"><?= htmlspecialchars($item['code']) ?></div>
           <?php endif; ?>
           <div class="srv-card__overlay">
-            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>" class="srv-card__overlay-btn">
+            <a href="<?= url('/service-detail?id=' . $item['id']) ?>" class="srv-card__overlay-btn">
               <i class="fa-solid fa-eye"></i> Xem Chi Tiết
             </a>
           </div>
@@ -101,15 +101,15 @@ foreach ($services as $s) {
         
         <div class="srv-card__body">
           <h3 class="srv-card__title">
-            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>"><?= htmlspecialchars($item['title']) ?></a>
+            <a href="<?= url('/service-detail?id=' . $item['id']) ?>"><?= htmlspecialchars($item['title']) ?></a>
           </h3>
           <p class="srv-card__desc"><?= htmlspecialchars($desc) ?></p>
 
           <div class="srv-card__footer">
-            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>" class="srv-card__action-btn">
+            <a href="<?= url('/service-detail?id=' . $item['id']) ?>" class="srv-card__action-btn">
               <i class="fa-solid fa-eye"></i> Chi Tiết Dịch Vụ
             </a>
-            <a href="<?= url('quote.php?service=' . urlencode($item['title'])) ?>" class="srv-card__proj-btn">
+            <a href="<?= url('/quote?service=' . urlencode($item['title'])) ?>" class="srv-card__proj-btn">
               Báo Giá <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
@@ -161,7 +161,7 @@ foreach ($services as $s) {
           <div class="srv-card__badge-code srv-card__badge-code--blue"><?= htmlspecialchars($item['code']) ?></div>
           <?php endif; ?>
           <div class="srv-card__overlay">
-            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>" class="srv-card__overlay-btn">
+            <a href="<?= url('/service-detail?id=' . $item['id']) ?>" class="srv-card__overlay-btn">
               <i class="fa-solid fa-eye"></i> Xem Chi Tiết
             </a>
           </div>
@@ -169,15 +169,15 @@ foreach ($services as $s) {
         
         <div class="srv-card__body">
           <h3 class="srv-card__title">
-            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>"><?= htmlspecialchars($item['title']) ?></a>
+            <a href="<?= url('/service-detail?id=' . $item['id']) ?>"><?= htmlspecialchars($item['title']) ?></a>
           </h3>
           <p class="srv-card__desc"><?= htmlspecialchars($desc) ?></p>
 
           <div class="srv-card__footer">
-            <a href="<?= url('service-detail.php?id=' . $item['id']) ?>" class="srv-card__action-btn srv-card__action-btn--blue">
+            <a href="<?= url('/service-detail?id=' . $item['id']) ?>" class="srv-card__action-btn srv-card__action-btn--blue">
               <i class="fa-solid fa-eye"></i> Chi Tiết Dịch Vụ
             </a>
-            <a href="<?= url('quote.php?service=' . urlencode($item['title'])) ?>" class="srv-card__proj-btn">
+            <a href="<?= url('/quote?service=' . urlencode($item['title'])) ?>" class="srv-card__proj-btn">
               Báo Giá <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
@@ -263,10 +263,10 @@ foreach ($services as $s) {
         </p>
       </div>
       <div class="srv-cta__actions">
-        <a href="<?= url('quote.php') ?>" class="btn btn-primary btn-lg">
+        <a href="<?= url('/quote') ?>" class="btn btn-primary btn-lg">
           <i class="fa-solid fa-calculator"></i> Nhận Báo Giá Ngay
         </a>
-        <a href="<?= url('contact.php') ?>" class="btn btn-outline btn-lg">
+        <a href="<?= url('/contact') ?>" class="btn btn-outline btn-lg">
           <i class="fa-solid fa-headset"></i> Liên Hệ Trực Tiếp
         </a>
       </div>

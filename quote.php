@@ -55,7 +55,7 @@ require_once __DIR__ . '/includes/header.php';
   <div class="container">
     <h1>Yêu Cầu Báo Giá Thi Công</h1>
     <div class="breadcrumb">
-      <a href="<?= url('/index.php') ?>">Trang chủ</a> / <span>Nhận Báo Giá</span>
+      <a href="<?= url('/') ?>">Trang chủ</a> / <span>Nhận Báo Giá</span>
     </div>
   </div>
 </div>

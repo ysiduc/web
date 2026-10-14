@@ -87,8 +87,28 @@ if (!defined('APP_DEBUG')) {
 // 6. URL Helpers
 if (!function_exists('url')) {
     function url($path = '') {
-        $path = '/' . ltrim($path, '/');
-        return rtrim(APP_BASE_URL, '/') . $path;
+        $path = '/' . ltrim((string)$path, '/');
+        
+        // Parse path & query
+        $parts = explode('?', $path, 2);
+        $urlPath = $parts[0];
+        $queryString = isset($parts[1]) ? '?' . $parts[1] : '';
+        
+        // Remove .php for frontend pages (except api/admin/assets/etc.)
+        if (!preg_match('#^/(api|admin|assets|storage|database|config)/#i', $urlPath)) {
+            if ($urlPath === '/index.php' || $urlPath === '/index') {
+                $urlPath = '/';
+            } elseif (substr($urlPath, -4) === '.php') {
+                $urlPath = substr($urlPath, 0, -4);
+            }
+        }
+        
+        // Root path formatting
+        if ($urlPath === '/') {
+            return (APP_BASE_URL !== '' ? rtrim(APP_BASE_URL, '/') : '') . '/' . ($queryString !== '' ? $queryString : '');
+        }
+        
+        return rtrim(APP_BASE_URL, '/') . $urlPath . $queryString;
     }
 }
 
