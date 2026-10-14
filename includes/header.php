@@ -117,6 +117,7 @@ $active_css_path = $page_css_map[$current_page] ?? 'css/user/home.css';
   <title><?php echo htmlspecialchars($meta_title, ENT_QUOTES, 'UTF-8'); ?></title>
   <meta name="description" content="<?php echo htmlspecialchars($meta_description, ENT_QUOTES, 'UTF-8'); ?>">
   <meta name="robots" content="<?php echo htmlspecialchars($meta_robots, ENT_QUOTES, 'UTF-8'); ?>">
+  <meta name="google-site-verification" content="eY3wJJr9J71D5tuFAimHx_iGle9pTkIK6v8Ccabd5OU">
 
   <!-- Canonical URL -->
   <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url, ENT_QUOTES, 'UTF-8'); ?>">
